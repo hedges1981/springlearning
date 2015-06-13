@@ -62,13 +62,13 @@
                     <fork>false</fork>
                     <!--<path>/${war.name}</path>-->
                     <port>2702</port>
-                    <contextFile>${basedir}/target/classes/context.xml</contextFile>
+                    <contextFile>${basedir}/context.xml</contextFile>
                     <additionalClasspathDirs>
                         <additionalClasspathDir>${basedir}/target/tomcat-lib-extra</additionalClasspathDir>
                     </additionalClasspathDirs>
                     <webapps>
                         <webapp>
-                            <contextPath>/spring-mvc-learning</contextPath>
+                            <contextPath>/springmvclearning</contextPath>
                             <groupId>${project.groupId}</groupId>
                             <artifactId>spring-mvc-learning</artifactId>
                             <version>${project.version}</version>
