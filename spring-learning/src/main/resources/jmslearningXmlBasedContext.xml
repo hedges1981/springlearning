@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/jms
+                           http://www.springframework.org/schema/jms/spring-jms.xsd
+                           http://activemq.apache.org/schema/core
+                           http://activemq.apache.org/schema/core/activemq-core.xsd">
+
+    <context:component-scan base-package="com.hedges.jmslearning" />
+
+    <!-- Here we define a broker, the broker is an intermediary that sits between message producers and consumers, routes the messages.
+        Broker can be set up on a different machine to the producer and consumer.
+
+        This one below is using a spring driven embedded broker. Note how it is set up to be persistent.
+        -->
+
+    <amq:broker id="broker" useJmx="false" persistent="true">
+        <amq:persistenceAdapter>
+                <amq:kahaDB directory="/home/rowland-hall/personal_ws/spring-learning/jmsdbs" />
+        </amq:persistenceAdapter>
+        <amq:transportConnectors>
+            <amq:transportConnector uri="vm://localhost" />
+        <!--note the vm:// protocol, this allows for traffic between things in the same JVM to be routed without having to go out over networks.
+        They just stay within the jvm,good for speed -->
+        </amq:transportConnectors>
+    </amq:broker>
+
+    <!--  ActiveMQ Destinations  -->
+    <!-- these are short hand ways of getting hold of ActiveMQDestinations, note that physical name must be specified-->
+    <amq:queue id="destinationQueue" physicalName="hedgesJmsQueue" />
+    <amq:topic id="destinationTopic" physicalName="hedgesJmsTopic" />
+    <amq:queue id="anotherQueue" physicalName="hedgesJmsTopic"/>
+    <amq:queue id="hedgesMessageListenerQueue" physicalName="hedgesMessageListenerQueue"/>
+
+    <!-- Connection factory, used by both consumers and producers, note how it routes connections to the broker via the broker URL:-->
+    <amq:connectionFactory id="jmsFactory" brokerURL="vm://localhost" />
+
+    <!-- Note that this is a SingleConnection factory, this means that the same connection is returned from all calls to createConnection()
+      Will ignore calls to closeConnection(). Apparently the single connection returned is thread safe-->
+    <bean id="jmsProducerSingleConnectionFactory"
+          class="org.springframework.jms.connection.SingleConnectionFactory"
+          depends-on="broker"
+          p:targetConnectionFactory-ref="jmsFactory" />
+
+    <!--JMS Template is just a helper class that simplfies sending of JMS messages
+    This one uses the default DynamicDestinationResolver, so if it is asked to do someithing with a dest that does not yet exist, it will create one-->
+    <bean id="dynamicDestinationJMSTemplate" class="org.springframework.jms.core.JmsTemplate"
+          p:connectionFactory-ref="jmsProducerSingleConnectionFactory"
+          p:defaultDestination-ref="destinationQueue" /> <!--note how it references the 'destination' queue here: -->
+
+    <!-- note that with this class, the beanFactory gets default set to the beanFactory that is making it, so that i.e. the destination beans it has access to
+    are those defined in this XML file -->
+    <bean id="beanFactoryDestinationResolver" class="org.springframework.jms.support.destination.BeanFactoryDestinationResolver"/>
+
+    <bean id="mustBeBeanDestinationJMSTemplate" class="org.springframework.jms.core.JmsTemplate"
+          p:connectionFactory-ref="jmsProducerSingleConnectionFactory"
+          p:destinationResolver-ref="beanFactoryDestinationResolver" />
+
+
+    <!--NOTE on how all this links up:
+    -Broker makes broker service available on URL
+    - amq:connectionFactory makes connections available on the URL
+    -  org.springframework.jms.connection.SingleConnectionFactory makes connections available through the amq:connectionFactory
+    - JmsTemplate uses the org.springframework.jms.connection.SingleConnectionFactory to make connection and send messages
+    - JmsTemplate references some kind of Destination/ DestinationResolver to decide which queue or topic to send the message
+    -->
+
+    <!--NOTE on CachingConnectionFactory...... it looks like when you us a SingleConnectionFactory, it creates a new JMS session and MessageProducer each time you send a message,
+    with the CachingConnectionFactory, it looks like these are cached, so is more efficient -->
+
+    <!--NOTE, when running this test project with these MessageDriven POJOs, they some times appear not to fire off the messages, probably due to the fact that we are registering them
+    on destinations that are not yet created?. When done with breakpoints in the message receivers, it appears to work.-->
+
+    <!--***************** USING AN IMPLEMENTATION OF MESSAGE LISTENER TO RECEIVE A MESSAGE ********************************************** -->
+    <bean id="messageListener" class="com.hedges.jmslearning.xmlbased.MessageListenerImpl" />
+
+    <!-- NEED the message listener container to rig up the listener to receve the messages -->
+    <bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="jmsFactory"/>
+        <property name="destination" ref="hedgesMessageListenerQueue"/>
+        <property name="messageListener" ref="messageListener" />
+    </bean>
+
+    <!--*****************************STUFF FOR USING THE @JmsListenerAnnotation ************************************************
+    SEE CLASS AnnotatedMessageListener for this bit-->
+
+    <!--enabels the @JmsListener annotation to get picked up-->
+    <jms:annotation-driven/>
+    <!-- id of "jmsListenerContainerFactory" makes it the default ListenerContainerFactory, so you don't have to specify one in the @JmsListener annotation-->
+    <bean id="jmsListenerContainerFactory" class="org.springframework.jms.config.DefaultJmsListenerContainerFactory">
+        <property name="connectionFactory" ref="jmsFactory"/>
+        <!--<property name="destinationResolver" ref="destinationResolver"/>-->   <!--****** COULD SPECIFY A DIFFERENT DESTINATION RESOLVER HERE IF YOU WANT-->
+        <property name="concurrency" value="3-10"/>
+
+        <!---NOTE, you could also use e.g. <jms:listener destination="xxx" ref="beanId" method="doSomething" /> to rig one up in XML rather than using annotations-->
+    </bean>
+
+    <!-- NOTE THAT A listener container is effectively a class that picks up the message listeners and puts them in a loop to receive messages, so it is necessary to
+    be used when using spring to deploy any kind of asynchronous message listener -->
+
+    <!--************************STUFF FOR USING A NON-ANNOTATED MESSAGE DRIVEN POJO ***********************************-->
+
+    <bean id="notAnnotatedMessageDrivenPOJO" class="com.hedges.jmslearning.xmlbased.NotAnnotatedMessageDrivenPOJO"/>
+    <bean id="notAnnotatedMessageDrivenPOJOResponseDestination" class="com.hedges.jmslearning.xmlbased.NotAnnotatedMessageDrivenPOJOResponseDestination"/>
+
+    <!--by default the message container class made is a DefaultMessageListenerContainer, it is apparently transaction aware, so that presumably the sending of the
+    message can be part of a transaction, I think this means that if a message is sent inside a transaction, the transaction will not commit until the message is successfully processed?-->
+    <jms:listener-container connection-factory="jmsProducerSingleConnectionFactory">
+        <!--NOTE HOW WE SPECIFY THE METHOD TO BE HIT WITH THE MESSAGE, and because it returns a string, we can tell it to automatically send that string to a response-destination, notice how it is picked up
+         by another message driven POJO-->
+        <jms:listener destination="notAnnotatedMessageDrivenPOJOQueue" ref="notAnnotatedMessageDrivenPOJO" method="handleMessage" response-destination="NotAnnotatedMessageDrivenPOJOResponseDestination"/>
+        <jms:listener destination="NotAnnotatedMessageDrivenPOJOResponseDestination" ref="notAnnotatedMessageDrivenPOJOResponseDestination" method="handleMessage"/>
+    </jms:listener-container>
+
+
+    <!--************************USE OF A MESSAGE LISTENER ADAPTER*****************************************************-->
+    <!-- the MessageListenerAdapter basically implements MessageListener, and allows you to adapt any old class to receive messages -->
+    <bean  id = "messageListenerAdapterDelegate" class="com.hedges.jmslearning.xmlbased.MessageListenerAdapterDelegate" />
+
+    <bean id="messageListenerAdapter"
+          class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
+        <constructor-arg ref="messageListenerAdapterDelegate" />  <!-- uses a default method of handleMessage on the delegate if nothing set, but you could set a given method-->
+    </bean>
+
+    <bean id="messageListenerContainer"
+          class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="jmsProducerSingleConnectionFactory" />
+        <property name="destinationName" value="MessageListenerAdapterQueue" />
+        <property name="messageListener" ref="messageListenerAdapter" />
+    </bean>
+
+
+    </beans>

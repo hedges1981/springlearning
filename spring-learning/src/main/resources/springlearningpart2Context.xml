@@ -1,0 +1,69 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.2.xsd
+	http://www.springframework.org/schema/jee
+	http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd"
+
+       default-autowire-candidates="*Autowireable,*Autowireable2"
+        >  <!-- default_autowire-candidates limits the bean name pattern that can match autowiring  -->
+
+    <!-- TESTING DIFFERENT AUTOWIRE MODES -->
+    <!--TESTING default-autowire -->
+    <!-- name doesn't match , so not autowired-->
+    <bean id="autoWiringTestBean1" class="com.hedges.springlearningpart2.AutoWiringTestBean1"
+            p:name="name no match pattern" />        <!-- this one not picked as not have right ending -->
+
+    <bean id="autoWiringTestBean1a_Autowireablen" class="com.hedges.springlearningpart2.AutoWiringTestBean1"
+          p:name="name no match pattern" />
+
+    <bean id="autoWiringTestBean1b_Autowireable" class="com.hedges.springlearningpart2.AutoWiringTestBean1"
+          p:name="name matches default autowire candidates"/>  <!-- this one picked as has right ending -->
+
+    <bean id="autoWiringTestBean2" class="com.hedges.springlearningpart2.AutoWiringTestBean2" autowire="byType"/>
+
+
+    <!-- testing autowire-candidate = "true/false"-->
+    <bean id="autowireTestBean4a_Autowireable"  class="com.hedges.springlearningpart2.AutowireTestBean4"
+          p:name="autowire-candidate=false" autowire-candidate="false"/>
+
+    <!-- setting autowire-candidate=true on the bean makes it available, even though it no match the name pattern above-->
+    <bean id="autowireTestBean4b"  class="com.hedges.springlearningpart2.AutowireTestBean4"
+          p:name="autowire-candidate=true" autowire-candidate="true"/>
+
+    <bean id="autowireTestBean5"  class="com.hedges.springlearningpart2.AutowireTestBean5" autowire="byType"/>
+
+
+    <!--***************************** Testing inner bean stuff **********************************-->
+    <bean id="generalBeanWithInnerBean"  class="com.hedges.springlearning.refandinnerbean.AGeneralBean1">
+        <property name="aGeneralBean2">
+            <bean id="anInnerBean"  class="com.hedges.springlearning.refandinnerbean.AGeneralBean2"/>
+        </property>
+    </bean>
+
+    <!--     NOTE:::: this is not allowed, as the anInnerBean is not in scope.
+    <bean id="anotherGeneralBean"  class="com.hedges.springlearning.refandinnerbean.AGeneralBean1"
+            p:aGeneralBean2-ref="anInnerBean"/>     -->
+
+    <!--
+    NOTE if this    were here, then this bean could be referenced in global scope, but the inner bean defined
+    above overrides it in bean "generalBeanWithInnerBean"
+    <bean id="anInnerBean"  class="com.hedges.springlearning.refandinnerbean.AGeneralBean2"/>
+
+    -->
+
+
+</beans>
