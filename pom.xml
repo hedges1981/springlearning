@@ -8,6 +8,8 @@
     <version>X</version>
     <packaging>pom</packaging>
 
+    <!--test comment commit-->
+
   <modules>
 		<module>spring-mvc-learning</module>
   </modules>
