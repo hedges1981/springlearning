@@ -5,7 +5,7 @@ import javax.annotation.PreDestroy;
 
 public class Donger 
 {
-	private String preMessage;
+	private String preMessage;     ////
 	
 	private String message;
 	
