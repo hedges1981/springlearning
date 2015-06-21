@@ -1,4 +1,4 @@
-package com.hedges.springlearning.mvc.controllers;
+package com.hedges.springlearning.mvc.reallysimplecontrollers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

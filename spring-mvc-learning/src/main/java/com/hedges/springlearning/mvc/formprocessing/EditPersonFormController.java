@@ -1,4 +1,4 @@
-package com.hedges.springlearning.mvc.controllers;
+package com.hedges.springlearning.mvc.formprocessing;
 
 import java.util.Date;
 

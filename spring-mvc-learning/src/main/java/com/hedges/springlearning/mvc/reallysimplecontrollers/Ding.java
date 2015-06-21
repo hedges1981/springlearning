@@ -1,4 +1,4 @@
-package com.hedges.springlearning.mvc.controllers;
+package com.hedges.springlearning.mvc.reallysimplecontrollers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -8,12 +8,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class Ding 
 {
-	public Ding()
-	{
-		int x=0;
-		x++;
-	}
-	
 	@RequestMapping( value="/ding", method=RequestMethod.GET )
 	public String printDing( ModelMap model )
 	{
