@@ -9,6 +9,8 @@
 
    <context:component-scan base-package="com.hedges" />
 
+<!-- NOTE that it uses the name, not the ID for the request mapping -->
+	<bean name="/xmlMappedController" class="com.hedges.springlearning.mvc.reallysimplecontrollers.ControllerWithRequestMappingInXml"/>
 	
 	<!--  this means that e.g. a view named "hello" will be directed to a file: /WEB-INF/jsp/hello.jsp  -->
    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

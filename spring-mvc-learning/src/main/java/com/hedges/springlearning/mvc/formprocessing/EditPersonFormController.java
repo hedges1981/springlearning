@@ -8,6 +8,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.hedges.springlearning.mvc.model.Person;
@@ -47,8 +48,9 @@ public class EditPersonFormController
 		  model.addAttribute("message", "Person edited, new values are:");
 		  
 		  model.addAttribute("person",person);
-	      
-	      return "editPersonForm";
+
+			  return "editPersonForm";
+
 	   }
 
 }
