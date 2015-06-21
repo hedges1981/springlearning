@@ -4,9 +4,23 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>springlearning-parent-pom</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>4.1.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>4.1.0.RELEASE</version>
+        </dependency>
+    </dependencies>
     <groupId>Hedges</groupId>
     <version>X</version>
     <packaging>pom</packaging>
+
+    <!--test comment commit-->
 
   <modules>
 		<module>spring-mvc-learning</module>

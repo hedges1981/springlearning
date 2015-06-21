@@ -1,0 +1,181 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.2.xsd
+	http://www.springframework.org/schema/jee
+	http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd"
+
+
+        >
+
+    <import resource="importedContext.xml"/>   <!--NO classpath: or file: prefix, so the reference is just a relative file path -->
+ 	
+ 	<!--  annotation config stuff -->
+ 	<!--
+ 	
+ 	When just declaring <context:annotation-config> you still need to delcare the beans, 
+ 	but not the dependencies.
+ 	  
+ 	<context:annotation-config />
+ 	
+ 	<bean id="autowiredComponent" class="com.hedges.springlearningAutowiredComponent"/>
+ 	<bean id="serviceWithAutoWiring" class="com.hedges.springlearningServiceWithAutoWiring">
+
+ 	</bean>
+ 	-->
+ 	
+ 	<!--  declaring this means that beans dont need delcaring, this also implies
+ 	<context:annotation-config/> -->
+ 	<!--  a bean must have a default constructor if it is created via the component-scan -->
+ 	<!-- <context:component-scan base-package="com.hedges"/> -->
+
+    <!--<task:annotation-driven executor="myExecutor" scheduler="myScheduler"/>-->
+    <!--<task:executor id="myExecutor" pool-size="5"/>-->
+    <!--<task:scheduler id="myScheduler" pool-size="10"/>-->
+
+    <!--<task:annotation-driven scheduler="myScheduler"/>-->
+    <!--<task:scheduler id="myScheduler" pool-size="10"/>-->
+
+    <task:annotation-driven executor="myExecutor"/>
+    <task:executor id="myExecutor" pool-size="10"/>
+
+    <context:annotation-config />
+    <context:component-scan base-package="com.hedges" />
+
+
+    <bean id="valueBean" class="com.hedges.springlearning.ValueBean"/>
+
+ 	<bean id="autowiredComponent" class="com.hedges.springlearning.AutowiredComponent"/>
+ 	<bean id="anotherServiceWithAutoWiring" class="com.hedges.springlearning.AnotherServiceWithAutoWiring" autowire="byType"/>
+
+    <!-- Use of properties splace:      -->
+    <util:properties id="testProps" location="classpath:testProps.properties" />
+
+    <!--  end annotation config stuff -->
+	
+	<bean class="com.hedges.springlearning.DongBeanPostProcessor"/>
+ 
+ 	<bean id="donger1"
+		class="com.hedges.springlearning.Donger"
+		c:arg1="donger1 arg1" c:arg2="donger1 arg2">
+		<property name="message" value="hello donger1!" />
+	</bean>
+ 	
+ 	<bean id="donger2"
+		class="com.hedges.springlearning.Donger"
+		c:_0="donger2 arg1" c:_1="donger2 arg2" >
+		<property name="message" value="hello donger2!" />
+	</bean>
+
+    <util:list id="beanList">
+        <value>beanListValue1</value>
+        <value>beanListValue2</value>
+    </util:list>
+
+    <bean id="collectionTestingBean" class="com.hedges.springlearning.CollectionTestingBean">
+        <property name="injectedList">
+            <list>
+                <value>aStringValue</value>
+                <value>aNotherStringValue</value>
+                <ref bean="donger1"/>
+            </list>
+        </property>
+        <property name="injectedSet">
+            <set>
+                <value>aSetValue</value>
+                <value>aNotherSetValue</value>
+            </set>
+        </property>
+        <property name="injectedMap">
+            <map>
+                <entry>
+                    <key><value>aKey</value></key>
+                    <value>aValue</value>
+                </entry>
+                <entry>
+                    <key><ref bean="donger1"/></key>
+                    <ref bean="donger1"/>
+                </entry>
+            </map>
+        </property>
+        <property name="linkedList">
+            <util:list list-class="java.util.LinkedList">
+                <value>aStringValue</value>
+                <value>aNotherStringValue</value>
+                <ref bean="donger1"/>
+            </util:list>
+        </property>
+        <property name="beanList" ref="beanList"/>
+    </bean>
+
+    <!-- PARENT AND CHILD BEAN STUFF -->
+    <bean id="parentBean"  class="com.hedges.springlearning.parentbeans.ParentBean" abstract="true"
+            p:val1="parentBeanVal1"/>
+    <!-- abstract = true means that the bean will not be instantiated -->
+
+    <bean id="childBean" class="com.hedges.springlearning.parentbeans.ChildBean" parent="parentBean"
+          p:val2="childBeanVal2" />
+    <!--no need to set val1 cos it gets set due to the parent relationship-->
+    <!--NOTE, child bean MUST have properties to match ALL those that have values set in the parent bean,
+    i.e. here, child bean must have a val1 -->
+
+    <bean id="templateBean"  abstract="true"
+          p:val1="templateBeanVal1"
+          p:val2="templateBeanVal2"/>  <!-- this bean does not have a class defined as it is a pure abstract template bean -->
+
+    <bean id="childOfTemplateBean" class="com.hedges.springlearning.parentbeans.ChildOfTemplateBean" parent="templateBean"/>
+    <!-- no properties need to be set here, as the all come in via the templateBean -->
+
+    <!-- Bean ID/ name testing -->
+
+    <bean class="com.hedges.springlearning.nameidtesting.BeanWithNoNameOrId"/>
+
+    <bean name="beanWithNameNoId" class="com.hedges.springlearning.nameidtesting.BeanWithNameNoId"/>
+
+    <bean name="beanWithNameAndId_name"  id="beanWithNameAndId_id" class = "com.hedges.springlearning.nameidtesting.BeanWithNameAndId"/>
+
+    <bean name="beanWithManyNames1,beanWithManyNames2 beanWithManyNames3" class="com.hedges.springlearning.nameidtesting.BeanWithManyNames" />
+
+    <!-- FACTORY BEAN TESTING -->
+    <bean id="dateFactoryBean" class="com.hedges.springlearning.factorybeantesting.DateFactoryBean"/>
+
+    <bean id="dateCreatedByDateFactoryBean" factory-bean="dateFactoryBean" factory-method="getADate"/>
+    <!-- SIMPLE USE OF A STATIC FACTORY -->
+    <bean id="dateCreatedByStaticFactoryBean" class="com.hedges.springlearning.factorybeantesting.StaticBeanFactory" factory-method="getDateStatic"/>
+
+    <!-- STUFF TDW CONSTANTS -->
+    <util:constant id="aConstant" static-field="com.hedges.springlearning.constantstesting.SomeConstants.A_CONSTANT" />
+    <bean id="beanWithConstants" class="com.hedges.springlearning.constantstesting.BeanWithConstants"
+          p:someCrap-ref="aConstant"
+          p:moreCrap="#{testProps.testProperty}"/>  <!-- note the use of this expression language stuff to get a the value from the properties file, see above:-->
+
+    <!-- TESTING REF AND INNER BEAN -->
+    <bean id="generalBean2" class="com.hedges.springlearning.refandinnerbean.AGeneralBean2"/>
+    <bean id="generalBean3" class="com.hedges.springlearning.refandinnerbean.AGeneralBean3"/>
+
+    <bean id="generalBean1" class="com.hedges.springlearning.refandinnerbean.AGeneralBean1">
+        <property name="aGeneralBean2">
+            <ref bean="generalBean2"/>   <!-- NOTE THE MORE VERBOSE WAY OF SETTING THE PROPERTY -->
+        </property>
+        <property name="aGeneralBean3" ref="generalBean3"/>
+        <property name="aString">
+            <value>"someRubbishString"</value>      <!--NOTE ALSO THE MORE VERBOSE WAY OF SETTING A VALUE -->
+        </property>
+    </bean>
+
+
+
+</beans>
