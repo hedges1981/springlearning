@@ -40,10 +40,6 @@
        <property name="order" value="2"/>
    </bean>
 
-
-
-    <!-- hello-->
-
     
     <!-- DEMO of different HandlerMapping classes, they define how URLs are mapped to controllers-->
     <!--NOTE that they all have an order property, this defines which one takes precidence when matching up a URL-->
@@ -64,8 +60,17 @@
    <bean class="org.springframework.web.servlet.mvc.support.ControllerBeanNameHandlerMapping">
        <property name="order" value="2"/>
    </bean>
+   
+   <bean id="simpleUrlHandlerMappingController" class="com.hedges.springlearning.mvc.controllermappingexamples.SimpleUrlHandlerMappingController/>
 
-
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="order" value="1"></property>
+	   <property name="mappings">
+               <props>
+                   <prop key="/simpleUrlHandlerMapping">simpleUrlHandlerMappingController</prop>
+               </props>
+           </property>
+    </bean>
 
 
 </beans>
