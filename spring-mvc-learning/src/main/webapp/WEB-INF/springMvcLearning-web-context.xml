@@ -10,12 +10,37 @@
    <context:component-scan base-package="com.hedges" />
 
 <!-- NOTE that it uses the name, not the ID for the request mapping -->
-	<bean name="/xmlMappedController" class="com.hedges.springlearning.mvc.reallysimplecontrollers.ControllerWithRequestMappingInXml"/>
+	<bean name="/xmlMappedController" class="com.hedges.springlearning.mvc.controllermappingexamples.ControllerWithRequestMappingInXml"/>
 	
 	<!--  this means that e.g. a view named "hello" will be directed to a file: /WEB-INF/jsp/hello.jsp  -->
    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
       <property name="prefix" value="/WEB-INF/jsp/" />
       <property name="suffix" value=".jsp" />
    </bean>
+
+
+
+    <!-- DEMO of different HandlerMapping classes, they define how URLs are mapped to controllers-->
+    <!--NOTE that they all have an order property, this defines which one takes precidence when matching up a URL-->
+
+    <!--this one allows the bean name to have the url in it, is supplied by default, so not necessary to put it in xml, UNLESS
+    another HandlerMapping is provided -->
+   <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
+       <property name="order" value="0"/>
+   </bean>
+
+    <!--this one allows the @RequestMapping annotation to get picked up and work. Again, is supplied by default, but needs definining if
+    you define any other HandlerMapping class-->
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+        <property name="order" value="1"/>
+    </bean>
+
+   <!-- maps the url to a controller with the same name, note if controller not explicitly named in XML, default name is simple class name-->
+   <bean class="org.springframework.web.servlet.mvc.support.ControllerBeanNameHandlerMapping">
+       <property name="order" value="2"/>
+   </bean>
+
+
+
 
 </beans>
