@@ -20,7 +20,10 @@
 
 
 
-    <!-- DEMO of different HandlerMapping classes, they define how URLs are mapped to controllers-->
+    <!--
+    fffff
+    
+    DEMO of different HandlerMapping classes, they define how URLs are mapped to controllers-->
     <!--NOTE that they all have an order property, this defines which one takes precidence when matching up a URL-->
 
     <!--this one allows the bean name to have the url in it, is supplied by default, so not necessary to put it in xml, UNLESS
