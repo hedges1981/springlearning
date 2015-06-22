@@ -4,8 +4,46 @@
 
 <web-app>
 
-    <listener>
+    <!-- <listener>
         <listener-class>com.hedges.springlearning.mvc.SampleListener</listener-class>
-    </listener>
+    </listener>-->
+    
+    
+    <servlet>
+      <servlet-name>SpringMVCDispatcherServlet</servlet-name>
+      <servlet-class>
+         org.springframework.web.servlet.DispatcherServlet
+      </servlet-class>
+      <init-param> <!-- NOTE: if this wasn't given, would look for a default of: /WEB-INF/servlet-name]-servlet.xml to load up -->
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/springMvcLearning-web-context.xml</param-value>
+      </init-param>
+      <load-on-startup>1</load-on-startup>
+   </servlet>
+
+   <servlet-mapping>
+      <servlet-name>SpringMVCDispatcherServlet</servlet-name>
+      <url-pattern>/test/*</url-pattern>  <!-- this CANNOT be e.g. just *, as that will cause any forwarding it does to .jsp pages to also come through this servlet -->
+   </servlet-mapping>
+   
+   <!-- NOTE: without this config of a listener and ContextConfigLocation, Dispatcher servlet will look for 
+    /WEB-INF/SpringMVCDispatcherServlet-servlet.xml
+    -->
+   <!--<context-param>
+   <param-name>contextConfigLocation</param-name>
+   <param-value>/WEB-INF/springMvcLearning-application-context.xml</param-value>
+	</context-param>-->
+	
+	
+	<jsp-config>
+  <jsp-property-group>
+    <url-pattern>/*</url-pattern>
+    <el-enabled>true</el-enabled>
+    <scripting-enabled>true</scripting-enabled>
+  </jsp-property-group>
+</jsp-config>
+<!-- NOTE:::: the above should have enabled expression language to work for all pages, but it didn't, see how had to add
+<%@ page isELIgnored="false" %> to printMessage.jsp -->
+    
 
 </web-app>
