@@ -63,8 +63,9 @@
    
    <bean id="simpleUrlHandlerMappingController" class="com.hedges.springlearning.mvc.controllermappingexamples.SimpleUrlHandlerMappingController/>
 
+    <!-- other mapping example, as was used in Sage code -->
     <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-        <property name="order" value="1"></property>
+        <property name="order" value="3"></property>
 	   <property name="mappings">
                <props>
                    <prop key="/simpleUrlHandlerMapping">simpleUrlHandlerMappingController</prop>
