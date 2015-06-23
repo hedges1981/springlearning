@@ -8,6 +8,7 @@
    http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
    <context:component-scan base-package="com.hedges" />
+   <!--NOTE you could have: <mvc:annotation-driven/> to make it just do the mvc stuff with annotations -->
 
 <!-- NOTE that it uses the name, not the ID for the request mapping -->
 	<bean name="/xmlMappedController" class="com.hedges.springlearning.mvc.controllermappingexamples.ControllerWithRequestMappingInXml"/>
