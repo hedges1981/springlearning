@@ -1,14 +1,7 @@
 <!DOCTYPE web-app PUBLIC
  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
-
 <web-app>
-
-    <!-- <listener>
-        <listener-class>com.hedges.springlearning.mvc.SampleListener</listener-class>
-    </listener>-->
-    
-    
     <servlet>
       <servlet-name>SpringMVCDispatcherServlet</servlet-name>
       <servlet-class>
@@ -29,21 +22,17 @@
    <!-- NOTE: without this config of a listener and ContextConfigLocation, Dispatcher servlet will look for 
     /WEB-INF/SpringMVCDispatcherServlet-servlet.xml
     -->
-   <!--<context-param>
-   <param-name>contextConfigLocation</param-name>
-   <param-value>/WEB-INF/springMvcLearning-application-context.xml</param-value>
-	</context-param>-->
-	
-	
-	<jsp-config>
-  <jsp-property-group>
-    <url-pattern>/*</url-pattern>
-    <el-enabled>true</el-enabled>
-    <scripting-enabled>true</scripting-enabled>
-  </jsp-property-group>
-</jsp-config>
-<!-- NOTE:::: the above should have enabled expression language to work for all pages, but it didn't, see how had to add
-<%@ page isELIgnored="false" %> to printMessage.jsp -->
-    
+
+    <!--ALLOWS US TO LOAD AN APPLICATION CONTEXT INDEPENDENTLY OF THE 'web one' loaded by the dispatcher servlet-->
+    <listener>
+        <listener-class>
+            org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+    </listener>
+
+   <context-param>
+       <param-name>contextConfigLocation</param-name>
+       <param-value>/WEB-INF/springMvcLearning-application-context.xml</param-value>
+	</context-param>
 
 </web-app>

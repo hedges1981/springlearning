@@ -57,5 +57,9 @@
            </property>
     </bean>
 
+    <bean id="beanDefinedInApplicationContext2" class="com.hedges.springlearning.mvc.applicationcontextbeans.BeanDefinedInApplicationContext">
+        <property name="message" value="I am defined in the WEB application context, I OVERRIDE THE ONE SET IN THE APPLICATION CONTEXT"></property>
+    </bean>
+
 
 </beans>
