@@ -5,10 +5,23 @@
  */
 package com.hedges.springlearning.mvc.controllermappingexamples;
 
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 /**
  *
- * @author christine
  */
-public class SimpleUrlHandlerMappingController {
-    
+public class SimpleUrlHandlerMappingController
+{
+
+    @RequestMapping(method = RequestMethod.GET)
+    public String doGet( Model model )
+    {
+        model.addAttribute("message",this.getClass()+" EXECUTED!");
+
+        return "printMessage";
+    }
 }
+    
+
