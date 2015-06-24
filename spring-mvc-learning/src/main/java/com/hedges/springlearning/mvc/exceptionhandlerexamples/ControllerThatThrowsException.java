@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.hedges.springlearning.mvc.exceptionhandlerexamples;
 
 import org.springframework.stereotype.Controller;
@@ -5,19 +10,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-/**
- * Created by rowland-hall on 24/06/15
- *
- * http://localhost:2702/springmvclearning/test/controllerThatThrowsException
- */
-@Controller
-public class ControllerThatThrowsException
-{
 
-    //NOTE how this method ends up with 404 set as the response code, due to the annotation on the Exception class.
+@Controller
+public class ControllerThatThrowsException 
+{
     @RequestMapping(method = RequestMethod.GET)
     public String doGetThrowsException( Model model )
     {
-        throw new ExceptionThatSetsResponseCode( "Hedges exception thrown from:"+this.getClass() );
+        throw new RuntimeException();
     }
 }

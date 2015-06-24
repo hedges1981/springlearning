@@ -1,17 +1,23 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-   xmlns:context="http://www.springframework.org/schema/context"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="
-   http://www.springframework.org/schema/beans     
-   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-   http://www.springframework.org/schema/context 
-   http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
-   <context:component-scan base-package="com.hedges" />
-   <!--NOTE you could have: <mvc:annotation-driven/> to make it just do the mvc stuff with annotations -->
-
+   <!--<context:component-scan base-package="com.hedges" />-->
+   <!--NOTE you could have: <mvc:annotation-driven/>  to make it just do the mvc stuff with annotations or 
+    <context:component-scan base-package="com.hedges" /> to do a full scan for all spring stuff.
+    With them both there, it can pick up components twice and give exceptions.-->
 <!-- NOTE that it uses the name, not the ID for the request mapping -->
-	<bean name="/xmlMappedController" class="com.hedges.springlearning.mvc.controllermappingexamples.ControllerWithRequestMappingInXml"/>
+	
+        <context:component-scan base-package="com.hedges" />
+    <bean name="/xmlMappedController" class="com.hedges.springlearning.mvc.controllermappingexamples.ControllerWithRequestMappingInXml"/>
 	
 	<!--  this means that e.g. a view named "hello" will be directed to a file: /WEB-INF/jsp/hello.jsp  -->
    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -61,6 +67,5 @@
     <bean id="beanDefinedInApplicationContext2" class="com.hedges.springlearning.mvc.applicationcontextbeans.BeanDefinedInApplicationContext">
         <property name="message" value="I am defined in the WEB application context, I OVERRIDE THE ONE SET IN THE APPLICATION CONTEXT"></property>
     </bean>
-
-
+    
 </beans>
