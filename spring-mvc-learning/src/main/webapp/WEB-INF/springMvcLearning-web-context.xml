@@ -13,17 +13,34 @@
    <!--<context:component-scan base-package="com.hedges" />-->
    <!--NOTE you could have: <mvc:annotation-driven/>  to make it just do the mvc stuff with annotations or 
     <context:component-scan base-package="com.hedges" /> to do a full scan for all spring stuff.
-    With them both there, it can pick up components twice and give exceptions.-->
-<!-- NOTE that it uses the name, not the ID for the request mapping -->
+
+
+   ********************************NOTE::: it would appear that with <mvc:annotation-driven/> it
+    ignores any handler mapping stuff defined in here and expects each controller to have a unique @RequestMapping
+    path defined, use with caution!-->
+
 	
         <context:component-scan base-package="com.hedges" />
     <bean name="/xmlMappedController" class="com.hedges.springlearning.mvc.controllermappingexamples.ControllerWithRequestMappingInXml"/>
-	
+
+    <bean class="org.springframework.web.servlet.view.XmlViewResolver">
+        <property name="location">
+            <value>/WEB-INF/spring-views.xml</value>
+            <!--NOTE that if the location was not spefcified, it would default to WEB-INF/views.xml -->
+        </property>
+        <property name="order" value="0"/>
+    </bean>
+
+
 	<!--  this means that e.g. a view named "hello" will be directed to a file: /WEB-INF/jsp/hello.jsp  -->
+    <!--NOTE*** apparently it is only this one that understands the prefixes redirect: and forward: whennnn a view name is specified-->
+    <!-- NOTE, FRAMEWORK forces this one to be last, this is because it will always return a view, even if there is not one to return!-->
    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
       <property name="prefix" value="/WEB-INF/jsp/" />
       <property name="suffix" value=".jsp" />
    </bean>
+
+
 
 
 
@@ -66,6 +83,23 @@
 
     <bean id="beanDefinedInApplicationContext2" class="com.hedges.springlearning.mvc.applicationcontextbeans.BeanDefinedInApplicationContext">
         <property name="message" value="I am defined in the WEB application context, I OVERRIDE THE ONE SET IN THE APPLICATION CONTEXT"></property>
+    </bean>
+
+    <!--**********************EXCEPTION HANDLING EXAMPLES************************************-->
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name ="order" value="0"/>
+    <property name="exceptionMappings">
+        <props>
+            <prop key="com.hedges.springlearning.mvc.exceptionhandlerexamples.DongException">
+                dongError
+            </prop>
+        </props>
+    </property>
+</bean>
+
+    <!--this one handles exceptions not handled by the one above -->
+    <bean id="demoExceptionHandlerResolver" class="com.hedges.springlearning.mvc.exceptionhandlerexamples.DemoHandlerExceptionResolver">
+        <property name="order" value="1"/>
     </bean>
     
 </beans>
