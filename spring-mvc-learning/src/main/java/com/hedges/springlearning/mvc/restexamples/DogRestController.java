@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Controller
 /**
- * Note that prior to introduction of @RestController, you would do the same thing by putting @Controller
- * on the class, and @ResponseBody on the methods that returned objects 
+ * Allows a dog object to be requested, e.g. try in the browser to get one over html.
+ * NOTE the fucking faff in getting this to work, see the message converter stuff in the context.xml
  */
 public class DogRestController
 {

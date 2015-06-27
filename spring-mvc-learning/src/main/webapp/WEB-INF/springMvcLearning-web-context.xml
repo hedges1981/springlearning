@@ -2,13 +2,16 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="
         http://www.springframework.org/schema/beans     
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/context 
         http://www.springframework.org/schema/context/spring-context-3.0.xsd
         http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+">
 
    <!--<context:component-scan base-package="com.hedges" />-->
    <!--NOTE you could have: <mvc:annotation-driven/>  to make it just do the mvc stuff with annotations or 
@@ -100,6 +103,27 @@
     <!--this one handles exceptions not handled by the one above -->
     <bean id="demoExceptionHandlerResolver" class="com.hedges.springlearning.mvc.exceptionhandlerexamples.DemoHandlerExceptionResolver">
         <property name="order" value="1"/>
+    </bean>
+    
+    <!--RIGGING UP THE HttpMessageConverters for the Rest Stuff -->
+    
+    <!--looks like this one used for marshalling pojo into very simple xml-->
+    <!-- you could supply a different marshaller, e.g. one to work with a jaxb style annotated bean, is one called Jaxb2Marshaller for example-->
+    <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller"/>
+    
+    <bean id="marshallingHttpMessageConverter" 
+      class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+        <property name="marshaller" ref="castorMarshaller" />
+        <property name="unmarshaller" ref="castorMarshaller" />
+    </bean>
+
+    
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+         <property name="messageConverters">
+      <util:list>
+        <ref bean="marshallingHttpMessageConverter"/>
+      </util:list>
+         </property>
     </bean>
     
 </beans>
