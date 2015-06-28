@@ -26,6 +26,9 @@
     Basically when you do it the other way to the 'full xml' way done here, a lot of stuff, e.g. handlerMappings are set up to be defaults, the stuff in here is not registered. 
     
     Seems like the way done here is the 'old fashioned way!'
+    
+    see: notes on mvc-annotation config vs context component scan file in project for a bit on it, note file taken from:
+    http://www.javabeat.net/spring-mvc-component-scan-annotations/
     -->
     <context:component-scan base-package="com.hedges" />
     <bean name="/xmlMappedController" class="com.hedges.springlearning.mvc.controllermappingexamples.ControllerWithRequestMappingInXml"/>

@@ -1,0 +1,47 @@
+taken from :
+
+http://www.javabeat.net/spring-mvc-component-scan-annotations/
+
+
+Spring MVC – component-scan Vs annotation-config Vs annotation-driven
+
+April 8, 2015 by Krishna Srinivasan 0 Comments
+
+ 
+If you are a spring developer then you might have a small confusion about the annotation processing inside spring’s IOC container. Spring MVC framework provides different configuration elements that are helping or instructing the Spring container to effectively manage the beans and inject the beans when required. Some of the XML configurations that are most commonly seen in our spring configuration files are:
+context:component-scan
+mvc:annotation-config
+context:annotation-driven
+The functionality of the above annotations are similar and there is little variations on how they are reacting on the specific scenarios. This tutorial highlights the important point about each element and when it is required for the application. If you have any queries on Spring Framework, please write it in the comments or post it in our facebook page.
+also read:
+Spring and Hibernate Integration
+Spring MVC Framework
+context:component-scan
+This element has been introduced in Spring configuration from version 2.5. If you have worked with the previous versions of Spring, all the beans has to be manually configured in the XML files. There are no annotations supported in the Java beans. This will result in lot of XML code in the configuration files and every time developer has to update the XML file for configuring the new beans. context:component-scan element in the spring configuration file would eliminate the need for declaring all the beans in the XML files. Look at the below declaration in your spring configuration file:
+1
+<context:component-scan base-package="org.controller"/>
+The above declaration in the spring application configuration file would scan the classes inside the specified package and create the beans instance. Note that it could create beans only if that class is annotated with correct annotations. The following are the annotations scanned by this element:
+@Component
+@Repository
+@Service
+@Controller
+One advantage of this element is that it also resolve @Autowired and @Qualifier annotations. Therefore if you declare <context:component-scan>, is not necessary anymore declare <context:annotation-config> too.
+
+********mvc:annotation-driven***************
+
+mvc:annotation-driven is used for enabling the Spring MVC components with its default configurations. If you dont include mvc:annotation-driven also your MVC application would work if you have used the context:component-scan for creating the beans or defined the beans in your XML file. But, mvc:annotation-driven does some extra job on configuring the special beans that would not have been configured if you are not using this element in your XML file.
+
+ 
+This tag would registers the HandlerMapping and HandlerAdapter required to dispatch requests to your @Controllers. In addition, it also applies some defaults based on what is present in your classpath. Such defaults are:
+Using the Spring 3 Type ConversionService as a simpler and more robust alternative to JavaBeans PropertyEditors
+Support for formatting Number fields with @NumberFormat
+Support for formatting Date, Calendar, and Joda Time fields with @DateTimeFormat, if Joda Time is on the classpath
+Support for validating @Controller inputs with @Valid, if a JSR-303 Provider is on the classpath
+Support for reading and writing XML, if JAXB is on the classpath
+Support for reading and writing JSON, if Jackson is on the classpath
+context:annotation-config
+context:annotation-config is used for activating annotations in beans already registered in the application context (no matter whether they were defined with XML or by package scanning). That means it will resolve @Autowired and @Qualifier annotations for the beans which are already created and stored in the spring container.
+context:component-scan can also do the same job, but context:component-scan will also scan the packages for registering the beans to application context. context:annotation-config will not search for the beans registration, this will only activate the already registered beans in the context.
+Please read this link for more explanation with examples.
+If you are looking for any support on Spring MVC applications, please post it in the comments section. We are happy to help you and resolve the technical issues. Happy reading!!
+- See more at: http://www.javabeat.net/spring-mvc-component-scan-annotations/#sthash.j9U5IimV.dpuf
