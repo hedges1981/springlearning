@@ -21,7 +21,7 @@ import org.springframework.web.client.RestTemplate;
 public class DogRestWebServiceUsesRestTemplateTest
 {
     
-    private RestTemplate getRestTemplateWithMessageConverters()
+    private RestTemplate getRestTemplateWithJsonMessageConverters()
     {
         List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
         MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
@@ -33,10 +33,13 @@ public class DogRestWebServiceUsesRestTemplateTest
         return restTemplate;
     }
     
+    /**
+     * Tests the getting of a dog from the web service
+     */
     @Test
-    public void testDogController()
+    public void testGetDog()
     {
-        RestTemplate restTemplate = getRestTemplateWithMessageConverters();
+        RestTemplate restTemplate = getRestTemplateWithJsonMessageConverters();
 
         /**
          * NOTE, because the restTemplate only has the jackson message converter with it, it sends that it ONLY accepts "application/json".
@@ -46,6 +49,29 @@ public class DogRestWebServiceUsesRestTemplateTest
         Dog dog = restTemplate.getForObject( "http://localhost:2702/springmvclearning/test/dogRestWebService/getDog?name=mavis", Dog.class );
         
         System.out.println(dog);
+    }
+    
+    /**
+     * Tests the putting of a new dog to the web service
+     */
+    @Test
+    public void testCreateDogByPut()
+    {
+       RestTemplate restTemplate = getRestTemplateWithJsonMessageConverters();
+       
+       Dog d = new Dog();
+       
+       d.setName("razzer");
+       
+       restTemplate.put( "http://localhost:2702/springmvclearning/test/dogRestWebService/createDog", d);
+    }
+    
+    @Test
+    public void testDeleteDog()
+    {
+       RestTemplate restTemplate = getRestTemplateWithJsonMessageConverters();
+       
+       restTemplate.delete("http://localhost:2702/springmvclearning/test/dogRestWebService/deleteDog?name=doesntexist");
     }
     
 }

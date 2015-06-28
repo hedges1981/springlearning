@@ -60,8 +60,12 @@ public class DogRestWebService
      * If called from a web browser, the marshallingHttpMessageConverter converts it to dog-xml before sending out the response.
      * 
      * url:http://localhost:2702/springmvclearning/test/dogRestWebService/getDog
+     * 
+     * NOTE, it seems that the produces is meaningless here.
+     * 
+     * It looks like in this case that the list of message converters defined 
      */
-    @RequestMapping( value="/getDog", method = RequestMethod.GET, produces={"application/json","application/xml"} )
+    @RequestMapping( value="/getDog", method = RequestMethod.GET,produces={"application/xml"} )
     @ResponseBody
     public Dog getDog(@RequestParam(value="name", defaultValue="mavis") String name )
     {
@@ -91,7 +95,15 @@ public class DogRestWebService
      */
     @RequestMapping(value = "/createDog", produces = {"application/json","application/xml"}, method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public void createDog(@RequestBody Dog dog)
+    public void createDogByPost(@RequestBody Dog dog)
+    {
+        dogs.put(dog.getName(), dog);
+        LOGGER.info( "Dog created:"+dog );
+    }
+    
+    @RequestMapping(value = "/createDog", produces = {"application/json","application/xml"}, method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createDogByPut(@RequestBody Dog dog)
     {
         dogs.put(dog.getName(), dog);
         LOGGER.info( "Dog created:"+dog );
@@ -101,22 +113,28 @@ public class DogRestWebService
      * Example of using webservice to delete an object.
      * Note convention to return OK status, (no Deleted status available).
      * Note the HTTP methods it accepts
+     * 
+     * NOTE, looks like convention is for delete methods to just work off an Id, path variable, for example the Spring rest tempalte doesn't send a content type with a delete() method,
+     * so any object passed can't be marshalled.
+     * 
+     * U could probably work a way of getting it to pass an object, by setting the content type in some way on the delete request. 
      */
-    @RequestMapping(value = "/deleteDog", produces = {"application/json","application/xml"}, method = {RequestMethod.DELETE, RequestMethod.POST} )
+    @RequestMapping(value = "/deleteDog", method = {RequestMethod.DELETE } )
     @ResponseStatus(HttpStatus.OK)
-    public void deleteDog( @RequestBody Dog dog )
+    public void deleteDog( @RequestParam(value="name") String name )
     {
-        if( dogs.containsKey(dog.getName()))
+        if( dogs.containsKey(name))
         {
-            dogs.remove(dog.getName());
+            dogs.remove( name );
+            LOGGER.info(name+" deleted.");
         }
         else
         {
-            throw new IllegalArgumentException("Dog not found:"+dog.getName());
+            throw new IllegalArgumentException("Dog not found:"+name);
         }
     }
     
-    @ExceptionHandler
+    @ExceptionHandler( Exception.class )
      @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleException( Exception e )
     {
