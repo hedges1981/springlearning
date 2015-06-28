@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 
 /**
@@ -136,9 +137,12 @@ public class DogRestWebService
     
     @ExceptionHandler( Exception.class )
      @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handleException( Exception e )
+    public ModelAndView handleException( Exception e )
     {
-        return e.getMessage();
+        ModelAndView mav = new ModelAndView( "printMessage" );
+        mav.addObject("message", e.getMessage() );
+        
+        return mav;
     }
     
 }

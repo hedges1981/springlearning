@@ -12,6 +12,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -66,7 +67,7 @@ public class DogRestWebServiceUsesRestTemplateTest
        restTemplate.put( "http://localhost:2702/springmvclearning/test/dogRestWebService/createDog", d);
     }
     
-    @Test
+    @Test(expected=HttpServerErrorException.class )
     public void testDeleteDog()
     {
        RestTemplate restTemplate = getRestTemplateWithJsonMessageConverters();

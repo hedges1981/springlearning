@@ -94,10 +94,17 @@
 
     <!--**********************EXCEPTION HANDLING EXAMPLES************************************-->
     
+    
+<!--    <bean class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver">
+        <property name ="order" value="0"/>
+    </bean>-->
+    
     <!--NOTE: normally this would be the default one, but is needed here because we have also defined the SimpleMappingException resolver-->
-    <bean class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver">
+    <!-- NOTE, for some reason this one works, i.e. causes the ExceptionHandler Annotations to get picked up, rather than the one above, this is odd, as this one has been depracated-->
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerExceptionResolver">
         <property name ="order" value="0"/>
     </bean>
+    
     
     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name ="order" value="1"/>

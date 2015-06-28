@@ -19,7 +19,7 @@ public class DemoHandlerExceptionResolver extends AbstractHandlerExceptionResolv
     @Override
     protected ModelAndView doResolveException( HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex )
     {
-        LOGGER.error(ex) ;
+        LOGGER.error(ex);
         ModelAndView modelAndView = new ModelAndView( "printMessage" );
         modelAndView.addObject( "message", "Exception handled by:"+this.getClass()+", exception type is:"+ex.getClass());
         return modelAndView;
