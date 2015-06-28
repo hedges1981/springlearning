@@ -1,68 +1,68 @@
 <?xml version="1.0"?>
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>Hedges</groupId>
-		<artifactId>springlearning-parent-pom</artifactId>
-		<version>X</version>
-	</parent>
+    <parent>
+        <groupId>Hedges</groupId>
+        <artifactId>springlearning-parent-pom</artifactId>
+        <version>X</version>
+    </parent>
 
-	<artifactId>spring-mvc-learning</artifactId>
+    <artifactId>spring-mvc-learning</artifactId>
 
-	<packaging>war</packaging>
+    <packaging>war</packaging>
 
-	<name>spring-mvc-learning</name>
-	<url>http://maven.apache.org</url>
+    <name>spring-mvc-learning</name>
+    <url>http://maven.apache.org</url>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-
-
-	<dependencies>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
 
-		<!-- Spring Dependencies -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>4.1.6.RELEASE</version>
-		</dependency>
+    <dependencies>
+
+
+        <!-- Spring Dependencies -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>4.1.6.RELEASE</version>
+        </dependency>
                 
-                <dependency>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-oxm</artifactId>
-                        <version>4.1.6.RELEASE</version>
-                </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-oxm</artifactId>
+            <version>4.1.6.RELEASE</version>
+        </dependency>
                 
-                <dependency>
-	<groupId>org.codehaus.castor</groupId>
-	<artifactId>castor-xml</artifactId>
-	<version>1.3.3</version>
-</dependency>
+        <dependency>
+            <groupId>org.codehaus.castor</groupId>
+            <artifactId>castor-xml</artifactId>
+            <version>1.3.3</version>
+        </dependency>
 
 		
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>7.0</version>
-		</dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+        </dependency>
 		
-		<dependency> 
-  <groupId>org.slf4j</groupId>
-  <artifactId>slf4j-log4j12</artifactId>
-  <version>1.7.12</version>
-</dependency>
+        <dependency> 
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.12</version>
+        </dependency>
 
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -70,83 +70,95 @@
             <version>1.2</version>
         </dependency>
         
-         <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>4.11</version>
-                <scope>test</scope>
-            </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <!--JACKSON Stuff used by the jackon http message converter that converts stuff from objects to json and back -->
+        <dependency>
+	<groupId>com.fasterxml.jackson.core</groupId>
+	<artifactId>jackson-core</artifactId>
+	<version>2.5.4</version>
+        </dependency>
+                <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.5.4</version>
+        </dependency>
 
 
 
-	</dependencies>
+    </dependencies>
 
-	<build>
-		<plugins>
-			<!-- TOMCAT PLUGIN, FIND IT AT http://localhost:2702/samplewebapp/ -->
-			<!-- TO RUN IT, mvnDebug: tomcat7-run-war -->
+    <build>
+        <plugins>
+            <!-- TOMCAT PLUGIN, FIND IT AT http://localhost:2702/samplewebapp/ -->
+            <!-- TO RUN IT, mvnDebug: tomcat7-run-war -->
 
-			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.2</version>
-				<!-- Deploy multiple WARs see http://stackoverflow.com/questions/11959975/how-to-use-maven-plugin-tomcat7run-with-multiple-contexts-wars -->
-				<configuration>
-					<!-- for IT tests needs to be true, for stand alone use needs to be 
-						false -->
-					<fork>false</fork>
-					<!--<path>/${war.name}</path> -->
-					<port>2702</port>
-					<contextFile>${basedir}/context.xml</contextFile>
-					<additionalClasspathDirs>
-						<additionalClasspathDir>${basedir}/target/tomcat-lib-extra</additionalClasspathDir>
-					</additionalClasspathDirs>
-					<webapps>
-						<webapp>
-							<contextPath>/springmvclearning</contextPath>
-							<groupId>${project.groupId}</groupId>
-							<artifactId>spring-mvc-learning</artifactId>
-							<version>${project.version}</version>
-							<type>war</type>
-							<asWebapp>true</asWebapp>
-						</webapp>
-					</webapps>
-					<systemProperties>
-						<!--<catalina.home>${pom.basedir}/target/test-classes</catalina.home> -->
-						<catalina.home>${pom.basedir}/target/tomcat</catalina.home>
-						<T_D_A_1>password</T_D_A_1>
-					</systemProperties>
-				</configuration>
-				<dependencies>
-				</dependencies>
-				<executions>
-					<execution>
-						<id>start-tomcat</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>run-war</goal>
-						</goals>
-						<configuration>
-							<!-- for IT tests needs to be true, for stand alone use needs to be 
-								false -->
-							<fork>true</fork>
-							<useSeparateTomcatClassLoader>true</useSeparateTomcatClassLoader>
-						</configuration>
-					</execution>
-					<execution>
-						<id>stop-tomcat</id>
-						<phase>post-integration-test</phase>
-						<goals>
-							<goal>shutdown</goal>
-						</goals>
-						<configuration>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <!-- Deploy multiple WARs see http://stackoverflow.com/questions/11959975/how-to-use-maven-plugin-tomcat7run-with-multiple-contexts-wars -->
+                <configuration>
+                    <!-- for IT tests needs to be true, for stand alone use needs to be 
+                    false -->
+                    <fork>false</fork>
+                    <!--<path>/${war.name}</path> -->
+                    <port>2702</port>
+                    <contextFile>${basedir}/context.xml</contextFile>
+                    <additionalClasspathDirs>
+                        <additionalClasspathDir>${basedir}/target/tomcat-lib-extra</additionalClasspathDir>
+                    </additionalClasspathDirs>
+                    <webapps>
+                        <webapp>
+                            <contextPath>/springmvclearning</contextPath>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>spring-mvc-learning</artifactId>
+                            <version>${project.version}</version>
+                            <type>war</type>
+                            <asWebapp>true</asWebapp>
+                        </webapp>
+                    </webapps>
+                    <systemProperties>
+                        <!--<catalina.home>${pom.basedir}/target/test-classes</catalina.home> -->
+                        <catalina.home>${pom.basedir}/target/tomcat</catalina.home>
+                        <T_D_A_1>password</T_D_A_1>
+                    </systemProperties>
+                </configuration>
+                <dependencies>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>start-tomcat</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>run-war</goal>
+                        </goals>
+                        <configuration>
+                            <!-- for IT tests needs to be true, for stand alone use needs to be 
+                            false -->
+                            <fork>true</fork>
+                            <useSeparateTomcatClassLoader>true</useSeparateTomcatClassLoader>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>stop-tomcat</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>shutdown</goal>
+                        </goals>
+                        <configuration>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
 
-	</build>
+    </build>
 
 </project>
 

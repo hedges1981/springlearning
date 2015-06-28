@@ -20,7 +20,8 @@
 
    ********************************NOTE::: it would appear that with <mvc:annotation-driven/> it
     ignores any handler mapping stuff defined in here and expects each controller to have a unique @RequestMapping
-    path defined, use with caution!-->
+    path defined, use with caution!
+    NOTE, the same thing happens with @EnableWebMvc used somewhere, looks like when set up with different ways, different things can happen-->
 
 	
         <context:component-scan base-package="com.hedges" />
@@ -109,6 +110,10 @@
     
     <!--looks like this one used for marshalling pojo into very simple xml-->
     <!-- you could supply a different marshaller, e.g. one to work with a jaxb style annotated bean, is one called Jaxb2Marshaller for example-->
+    <!-- NOTE, apparently some default message converters are supplied to the AnnotationMethodHandlerAdapter without doing this, however none of them
+    matched the test case used.-->
+    <!--NOTE, it appears that if the @EnableWebMvc is used, then a lot more message converters, including the ones below, are given by default-->
+    
     <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller"/>
     
     <bean id="marshallingHttpMessageConverter" 
@@ -116,12 +121,15 @@
         <property name="marshaller" ref="castorMarshaller" />
         <property name="unmarshaller" ref="castorMarshaller" />
     </bean>
+    
+    <bean id="mappingJackson2HttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
 
     
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
          <property name="messageConverters">
       <util:list>
         <ref bean="marshallingHttpMessageConverter"/>
+        <ref bean="mappingJackson2HttpMessageConverter"/>
       </util:list>
          </property>
     </bean>
