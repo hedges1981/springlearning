@@ -1,0 +1,61 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<web-app>
+    <servlet>
+      <servlet-name>SpringMVCDispatcherServlet</servlet-name>
+      <servlet-class>
+         org.springframework.web.servlet.DispatcherServlet
+      </servlet-class>
+      <init-param> <!-- NOTE: if this wasn't given, would look for a default of: /WEB-INF/servlet-name]-servlet.xml to load up -->
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/web-context.xml</param-value>
+      </init-param>
+      <load-on-startup>1</load-on-startup>
+   </servlet>
+
+   <servlet-mapping>
+      <servlet-name>SpringMVCDispatcherServlet</servlet-name>
+      <url-pattern>/test/*</url-pattern>  <!-- this CANNOT be e.g. just *, as that will cause any forwarding it does to .jsp pages to also come through this servlet -->
+   </servlet-mapping>
+
+
+
+    <!--Spring Security Filter, necessary for the security to kick in -->
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!--NOTE that the siteMesh filter is places after the Spring security filter.
+    This is so that security information can be passed to the SiteMesh framework -->
+    <filter>
+        <filter-name>sitemesh</filter-name>
+        <filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>sitemesh</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+   
+   <!-- NOTE: without this config of a listener and ContextConfigLocation, Dispatcher servlet will look for 
+    /WEB-INF/SpringMVCDispatcherServlet-servlet.xml
+    -->
+
+    <!--ALLOWS US TO LOAD AN APPLICATION CONTEXT INDEPENDENTLY OF THE 'web one' loaded by the dispatcher servlet-->
+    <listener>
+        <listener-class>
+            org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+    </listener>
+
+   <context-param>
+       <param-name>contextConfigLocation</param-name>
+       <param-value>/WEB-INF/application-context.xml,/WEB-INF/security-context.xml</param-value>
+	</context-param>
+
+</web-app>
