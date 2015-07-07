@@ -1,1 +1,1 @@
-for maven , do cd C:\Users\christine\Documents\NetBeansProjects\springlearning\spring-mvc-learning in windows
+for maven , do cd C:\Users\christine\Documents\NetBeansProjects\springlearning\spring-mvc-security-learning in windows
