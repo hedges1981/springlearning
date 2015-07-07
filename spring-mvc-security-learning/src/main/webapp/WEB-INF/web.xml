@@ -31,16 +31,6 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!--NOTE that the siteMesh filter is places after the Spring security filter.
-    This is so that security information can be passed to the SiteMesh framework -->
-    <filter>
-        <filter-name>sitemesh</filter-name>
-        <filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>sitemesh</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
    
    <!-- NOTE: without this config of a listener and ContextConfigLocation, Dispatcher servlet will look for 
     /WEB-INF/SpringMVCDispatcherServlet-servlet.xml

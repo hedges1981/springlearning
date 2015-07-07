@@ -7,28 +7,30 @@
 		http://www.springframework.org/schema/security
 		http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-    <!-- http block: enables web security, has the effect of creating the chain of filters that handle spring security stuff-->
-    <!-- use expressions enables spring expression language to be used in JSPs -->
-    <sec:http auto-config="true" use-expressions="true">
+    <!--&lt;!&ndash; http block: enables web security, has the effect of creating the chain of filters that handle spring security stuff&ndash;&gt;-->
+    <!--&lt;!&ndash; use expressions enables spring expression language to be used in JSPs &ndash;&gt;-->
+    <!--<sec:http auto-config="true" use-expressions="true">-->
 
-        <sec:intercept-url pattern=".*" access="isAuthenticated()"/>
-        <!--tells it where to land after a user has logged in -->
-        <sec:form-login default-target-url="/home.html" />
-        <!--Tells it to use 'remember-me' authentication. This means that it will store a cookie on the browser to keep a user logged
-        in between sessions. Presumably you can configure things like cookie expiry.-->
-        <sec:remember-me />
-        <!-- this bit defines the place where a user is taken to when they successfully log out-->
-        <sec:logout logout-success-url="/home.html" />
-    </sec:http>
+        <!--<sec:intercept-url pattern="/test/securitylearning/user**" access="user"/>-->
 
-    <!-- here we define the classes used for authentication. Basically we have: AuthenticationManager has a AuthenticationProvider
-    has a UserDetailsService. It is the user details service which provides a look up of users based on username, -->
-    <sec:authentication-manager>
-        <sec:authentication-provider>
-            <!--this gives us a default noddy UserDetailsService. In practice you'd use something proper that e.g. went off to a database-->
-            <sec:user-service>
-                <sec:user name="hedges" password="password" authorities="user,admin" />
-            </sec:user-service>
-        </sec:authentication-provider>
-    </sec:authentication-manager>
+        <!--&lt;!&ndash; note the use of ** in the URLs, to stop hacker getting past by appending stuff to it.  &ndash;&gt;-->
+
+        <!--<sec:intercept-url pattern="/test/securitylearning/admin**" access="admin"/>-->
+
+        <!--&lt;!&ndash; Tells it to use 'remember-me' authentication. This means that it will store a cookie on the browser to keep a user logged-->
+        <!--in between sessions. Presumably you can configure things like cookie expiry.&ndash;&gt;-->
+        <!--<sec:remember-me />-->
+    <!--</sec:http>-->
+
+    <!--&lt;!&ndash; here we define the classes used for authentication. Basically we have: AuthenticationManager has a AuthenticationProvider-->
+    <!--has a UserDetailsService. It is the user details service which provides a look up of users based on username, &ndash;&gt;-->
+    <!--<sec:authentication-manager>-->
+        <!--<sec:authentication-provider>-->
+            <!--&lt;!&ndash;this gives us a default noddy UserDetailsService. In practice you'd use something proper that e.g. went off to a database&ndash;&gt;-->
+            <!--<sec:user-service>-->
+                <!--<sec:user name="hedges_user" password="password" authorities="user" />-->
+                <!--<sec:user name="hedges_admin" password="password" authorities="admin" />-->
+            <!--</sec:user-service>-->
+        <!--</sec:authentication-provider>-->
+    <!--</sec:authentication-manager>-->
 </beans:beans>
