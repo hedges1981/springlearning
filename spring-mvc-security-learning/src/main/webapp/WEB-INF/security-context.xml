@@ -13,11 +13,13 @@
         <!--**************NOTE, use-expressions allows you to put evauluatable things in the access bit of an intercept url, see: 
         http://docs.spring.io/spring-security/site/docs/3.0.x/reference/el-access.html   for what can be done    -->
         
-        <!-- **************NOTE::::: see how the roles have needed to be prefixed with "ROLE_". This is necessary, see use of defaultRolePrefix in class SecurityExpression root -->
-        <sec:intercept-url pattern="/test/securitylearning/user**" access="isAuthenticated() and hasRole('ROLE_user')"/>
+        <!-- **************NOTE::::: see how the roles have needed to be prefixed with "ROLE_". This is necessary, see use of defaultRolePrefix in class SecurityExpression root -->#
+        <!-- You can negate any expression using !: "!hasRole('ROLE_USER')" -->
+        <sec:intercept-url pattern="/test/securitylearning/user**" access="hasRole('ROLE_user')"/>
         <!-- note the use of ** in the URLs, to stop hacker getting past by appending stuff to it. -->
-        <sec:intercept-url pattern="/test/securitylearning/admin**" access="isAuthenticated() and hasRole('ROLE_admin')"/>
-
+        <sec:intercept-url pattern="/test/securitylearning/admin**" access="hasRole('ROLE_admin')"/>
+        <sec:intercept-url pattern="/test/securitylearning/adminAndUser**" access="hasRole('ROLE_admin') and hasRole('ROLE_user')"/>
+        <sec:intercept-url pattern="/test/securitylearning/adminOrUser**" access="hasAnyRole('ROLE_admin','ROLE_user')"/>
         <!-- Tells it to use 'remember-me' authentication. This means that it will store a cookie on the browser to keep a user logged
         in between sessions. Presumably you can configure things like cookie expiry -->
         <sec:remember-me />
@@ -31,6 +33,7 @@
             <sec:user-service>
                 <sec:user name="hedges_user" password="password" authorities="ROLE_user" />
                 <sec:user name="hedges_admin" password="password" authorities="ROLE_admin" />
+                <sec:user name="hedges_admin_and_user" password="password" authorities="ROLE_admin,ROLE_user" />
             </sec:user-service>
         </sec:authentication-provider>
     </sec:authentication-manager>
