@@ -29,28 +29,28 @@ public class SecurityLearningController
     {
         model.addAttribute( "message","in role_user area");
 
-        return "printMessage";
+        return "printMessageWithLogOut";
     }
 
     @RequestMapping(value = "/admin**", method = RequestMethod.GET)
     public String adminRequest( ModelMap model )
     {
         model.addAttribute( "message","in admin area");
-        return "printMessage";
+        return "printMessageWithLogOut";
     }
 
     @RequestMapping(value = "/adminAndUser**", method = RequestMethod.GET)
     public String adminAndUserRequest( ModelMap model )
     {
         model.addAttribute( "message","in admin and User area");
-        return "printMessage";
+        return "printMessageWithLogOut";
     }
 
     @RequestMapping(value = "/adminOrUser**", method = RequestMethod.GET)
     public String adminOrUserRequest( ModelMap model )
     {
         model.addAttribute( "message","in admin OR User area");
-        return "printMessage";
+        return "printMessageWithLogOut";
     }
 
 }

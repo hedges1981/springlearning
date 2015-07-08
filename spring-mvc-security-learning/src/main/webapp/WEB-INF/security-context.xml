@@ -10,6 +10,7 @@
 <!--  http block: enables web security, has the effect of creating the chain of filters that handle spring security stuff&ndash;&gt;
     &lt;!&ndash; use expressions enables spring expression language to be used in JSPs -->
     <sec:http auto-config="true" use-expressions ="true" >
+        
         <!--**************NOTE, use-expressions allows you to put evauluatable things in the access bit of an intercept url, see: 
         http://docs.spring.io/spring-security/site/docs/3.0.x/reference/el-access.html   for what can be done    -->
         
@@ -19,9 +20,11 @@
         <!-- NOTE: ************ to allow for 'layered' access, the ordering of the intercept URLs is important, more specific ones should be higher up the list -->
 
         <!-- tells it where to go whenever a 403 is encountered -->
-        <sec:access-denied-handler error-page="/accessdenied"/>
+        <sec:access-denied-handler error-page="/test/accessdenied"/>
         <!-- makes it so that you don't need to be authenticated see access denied page, makes sense -->
-        <sec:intercept-url pattern="/accessdenied" filters="none" />
+        <sec:intercept-url pattern="/accessdenied" access="permitAll" />
+        
+        <sec:intercept-url pattern="/test/loggedout" access="permitAll" />
 
         <sec:intercept-url pattern="/test/securitylearning/user**" access="hasRole('ROLE_user')"/>
         <!-- note the use of ** in the URLs, to stop hacker getting past by appending stuff to it. -->
@@ -35,6 +38,13 @@
         <!-- Tells it to use 'remember-me' authentication. This means that it will store a cookie on the browser to keep a user logged
         in between sessions. Presumably you can configure things like cookie expiry -->
         <sec:remember-me />
+        
+        <!--***********NOTE******** unlike the examples,log out was a faff to get to work, had to:
+        - use a post for the logout form. See printMessageWithLogout.jsp
+        -have csrf tokens on the form, seems like with spring security 4, csrf checking is default.
+        - have a valid success url. 
+        -AND explicitly set logout-url="/j_spring_security_logout", even though that is supposed to work by fucking default -->
+        <sec:logout logout-success-url="/test/loggedout" logout-url="/j_spring_security_logout"/>
     </sec:http>
 
     <!-- here we define the classes used for authentication. Basically we have: AuthenticationManager has a AuthenticationProvider
