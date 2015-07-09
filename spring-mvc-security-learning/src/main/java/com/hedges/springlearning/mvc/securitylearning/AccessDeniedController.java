@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping(value="/accessdenied")
 public class AccessDeniedController
 {
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST} )
     public String ok( ModelMap model )
     {
         model.addAttribute( "message","ACCESS DENIED!" );
