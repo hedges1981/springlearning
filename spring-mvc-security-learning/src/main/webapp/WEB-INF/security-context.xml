@@ -27,6 +27,8 @@
         <sec:intercept-url pattern="/test/loggedout" access="permitAll" />
 
         <sec:intercept-url pattern="/test/login" access="permitAll" />
+        <!-- this is the thing it tries to go to in order to validate a login, so this needs to be allowed-->
+        <sec:intercept-url pattern="/test/j_spring_security_check" access="permitAll"/>
 
         <sec:intercept-url pattern="/test/securitylearning/user**" access="hasRole('ROLE_user')"/>
         <!-- note the use of ** in the URLs, to stop hacker getting past by appending stuff to it. -->
@@ -42,9 +44,13 @@
         <sec:remember-me />
 
         <!--Custom form login settings-->
-        <!-- default-target-url. where they go to if i) they cannot carry on to the requested url, or ii) they have come straight in via the login page-->
+         <!--default-target-url. where they go to if i) they cannot carry on to the requested url, or ii) they have come straight in via the login page-->
+        <!-- note that login-processing-url defaults to /login if not specified. Note that the login-processing-url doesn't need a permit all security
+        rule, presumably it gets automatically interpreted by the login filter.
+        Note how it is set as the post target in the custom login form on login.jsp -->
         <sec:form-login
                 login-page="/test/login"
+                login-processing-url="/processLogin"
                 default-target-url="/test/ding"
                 authentication-failure-url="/test/login?error"
                 always-use-default-target="false"

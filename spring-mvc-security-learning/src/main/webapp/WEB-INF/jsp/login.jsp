@@ -1,3 +1,4 @@
+<%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
@@ -50,7 +51,7 @@
     </c:if>
 
     <form name='loginForm'
-          action="<c:url value='j_spring_security_check' />" method='POST'>
+          action="<c:url value='/processLogin' />" method='POST'>
 
         <table>
             <tr>
