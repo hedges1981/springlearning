@@ -26,6 +26,8 @@
         
         <sec:intercept-url pattern="/test/loggedout" access="permitAll" />
 
+        <sec:intercept-url pattern="/test/sahiexample/**" access="permitAll" />
+
         <sec:intercept-url pattern="/test/login" access="permitAll" />
         <!-- this is the thing it tries to go to in order to validate a login, so this needs to be allowed-->
         <sec:intercept-url pattern="/test/j_spring_security_check" access="permitAll"/>

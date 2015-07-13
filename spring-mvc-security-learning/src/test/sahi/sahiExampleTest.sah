@@ -1,0 +1,3 @@
+_navigateTo("http://localhost:2702/springmvclearning/test/sahiexample/page1");
+_click(_link("Click here for next page"));
+_assertContainsText("This is page 2", _div("aDiv"));

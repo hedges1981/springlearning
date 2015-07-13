@@ -6,8 +6,6 @@
 package test;
 
 import com.hedges.springlearning.mvc.restexamples.Dog;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -15,10 +13,14 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author christine
  */
+@Ignore
 public class DogRestWebServiceUsesRestTemplateTest
 {
     
