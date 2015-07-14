@@ -66,18 +66,39 @@
         -AND explicitly set logout-url="/j_spring_security_logout", even though that is supposed to work by fucking default -->
         <sec:logout logout-success-url="/test/loggedout" logout-url="/j_spring_security_logout"/>
     </sec:http>
+    
+    <!--NOTE the need to use the beans ns prefix due to the slightly messed up namespacing of this file -->
+    <beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <beans:property name="url" value="jdbc:mysql://localhost/test_schema" />
+        <beans:property name="username" value="root" />
+        <beans:property name="password" value="password" />
+    </beans:bean>
 
     <!-- here we define the classes used for authentication. Basically we have: AuthenticationManager has a AuthenticationProvider
     has a UserDetailsService. It is the user details service which provides a look up of users based on username,-->
     <sec:authentication-manager>
         <sec:authentication-provider>
+            <!--note how they are stored in the db in hashed format -->
+            <!-- this uses the default BCryptPasswordEncoder class for the hashing. BCrypt is the recommended ecoder these days. -->
+            <!-- see GenreateEncodedBCryptPasswords test class for generation logic. Note that this will use the default strength and 'salt',
+            you could use <sec:password-encoder ref="beanId" /> to have one that uses a custome strength and salt-->
+                <sec:password-encoder hash="bcrypt" />
+                
+            <!--user details service that works off a database, see the test_schema.sql for how this is linked. -->
+            	<sec:jdbc-user-service data-source-ref="dataSource"
+		  users-by-username-query=
+		    "select username,password, enabled from users where username=?"
+		  authorities-by-username-query=
+		    "select username, role from user_roles where username =?  " />
+            
             <!--this gives us a default noddy UserDetailsService. In practice you'd use something proper that e.g. went off to a database-->
-            <sec:user-service>
+           <!-- <sec:user-service>
                 <sec:user name="hedges_guest" password="password" authorities="ROLE_guest" />
                 <sec:user name="hedges_user" password="password" authorities="ROLE_user" />
                 <sec:user name="hedges_admin" password="password" authorities="ROLE_admin" />
                 <sec:user name="hedges_admin_and_user" password="password" authorities="ROLE_admin,ROLE_user" />
-            </sec:user-service>
+            </sec:user-service>-->
         </sec:authentication-provider>
     </sec:authentication-manager>
 </beans:beans>
