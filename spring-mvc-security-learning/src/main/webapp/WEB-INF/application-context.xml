@@ -16,6 +16,6 @@
     <bean id="beanDefinedInApplicationContext2" class="com.hedges.springlearning.mvc.applicationcontextbeans.BeanDefinedInApplicationContext">
         <property name="message" value="I am defined in the application context"></property>
     </bean>
-
-
+    
+    <bean id="beanWithMethodLevelSecurity" class="com.hedges.springlearning.mvc.securitylearning.BeanWithMethodLevelSecurity"/>
     </beans>

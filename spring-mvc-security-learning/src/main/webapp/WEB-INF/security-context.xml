@@ -68,6 +68,7 @@
     </sec:http>
     
     <!--NOTE the need to use the beans ns prefix due to the slightly messed up namespacing of this file -->
+    <!--NOTE would be better practice to put this in a separate datasource-context.xml file-->
     <beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
         <beans:property name="url" value="jdbc:mysql://localhost/test_schema" />
@@ -101,4 +102,11 @@
             </sec:user-service>-->
         </sec:authentication-provider>
     </sec:authentication-manager>
+    
+    <!--allows for bean methods to be annotated with eg @Secured("someRole") or @RolesAllowed("someRole")-->
+    <!-- see the use of class "BeanWithMethodLevelSecrity" for an example-->
+    <sec:global-method-security secured-annotations="enabled">
+        <sec:protect-pointcut expression="execution(* adminOnlyViaGlobalDeclaration())" access="ROLE_admin"/>
+    </sec:global-method-security>
+    
 </beans:beans>
