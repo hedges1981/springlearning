@@ -62,6 +62,10 @@
                 <td>Password:</td>
                 <td><input type='password' name='password' /></td>
             </tr>
+             <tr>
+                <td>remember me:</td>
+                <td><input type='checkbox' name='remember-me' /></td>
+            </tr>
             <tr>
                 <td colspan='2'><input name="submit" type="submit"
                                        value="submit" /></td>

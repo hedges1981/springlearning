@@ -41,9 +41,15 @@
 
         <sec:intercept-url pattern="/**" access="isAuthenticated()"/>
 
-        <!-- Tells it to use 'remember-me' authentication. This means that it will store a cookie on the browser to keep a user logged
-        in between sessions. Presumably you can configure things like cookie expiry -->
-        <sec:remember-me />
+        <!-- Tells it to use 'remember-me' authentication.
+        Note  the datasource ref, allows for the remember me to be persisted,see persistent-logings table.
+        requires a check box called with name 'remember-me' to be toggled on. Note that   
+        remember-me-parameter allows for the name of the parameter to be changed.
+        Note that when the user logs out, their row from the table gets deleted.
+        Note, a user can have remember me in > 1 place, in which case they get two rows in the
+        persistent-logins table. A cookie is stored called 'remember-me' on the browser, which points to the
+        series column of the persistent logins table.        -->
+        <sec:remember-me token-validity-seconds="3600"  data-source-ref="dataSource"/>
 
         <!--Custom form login settings-->
          <!--default-target-url. where they go to if i) they cannot carry on to the requested url, or ii) they have come straight in via the login page-->

@@ -26,3 +26,12 @@ INSERT INTO user_roles (username, ROLE)
 VALUES ('hedges_admin', 'ROLE_user');
 INSERT INTO user_roles (username, ROLE)
 VALUES ('hedges_admin', 'ROLE_admin');
+
+--this table allows for the remember-me functionality to work
+CREATE TABLE persistent_logins (
+    username VARCHAR(64) NOT NULL,
+    series VARCHAR(64) NOT NULL,
+    token VARCHAR(64) NOT NULL,
+    last_used TIMESTAMP NOT NULL,
+    PRIMARY KEY (series)
+);
