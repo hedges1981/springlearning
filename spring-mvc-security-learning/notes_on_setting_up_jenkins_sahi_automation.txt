@@ -1,0 +1,44 @@
+SETTING A NO GUI JENKINS BOX UP FOR RUNNING SAHI TESTS-- USING HEADLESS SAHI AND A HEADLESS BROWSER (FF WITH XVFB)
+
+Installed xvfb by:
+
+yum install xorg-x11-server-Xvfb
+
+Install the xvfb plugin on Jenkins.
+
+Got hold of sahi 'community' edition and got the installation jar.
+
+from /home/rowland.hall ran: java -jar install_sahi_v50_20141105.jar sahi-no-gui-install.xml
+
+note the need for the sahi-no-gui-install.xml file. This allows it to be installed without a gui. To generate one, install it on abox with a GUI,
+then generate an XML script at the end. Be careful of the installation folder specified in the xml file.
+
+
+Installed firefox:
+
+yum install firefox
+
+Start sahi, (note sahi was installed in /opt/sahi, could have been put anywhere):
+
+/opt/sahi/userdata/bin/start_sahi.sh
+
+when you start sahi, it looks like it picks up firefox and sets up e.g.a folder in:
+
+......sahi/userdata/browser/ff/
+
+Add firefox xvfb browser to sahi:
+
+Put this in /opt/sahi/userdata/config/browser_types.xml
+
+note that it is using DISPLAY 1. Besure that the the jenkins build is set to use that display number also, see the
+Xvfb specific display name bit of the build config options.
+
+<browserType>
+<name>firefox-xvfb</name>
+<displayName>Firefox</displayName>
+<icon>firefox.png</icon>
+<path>env DISPLAY=:1 firefox</path>
+<options>-profile "$userDir/browser/ff/profiles/sahi$threadNo" -no-remote</options>
+<processName>firefox</processName>
+<capacity>5</capacity>
+</browserType>
