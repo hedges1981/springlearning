@@ -6,6 +6,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
+
 /**
  * Created by rowland-hall on 07/07/15
  *
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * localhost:2702/springmvclearning/test/securitylearning/user/callsAdminMethod
  * localhost:2702/springmvclearning/test/securitylearning/adminOrUser
  * localhost:2702/springmvclearning/test/securitylearning/admin    localhost:2702/springmvclearning/test/securitylearning/adminAndUser
+ * localhost:2702/springmvclearning/test/securitylearning/printUserRoles
+ * localhost:2702/springmvclearning/test/securitylearning/roleDependentJsp
  */
 @Controller
 @RequestMapping(value="/securitylearning")
@@ -90,5 +94,22 @@ public class SecurityLearningController
         model.addAttribute( "message","in admin OR User area");
         return "printMessageWithLogOut";
     }
+
+    @RequestMapping(value = "/printUserRoles", method = RequestMethod.GET)
+    public String printUserRoles( ModelMap model )
+    {
+        List<String> userRolesList = SpringSecurityUtil.getUserRoles();
+
+        model.addAttribute( "message","User roles are: "+ userRolesList );
+
+        return "printMessage";
+    }
+
+    @RequestMapping(value = "/roleDependentJsp", method = RequestMethod.GET)
+    public String roleDependentJsp( ModelMap model )
+    {
+        return "roleDependentJsp";
+    }
+
 
 }

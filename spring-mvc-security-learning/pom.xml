@@ -55,7 +55,13 @@
             <artifactId>spring-security-web</artifactId>
             <version>4.0.1.RELEASE</version>
         </dependency>
-        
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>4.0.1.RELEASE</version>
+        </dependency>
+
         <dependency>
             <groupId>org.codehaus.castor</groupId>
             <artifactId>castor-xml</artifactId>
@@ -129,13 +135,24 @@
             <scope>test</scope>
         </dependency>
 
+        <!--SAHI dependencies, note that they are 'mocked up' as currently no SAHI stuff in actual maven -->
         <dependency>
             <groupId>dummy-sahi-group-id</groupId>
             <artifactId>dummy-sahi-artifact-id</artifactId>
             <version>1.0.0</version>
             <scope>system</scope>      <!--MUST be a system scope if using this file path mechanism for bringing it in-->
+            <systemPath>${basedir}/src/test/resources/sahi.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>dummy-sahi-group-id</groupId>
+            <artifactId>dummy-ant-sahi-artifact-id</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>      <!--MUST be a system scope if using this file path mechanism for bringing it in-->
             <systemPath>${basedir}/src/test/resources/ant-sahi.jar</systemPath>
         </dependency>
+
+        <!--/SAHI dependencies -->
         
         <!--JACKSON Stuff used by the jackon http message converter that converts stuff from objects to json and back -->
         <dependency>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="sahi">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/spring-mvc-security-learning/src/test/resources/sahi.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

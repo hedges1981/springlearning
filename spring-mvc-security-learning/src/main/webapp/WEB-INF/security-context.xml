@@ -31,6 +31,10 @@
         <sec:intercept-url pattern="/test/login" access="permitAll" />
         <!-- this is the thing it tries to go to in order to validate a login, so this needs to be allowed-->
         <sec:intercept-url pattern="/test/j_spring_security_check" access="permitAll"/>
+        <!-- permit all on this one, so that we can test the anon user -->
+        <sec:intercept-url pattern="/test/securitylearning/printUserRoles" access="permitAll"/>
+
+        <sec:intercept-url pattern="/test/securitylearning/roleDependentJsp" access="permitAll"/>
 
         <sec:intercept-url pattern="/test/securitylearning/user**" access="hasRole('ROLE_user')"/>
         <!-- note the use of ** in the URLs, to stop hacker getting past by appending stuff to it. -->
@@ -50,6 +54,9 @@
         persistent-logins table. A cookie is stored called 'remember-me' on the browser, which points to the
         series column of the persistent logins table.        -->
         <sec:remember-me token-validity-seconds="3600"  data-source-ref="dataSource"/>
+
+        <!-- use this to grant a specified userName to an anonymous user. else they are given the default user name of: ROLE_ANONYMOUS -->
+        <sec:anonymous username="annonUser" granted-authority="ROLE_guest"/>
 
         <!--Custom form login settings-->
          <!--default-target-url. where they go to if i) they cannot carry on to the requested url, or ii) they have come straight in via the login page-->
@@ -112,6 +119,7 @@
     <!--allows for bean methods to be annotated with eg @Secured("someRole") or @RolesAllowed("someRole")-->
     <!-- see the use of class "BeanWithMethodLevelSecrity" for an example-->
     <sec:global-method-security secured-annotations="enabled">
+        <!--this allows security via a pointcut, in this case, any method on a class called the below will be restricted -->
         <sec:protect-pointcut expression="execution(* adminOnlyViaGlobalDeclaration())" access="ROLE_admin"/>
     </sec:global-method-security>
     
