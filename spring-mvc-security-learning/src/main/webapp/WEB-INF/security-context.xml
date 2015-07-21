@@ -36,6 +36,12 @@
 
         <sec:intercept-url pattern="/test/securitylearning/roleDependentJsp" access="permitAll"/>
 
+        <!-- this one is the URL used for the demo of the HTTP invoker stuff, note there is a way using Spring security of making calls to
+        such services -->
+        <sec:intercept-url pattern="/test/greetingService" access="permitAll" />
+
+        <sec:csrf disabled="true"/>
+
         <sec:intercept-url pattern="/test/securitylearning/user**" access="hasRole('ROLE_user')"/>
         <!-- note the use of ** in the URLs, to stop hacker getting past by appending stuff to it. -->
         <sec:intercept-url pattern="/test/securitylearning/admin**" access="hasRole('ROLE_admin')"/>

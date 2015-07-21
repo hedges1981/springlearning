@@ -1,0 +1,25 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+"
+        >
+
+
+    <!-- HERE is defined a bean that acts as a proxy for the GreetingService over RMI.
+    Note the way that the URL matches up with the service name and the Registry port of the RmiServiceExporter in the RMI
+    server context file.
+     NOTE how spring makes it really simple, the RMIProxyFactoryBean does all the work of wiring it up to the RMI service, all
+     you need to do is reference this bean to make calls-->
+    <bean id="greetingServiceOverRMI" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
+        <property name="serviceUrl" value="rmi://localhost:1981/greetingService"></property>
+        <property name="serviceInterface" value="com.hedges.rmiexample.GreetingService"></property>
+    </bean>
+</beans>

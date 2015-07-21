@@ -87,6 +87,7 @@
 	   <property name="mappings">
                <props>
                    <prop key="/simpleUrlHandlerMapping">simpleUrlHandlerMappingController</prop>
+                   <prop key="/greetingService">httpGreetingService</prop>
                </props>
            </property>
     </bean>
@@ -151,6 +152,17 @@
         <ref bean="mappingJackson2HttpMessageConverter"/>
       </util:list>
          </property>
+    </bean>
+
+    <!-- ************************ HTTP Invoker Example *************************************************** -->
+    <bean id="greetingService" class="com.hedges.springlearning.mvc.httpinvokerexample.GreetingServiceImpl"/>
+    <!--THIS makes the greetingService bean available to remote method calls over HTTP, note how the  SimpleUrlHandlerMapping maps it to
+    a /greetingService url -->
+    <bean id="httpGreetingService"
+          class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter" >
+        <property name="service" ref="greetingService"/>
+        <property name="serviceInterface" value="com.hedges.springlearning.mvc.httpinvokerexample.GreetingService">
+        </property>
     </bean>
     
 </beans>
