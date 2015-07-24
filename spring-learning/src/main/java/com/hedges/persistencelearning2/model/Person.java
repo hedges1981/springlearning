@@ -1,10 +1,13 @@
 package com.hedges.persistencelearning2.model;
 
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Created by rowland-hall on 22/07/15
  */
+@Entity
+@Table( name="person")
 public class Person
 {
     private int id;
@@ -17,6 +20,12 @@ public class Person
 
     private String carMake;
 
+
+    @Id
+    //NOTE: this generation strategy set up means that it takes advantage of the mysql auto increment. When a new
+    //Person is created, the generated ID from the mysql AI system is automatically set on the object persisted.
+    @GeneratedValue( strategy =  GenerationType.AUTO )
+    @Column
     public int getId()
     {
         return id;
@@ -27,6 +36,7 @@ public class Person
         this.id = id;
     }
 
+    @Column
     public String getName()
     {
         return name;
@@ -37,6 +47,7 @@ public class Person
         this.name = name;
     }
 
+    @Column
     public String getSex()
     {
         return sex;
@@ -47,6 +58,7 @@ public class Person
         this.sex = sex;
     }
 
+    @Column( name="dob")
     public Date getDateOfBirth()
     {
         return dateOfBirth;
@@ -57,6 +69,7 @@ public class Person
         this.dateOfBirth = dateOfBirth;
     }
 
+    @Column(name="car_make")
     public String getCarMake()
     {
         return carMake;
