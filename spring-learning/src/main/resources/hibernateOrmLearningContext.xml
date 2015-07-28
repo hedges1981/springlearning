@@ -44,7 +44,11 @@
 
     <!-- packages to scan tells it where to look for @Entity objects
      Could also use the annotatedClasses property to tell it which classes to look at,
-     OR: the mappingLocations property, which allows for a list of .... .hbm.xml files to be specified. -->
+     OR: the mappingLocations property, which allows for a list of .... .hbm.xml files to be specified.
+
+     NOTE: this is a Spring4/Hib4 class, in the exam notes it refers to a hibernate3 AnnotationSessionFactoryBean and a
+     hibernate3 LocalSessionFactoryBean. This hib4 class appears to combine the jobs of both.
+     -->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
           p:dataSource-ref="dataSource"
           p:packagesToScan="com.hedges.persistencelearning2.model"

@@ -27,7 +27,7 @@ public class JdbcLearningMain
         person.setDateOfBirth( new Date() );
         person.setCarMake( "VW" );
 
-        personService.CreatePerson( person );
+        personService.createPerson( person );
         U.print( "Person created with ID= "+person.getId() );
 
         //demo find all persons:

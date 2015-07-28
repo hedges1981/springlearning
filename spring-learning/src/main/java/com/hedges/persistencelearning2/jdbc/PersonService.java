@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public interface PersonService
 {
-    void CreatePerson( Person p );
+    int createPerson( Person p );
 
     List<Person> getAllPersons();
 
@@ -24,9 +24,9 @@ public interface PersonService
 
     Map<String,Object> getPersonAsAMap( int id );
 
-    void updatePerson( Person person );
+    void updatePersonUsingTransactionTemplate( Person person );
 
-    void deletePerson( int id );
+    int createPersonUsingTransactionTemplate( Person person );
 
     void runQueryThrowsException();
 }

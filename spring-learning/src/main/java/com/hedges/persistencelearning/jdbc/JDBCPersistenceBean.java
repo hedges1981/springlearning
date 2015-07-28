@@ -20,6 +20,7 @@ public class JDBCPersistenceBean
     @Autowired
     private NamedParameterJdbcOperations jdbcOperations;
 
+
     @Autowired
     private TestTableRowMapper testTableRowMapper;
 

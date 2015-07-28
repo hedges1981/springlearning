@@ -12,6 +12,10 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,16 +46,19 @@ public class PersonServiceImpl implements PersonService
             "update person set name=:name,sex=:sex,dob=:dob,car_make=:car_make where id=:id";
 
     private static final String DELETE_SQL=
-            "delete from person where person_id=:person_id";
+            "delete from person where id=:id";
 
     @Autowired
     private NamedParameterJdbcOperations jdbcTemplate;
+
+    @Autowired
+    private TransactionTemplate transactionTemplate;
 
     private PersonRowMapper personRowMapper = new PersonRowMapper();
 
 
     @Override
-    public void CreatePerson( Person person )
+    public int createPerson( Person person )
     {
         SqlParameterSource parameterSource = new MapSqlParameterSource(  )
                 .addValue( "name",person.getName() )
@@ -66,6 +73,8 @@ public class PersonServiceImpl implements PersonService
         jdbcTemplate.update( CREATE_SQL,parameterSource,keyHolder );
 
         person.setId( keyHolder.getKey().intValue() );
+
+        return person.getId();
     }
 
     @Override
@@ -134,16 +143,57 @@ public class PersonServiceImpl implements PersonService
         return jdbcTemplate.queryForMap( FIND_ONE_BY_ID_SQL,parameterSource );
     }
 
+    /**
+     * Uses the transaction template, which does things a bit cleaner than you can with the actual low level TransactionManager.
+     */
     @Override
-    public void updatePerson( Person person )
+    public void updatePersonUsingTransactionTemplate( Person person )
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        final SqlParameterSource parameterSource = new MapSqlParameterSource(  )
+                .addValue( "id", person.getId() )
+                .addValue( "name", person.getName() )
+                .addValue( "dob", person.getDateOfBirth() )
+                .addValue( "car_make", person.getCarMake() );
+
+        TransactionCallbackWithoutResult transactionCallbackWithoutResult = new TransactionCallbackWithoutResult()
+        {
+            @Override
+            protected void doInTransactionWithoutResult( TransactionStatus transactionStatus )
+            {
+                try
+                {
+                    jdbcTemplate.update( UPDATE_SQL, parameterSource );
+                }
+                catch( Exception e )
+                {
+                    //NOTE how you need to catch the exception and do the rollback explicitly.
+                    transactionStatus.setRollbackOnly();
+                }
+            }
+        };
+
+        transactionTemplate.execute( transactionCallbackWithoutResult );
     }
 
+
+    /**
+     * Demos using the transaction template to return a value, note the parameterized  TransactionCallback class.
+     */
     @Override
-    public void deletePerson( int id )
+    public int createPersonUsingTransactionTemplate( final Person p )
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+
+
+        TransactionCallback<Integer> transactionCallback = new TransactionCallback<Integer>()
+        {
+            @Override
+            public Integer doInTransaction( TransactionStatus status )
+            {
+                    return createPerson(p);
+            }
+        };
+
+        return transactionTemplate.execute( transactionCallback );
     }
 
     @Override
