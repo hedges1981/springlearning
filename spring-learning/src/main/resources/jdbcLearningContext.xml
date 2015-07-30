@@ -37,4 +37,7 @@
         <property name="transactionManager" ref="transactionManager"/>
     </bean>
 
+    <!--******NOTE ON GLOBAL / DISTRIBUTED TRANSACTIONS.... SEE HERE FOR A DISCUSSION:
+                http://spring.io/blog/2011/08/15/configuring-spring-and-jta-without-full-java-ee/ -->
+
 </beans>
