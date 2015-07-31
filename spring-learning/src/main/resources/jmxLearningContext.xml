@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.hedges.jmxexample" />
+
+    <context:mbean-export/>
+
+    <!-- Expose JMX over JMXMP -->
+    <bean id="serverConnector" class="org.springframework.jmx.support.ConnectorServerFactoryBean" />
+
+    <!-- Client connector to JMX over JMXMP -->
+    <!-- NOTE: for the jmxmp protocol to work ok, had to include jmxremote_optional dependency, see da POM -->
+    <bean id="clientConnector" class="org.springframework.jmx.support.MBeanServerConnectionFactoryBean"
+          p:serviceUrl="service:jmx:jmxmp://localhost:9875" />
+
+    <!-- Client AnnotatedMBean proxy to JMX over JMXMP -->
+    <!-- Note how the proxy has a reference to "clientConntector". It talks to the Mbean server over the serviceUrl -->
+
+    <!--***************NOTE: for this to work, the objectName   MUST be the same as what is in the @ManagedResource annotation on the class.
+    THIS ensures that the annotations on that class which expose the methods for MBean access can be called via JMX -->
+
+    <bean id="annotatedMBeanProxy" class="org.springframework.jmx.access.MBeanProxyFactoryBean"
+          p:objectName="com.hedges.jmxexample:name=annotatedMBean"
+          p:proxyInterface="com.hedges.jmxexample.AnnotatedMBean"
+          p:server-ref="clientConnector" />
+
+
+    <!--*********************** STUFF FOR USING POJOS AS MBEANS *********************************************-->
+    <bean id="pojoMBean" class="com.hedges.jmxexample.POJOMBeanImpl"/>
+
+    <!-- THIS exports the listed POJO beans as JMX Mbeans. Note that by default, all public getters and setters are exposed as 'ManagedAttributes',
+     and all other public methods as ManagedOperation, basically doing it this way saves you from having to put all the annotations all over the class-->
+    <bean class ="org.springframework.jmx.export.MBeanExporter">
+        <property name="beans">
+            <util:map>
+                <entry key="com.hedges.jmxexample:name=pojoMBean" value-ref="pojoMBean"/>
+            </util:map>
+        </property>
+    </bean>
+
+    <!-- again, put up a proxy for the POJO mbean -->
+    <bean id="pojoMBeanProxy" class="org.springframework.jmx.access.MBeanProxyFactoryBean"
+          p:objectName="com.hedges.jmxexample:name=pojoMBean"
+          p:proxyInterface="com.hedges.jmxexample.POJOMBean"
+          p:server-ref="clientConnector" />
+
+</beans>

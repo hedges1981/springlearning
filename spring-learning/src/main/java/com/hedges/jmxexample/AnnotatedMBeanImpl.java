@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 /**
  * the @ManagedResource tells spring to register an instance with the MBean server.
  */
-@ManagedResource(objectName="com.hedges.jmxexample:name=AnnotatedMBean", description = "example of a MBean done with annotations")
+@ManagedResource(objectName="com.hedges.jmxexample:name=annotatedMBean", description = "example of a MBean done with annotations")
 public class AnnotatedMBeanImpl implements AnnotatedMBean
 {
     private String status = "ok";
@@ -51,6 +51,9 @@ public class AnnotatedMBeanImpl implements AnnotatedMBean
     {
         U.print( "Doing something, a="+a+" and b="+b );
     }
+
+
+
 
 
 }
