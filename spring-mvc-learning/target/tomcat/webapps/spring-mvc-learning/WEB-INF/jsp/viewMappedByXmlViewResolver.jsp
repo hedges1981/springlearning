@@ -1,0 +1,1 @@
+This view has been mapped by the: XmlViewResolver

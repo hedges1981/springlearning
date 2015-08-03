@@ -11,10 +11,22 @@
 
     <context:component-scan base-package="com.hedges.jmxexample" />
 
-    <context:mbean-export/>
+    <!--NOTE, this enables you to create your own MBean server. Couldnt get it to work this way. See below where it creates one automatically instead via:
+    <context:mbean-export />-->
+    <!--<context:mbean-server id="testServer"/>-->
+    
+    <!--THIS picks up beans annotated with @ManagedResource. 
+    *****NOTE******************** that you could also delcare a bean of class
+    org.springframework.jmx.export.annotation.AnnotationMBeanExporter which would do the same thing -->
+    <!--***************NOTE that the spring code behind this will automatically create an MBeanServer if there is not one there, then export the beans to it.
+    It does this by calling standard 'javax' code to get one set up -->
+    <context:mbean-export />
+    
+    
+    
 
     <!-- Expose JMX over JMXMP -->
-    <bean id="serverConnector" class="org.springframework.jmx.support.ConnectorServerFactoryBean" />
+    <bean id="serverConnector" class="org.springframework.jmx.support.ConnectorServerFactoryBean"/>
 
     <!-- Client connector to JMX over JMXMP -->
     <!-- NOTE: for the jmxmp protocol to work ok, had to include jmxremote_optional dependency, see da POM -->
@@ -27,6 +39,8 @@
     <!--***************NOTE: for this to work, the objectName   MUST be the same as what is in the @ManagedResource annotation on the class.
     THIS ensures that the annotations on that class which expose the methods for MBean access can be called via JMX -->
 
+    <!--**************NOTE: in this example we use simple proxy stuff to access the Mbeans, in realty for a real App, you would probably use the
+    'javaConsole' which talks to the Mbean server over a port -->
     <bean id="annotatedMBeanProxy" class="org.springframework.jmx.access.MBeanProxyFactoryBean"
           p:objectName="com.hedges.jmxexample:name=annotatedMBean"
           p:proxyInterface="com.hedges.jmxexample.AnnotatedMBean"
@@ -51,5 +65,6 @@
           p:objectName="com.hedges.jmxexample:name=pojoMBean"
           p:proxyInterface="com.hedges.jmxexample.POJOMBean"
           p:server-ref="clientConnector" />
+    
 
 </beans>
