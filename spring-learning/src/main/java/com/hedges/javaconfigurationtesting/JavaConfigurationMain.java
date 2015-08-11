@@ -13,7 +13,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class JavaConfigurationMain
 {
     public static void main(String[] args)
-    {                                                                        //could put >1 class in here, like you can with XML files.
+    {
+        //NOTE how this line causes the bean annotated with @Profile("testProfile") to get loaded.
+        System.setProperty("spring.profiles.active","testProfile");
+                                                                      //could put >1 class in here, like you can with XML files.
         ApplicationContext appContext = new AnnotationConfigApplicationContext( TestConfiguration.class );
 
         //note that you can get the bean by class.
@@ -24,13 +27,14 @@ public class JavaConfigurationMain
         //note here that full name of the method can be used to get the bean out.
         aGeneralBean1 = (AGeneralBean1)appContext.getBean( "getAGeneralBean1");
 
-        U.print( aGeneralBean1 );
+        //this will give a NoSuchBeanDefinitionException, as it is only made available via the method name, not the 'property name'.
+        //Object aGeneralBean1pt5 = appContext.getBean( "aGeneralBean1");
 
         //Note here that we can get it using the explicitly defined name.
         AGeneralBean2 aGeneralBean2 = ( AGeneralBean2 ) appContext.getBean( "aGeneralBean2" );
 
         //this will not work as the explicitly defined name replaces the default method name thing.
-        //AGeneralBean2 aGeneralBean2 = ( AGeneralBean2 ) appContext.getBean( "getAGeneralBean2" );
+        //AGeneralBean2 aGeneralBean2pt5 = ( AGeneralBean2 ) appContext.getBean( "getAGeneralBean2" );
 
         U.print(aGeneralBean2);
 
