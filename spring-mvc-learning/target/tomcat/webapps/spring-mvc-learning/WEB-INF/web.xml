@@ -1,0 +1,38 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<web-app>
+    <servlet>
+      <servlet-name>SpringMVCDispatcherServlet</servlet-name>
+      <servlet-class>
+         org.springframework.web.servlet.DispatcherServlet
+      </servlet-class>
+      <init-param> <!-- NOTE: if this wasn't given, would look for a default of: /WEB-INF/servlet-name]-servlet.xml to load up -->
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/springMvcLearning-web-context.xml</param-value>
+      </init-param>
+      <load-on-startup>1</load-on-startup>
+   </servlet>
+
+   <servlet-mapping>
+      <servlet-name>SpringMVCDispatcherServlet</servlet-name>
+      <url-pattern>/test/*</url-pattern>  <!-- this CANNOT be e.g. just *, as that will cause any forwarding it does to .jsp pages to also come through this servlet -->
+   </servlet-mapping>
+   
+   <!-- NOTE: without this config of a listener and ContextConfigLocation, Dispatcher servlet will look for 
+    /WEB-INF/SpringMVCDispatcherServlet-servlet.xml
+    -->
+
+    <!--ALLOWS US TO LOAD AN APPLICATION CONTEXT INDEPENDENTLY OF THE 'web one' loaded by the dispatcher servlet-->
+    <listener>
+        <listener-class>
+            org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+    </listener>
+
+   <context-param>
+       <param-name>contextConfigLocation</param-name>
+       <param-value>/WEB-INF/springMvcLearning-application-context.xml</param-value>
+	</context-param>
+
+</web-app>

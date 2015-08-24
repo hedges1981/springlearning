@@ -1,0 +1,1 @@
+127.0.0.1 - - [28/Jun/2015:20:39:21 +0100] "DELETE /springmvclearning/test/dogRestWebService/deleteDog?name=doesntexist HTTP/1.1" 500 141 http-bio-2702-exec-1 11852

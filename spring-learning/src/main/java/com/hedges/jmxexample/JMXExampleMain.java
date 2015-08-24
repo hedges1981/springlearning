@@ -5,6 +5,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.management.*;
 import java.io.IOException;
+import javax.management.remote.JMXConnectorServer;
+import org.springframework.jmx.support.ConnectorServerFactoryBean;
+import org.springframework.jmx.support.JmxUtils;
 
 /**
  * Created by rowland-hall on 31/07/15
@@ -43,6 +46,9 @@ public class JMXExampleMain
          */
         POJOMBean pojomBeanProxy = (POJOMBean)context.getBean( "pojoMBeanProxy" );
         pojomBeanProxy.doSomething();
+        
+        //****************
+     
 
         System.exit( 1 );
     }
