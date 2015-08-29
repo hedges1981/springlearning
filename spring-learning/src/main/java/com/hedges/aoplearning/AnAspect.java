@@ -1,6 +1,7 @@
 package com.hedges.aoplearning;
 
 import com.hedges.springlearning.U;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 
@@ -12,7 +13,7 @@ import org.aspectj.lang.annotation.*;
 public class AnAspect
 {
     @Before("doThingPointCut()")
-    public void pointCutHook1()
+    public void pointCutHook1( JoinPoint jp )
     {
         System.out.println("in pointCutHook1()");
     }
@@ -45,12 +46,14 @@ public class AnAspect
     }
 
     @AfterReturning("doThingPointCut()")  //this will get executed only if it returns without exception.
+    //could have added e.g.  returning="retVal" and declaring reVal as a parameter to the method to get the retVal.
     public void afterReturningDoThingPointCut()
     {
         System.out.println("in afterReturning doThingPointCut()");
     }
 
     @AfterThrowing("doThingPointCut()")  //this will get executed only if the exception throws an exception.
+    //could have added e.g. , throwing = "e" and added e as a method parameter, to get hold of the exception object.
     public void afterThrowingDoThingPointCut()
     {
         System.out.println("in afterThrowing doThingPointCut()");
