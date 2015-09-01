@@ -11,10 +11,19 @@ import org.aspectj.lang.annotation.*;
 @Aspect
 public class AnAspect
 {
+    /*
+    These two methods have exactly the same point cut, in this case the order in which they execute is undefined.
+     */
     @Before("doThingPointCut()")
     public void pointCutHook1()
     {
         System.out.println("in pointCutHook1()");
+    }
+
+    @Before("doThingPointCut()")
+    public void beforeDoThingPointCut()
+    {
+        System.out.println("in before doThingPointCut()");
     }
 
 
@@ -25,17 +34,18 @@ public class AnAspect
         System.out.println("Executing beforeAnyGetNameAdvice()");
     }
 
+    // this method will execute when a public String getName() is called on any spring bean.
+    @After("execution(public String getName())") //the execution..... is called a pointCut, defines the point at which it cuts in."
+    public void afterAnyGetNameAdvice()   //this gets executed before pointCutHook1(), as it defines the 'pointcut' explicitly rather than indirectly.
+    {
+        System.out.println("Executing afterAnyGetNameAdvice()");
+    }
+
     //Only gets executed before the AOPTargetObject2.getName() method.
     @Before("execution(* com.hedges.aoplearning.AOPTargetObject2.getName())")
     public void beforeAOPTargetObject2GetName()
     {
         System.out.println("Executing beforeAOPTargetObject2GetName()");
-    }
-
-    @Before("doThingPointCut()")
-    public void beforeDoThingPointCut()
-    {
-        System.out.println("in before doThingPointCut()");
     }
 
     @After("doThingPointCut()")  //this will get executed even if the method it wraps throws an exception.
@@ -65,7 +75,8 @@ public class AnAspect
         try
         {
             //note here that the doThing() methods that this wraps are voids, in this case the pjp.proceed(); returns null/
-            return proceedingJoinPoint.proceed();
+            Object o = proceedingJoinPoint.proceed();
+            return o;
         }
         catch ( Throwable throwable )
         {
@@ -104,7 +115,8 @@ public class AnAspect
 
 
 
-
+    //Presumably this allows you to effectively reference the point cut as a variable, rather than having to copy and paste a given execution string
+    //into loads of places.
     @Pointcut("execution(public void doThing())")   //note the way this @Pointcut is used to indirectly imply a point cut.
     public void doThingPointCut()
     {} //this method must have an empty body, else it is not a valid pointCut.

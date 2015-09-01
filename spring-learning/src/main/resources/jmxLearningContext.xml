@@ -11,25 +11,28 @@
 
     <context:component-scan base-package="com.hedges.jmxexample" />
 
-    <!--NOTE, this enables you to create your own MBean server. Couldnt get it to work this way. See below where it creates one automatically instead via:
-    <context:mbean-export />-->
-    <!--<context:mbean-server id="testServer"/>-->
+    <!--NOTE, this enables you to create your own MBean server. -->
+
+    <!-- this uses the MBeanServerFactoryBean under the hood, with locateExistingServerIfPossible set to true. -->
+    <context:mbean-server id="testServer"/>
     
     <!--THIS picks up beans annotated with @ManagedResource. 
     *****NOTE******************** that you could also delcare a bean of class
     org.springframework.jmx.export.annotation.AnnotationMBeanExporter which would do the same thing -->
     <!--***************NOTE that the spring code behind this will automatically create an MBeanServer if there is not one there, then export the beans to it.
     It does this by calling standard 'javax' code to get one set up -->
-    <context:mbean-export />
-    
-    
-    
+    <!--NOTE how we export them to the "testServer" that has been defined above-->
+      <context:mbean-export server="testServer" default-domain="com.hedges.jmxexample"/>
+
 
     <!-- Expose JMX over JMXMP -->
+    <!-- this is a connector that conntects to the MBean Server and allows the various MBeanProxyFactoyBeans to connect to the MBeans -->
     <bean id="serverConnector" class="org.springframework.jmx.support.ConnectorServerFactoryBean"/>
 
     <!-- Client connector to JMX over JMXMP -->
+    <!-- DEFINES A connector that the below proxy beans can use to connect to the JMS Server defined above -->
     <!-- NOTE: for the jmxmp protocol to work ok, had to include jmxremote_optional dependency, see da POM -->
+    <!-- NOTE that the service URL here comes from the value of: ConnectorServerFactoryBean.DEFAULT_SERVICE_URL, you would use setServiceUrl(...) to set it to what you want -->
     <bean id="clientConnector" class="org.springframework.jmx.support.MBeanServerConnectionFactoryBean"
           p:serviceUrl="service:jmx:jmxmp://localhost:9875" />
 

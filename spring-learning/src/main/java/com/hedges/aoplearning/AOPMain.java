@@ -20,6 +20,8 @@ public class AOPMain
         //Will trigger the beforeAnyGetNameAdvice()  method on the @Aspect object anAspect
         aopTargetObject.getName();
 
+
+
         AOPTargetObject2 aopTargetObject2 =(AOPTargetObject2)context.getBean( "aopTargetObject2" );
 
         //Will trigger beforeAOPTargetObject2GetName() on the @Aspect object anAspect, this one is called first, as it is

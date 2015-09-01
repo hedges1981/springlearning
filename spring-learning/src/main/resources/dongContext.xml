@@ -59,7 +59,7 @@
     <bean id="valueBean" class="com.hedges.springlearning.ValueBean"/>
 
  	<bean id="autowiredComponent" class="com.hedges.springlearning.AutowiredComponent"/>
- 	<bean id="anotherServiceWithAutoWiring" class="com.hedges.springlearning.AnotherServiceWithAutoWiring" autowire="byType"/>
+ 	<bean id="anotherServiceWithAutoWiring" class="com.hedges.springlearning.AnotherServiceWithAutoWiring" autowire="byType" />
 
     <!-- Use of properties splace:      -->
     <util:properties id="testProps" location="classpath:testProps.properties" />

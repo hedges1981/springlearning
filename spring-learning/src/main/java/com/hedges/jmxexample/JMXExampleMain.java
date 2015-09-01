@@ -5,9 +5,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.management.*;
 import java.io.IOException;
-import javax.management.remote.JMXConnectorServer;
-import org.springframework.jmx.support.ConnectorServerFactoryBean;
-import org.springframework.jmx.support.JmxUtils;
 
 /**
  * Created by rowland-hall on 31/07/15
@@ -21,7 +18,7 @@ public class JMXExampleMain
     {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "jmxLearningContext.xml" );
 
-        MBeanServerConnection clientConnector = context.getBean( MBeanServerConnection.class );
+        MBeanServerConnection clientConnector = context.getBean( "clientConnector", MBeanServerConnection.class );
 
         MBeanInfo beanInfo = clientConnector.getMBeanInfo(new ObjectName("com.hedges.jmxexample:name=annotatedMBean"));
 
@@ -48,6 +45,7 @@ public class JMXExampleMain
         pojomBeanProxy.doSomething();
         
         //****************
+        clientConnector.getMBeanCount();
      
 
         System.exit( 1 );
