@@ -112,7 +112,7 @@
 		  authorities-by-username-query=
 		    "select username, role from user_roles where username =?  " />
             
-            <!--this gives us a default noddy UserDetailsService. In practice you'd use something proper that e.g. went off to a database-->
+            <!--this gives us a default cheapo UserDetailsService. In practice you'd use something proper that e.g. went off to a database-->
            <!-- <sec:user-service>
                 <sec:user name="hedges_guest" password="password" authorities="ROLE_guest" />
                 <sec:user name="hedges_user" password="password" authorities="ROLE_user" />

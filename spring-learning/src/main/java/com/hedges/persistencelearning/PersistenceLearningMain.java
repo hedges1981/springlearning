@@ -19,7 +19,7 @@ public class PersistenceLearningMain
     {
         AbstractApplicationContext context = new ClassPathXmlApplicationContext("persistenceLearningContext.xml");
 
-        testTheJdbcStuff( context );
+        //testTheJdbcStuff( context );
 
         testTheHibernateOrmStuff( context);
     }

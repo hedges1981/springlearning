@@ -24,5 +24,6 @@
 
   <modules>
 		<module>spring-mvc-learning</module>
+      <module>jpa-learning</module>
   </modules>
 </project>
