@@ -3,6 +3,7 @@ package com.hedges.jpalearning.model;
 import com.hedges.jpalearning.U;
 
 import javax.persistence.*;
+import java.util.Date;
 
 
 /**
@@ -17,7 +18,9 @@ public class Employee
     public static final String LOCAL_AREA_CODE = "01978";
 
     @Id
-    @GeneratedValue( strategy = GenerationType.AUTO )//this allows the mysql auto increment stuff to do its business
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    //IDENTITY right one to use to get mysql auto increment, note see book p. 82,might be better to use a sequence table or db held sequence to make it db
+    //independent and have control over the allocated values.
     private int id;
 
     /*
@@ -44,6 +47,25 @@ public class Employee
     @Enumerated//uses type= ORDINAL as the default, will be a 0-x depending on the enum's position in its list.
     //This is dodgy as fuck, re ordering the enum/ adding new ones will cause major issues.
     private EmployeeSuspendedStatus employeeSuspendedStatus;
+
+    @Temporal( TemporalType.DATE )//tells it to use the java.sql.date class when mapping it to the db:
+    private Date startDate;
+    @Temporal( TemporalType.TIME )
+    //column is a time, so this tells it to convert the Date obj to a java.sql.time obj before persisting.
+    private Date startTime;
+    /*
+    Note on the temporal annotation, hibernate and mysql seems smart enough to resolve it without the @, e.g. the above startTime
+    still gets persisted to the DB as a time without the @Temporal, note however that it break with TemporalType.DATE, as the db column is a TIME.
+     */
+
+    @Transient
+    //need @Transient,as no column in the db. Note: be ware of property: HibernateJpaVendorAdapter.generateDDL being set to true, see context xml file.
+    private String notToBePersisted;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)//note the cascade type persist, means that we can create a new department, set it on the employee, then save
+    //the whole lot. No need to save the department object first.
+    @JoinColumn( name = "dept_id" )
+    private Department department;
 
     public int getId()
     {
@@ -155,5 +177,45 @@ public class Employee
     public void setEmployeeSuspendedStatus( EmployeeSuspendedStatus employeeSuspendedStatus )
     {
         this.employeeSuspendedStatus = employeeSuspendedStatus;
+    }
+
+    public Date getStartDate()
+    {
+        return startDate;
+    }
+
+    public void setStartDate( Date startDate )
+    {
+        this.startDate = startDate;
+    }
+
+    public Date getStartTime()
+    {
+        return startTime;
+    }
+
+    public void setStartTime( Date startTime )
+    {
+        this.startTime = startTime;
+    }
+
+    public String getNotToBePersisted()
+    {
+        return notToBePersisted;
+    }
+
+    public void setNotToBePersisted( String notToBePersisted )
+    {
+        this.notToBePersisted = notToBePersisted;
+    }
+
+    public Department getDepartment()
+    {
+        return department;
+    }
+
+    public void setDepartment( Department department )
+    {
+        this.department = department;
     }
 }

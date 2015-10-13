@@ -25,7 +25,8 @@
 
     <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
         <property name="showSql" value="true"/>
-        <property name="generateDdl" value="true"/>
+        <!--NOTE thid generate DDL property,if true, generated tables, columns, etc to match the entities.-->
+        <property name="generateDdl" value="false"/>
         <property name="database" value="MYSQL"/>
     </bean>
 
