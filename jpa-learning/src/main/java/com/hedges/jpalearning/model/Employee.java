@@ -62,10 +62,14 @@ public class Employee
     //need @Transient,as no column in the db. Note: be ware of property: HibernateJpaVendorAdapter.generateDDL being set to true, see context xml file.
     private String notToBePersisted;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)//note the cascade type persist, means that we can create a new department, set it on the employee, then save
+    @ManyToOne
     //the whole lot. No need to save the department object first.
     @JoinColumn( name = "dept_id" )
     private Department department;
+
+    @OneToOne(cascade = CascadeType.PERSIST) //note how the one to one set up is backed up by a unique constraint in the emp table on parking_space_id
+    @JoinColumn( name = "parking_space_id" ) // look in the ParkingSpace class for the reverse mapping.
+    private ParkingSpace parkingSpace;
 
     public int getId()
     {
@@ -217,5 +221,15 @@ public class Employee
     public void setDepartment( Department department )
     {
         this.department = department;
+    }
+
+    public ParkingSpace getParkingSpace()
+    {
+        return parkingSpace;
+    }
+
+    public void setParkingSpace( ParkingSpace parkingSpace )
+    {
+        this.parkingSpace = parkingSpace;
     }
 }
