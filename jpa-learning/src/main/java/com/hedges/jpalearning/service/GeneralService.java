@@ -2,7 +2,9 @@ package com.hedges.jpalearning.service;
 
 import com.hedges.jpalearning.model.Department;
 import com.hedges.jpalearning.model.ParkingSpace;
+import com.hedges.jpalearning.model.Project;
 import com.hedges.jpalearning.repositories.ParkingSpaceRepository;
+import com.hedges.jpalearning.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,9 @@ public class GeneralService
     @Autowired //Note the nice way this can be done, no need to extend the interface
     private JpaRepository<Department,Integer> departmentRepository;
 
+    @Autowired
+    private ProjectRepository projectRepository;
+
     public ParkingSpace getParkingSpaceById( int id )
     {
         return parkingSpaceRepository.findOne( id );
@@ -34,5 +39,8 @@ public class GeneralService
         return d;
     }
 
-
+    public Project getProjectById( int id )
+    {
+        return projectRepository.findOne( id );
+    }
 }

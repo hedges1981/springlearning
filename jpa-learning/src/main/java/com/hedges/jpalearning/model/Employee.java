@@ -3,6 +3,7 @@ package com.hedges.jpalearning.model;
 import com.hedges.jpalearning.U;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
 
 
@@ -70,6 +71,11 @@ public class Employee
     @OneToOne(cascade = CascadeType.PERSIST) //note how the one to one set up is backed up by a unique constraint in the emp table on parking_space_id
     @JoinColumn( name = "parking_space_id" ) // look in the ParkingSpace class for the reverse mapping.
     private ParkingSpace parkingSpace;
+
+    @ManyToMany(fetch = FetchType.EAGER ) //note how we use the simple join table to map the many to many relation here:
+    //note that the join table and columns will default if not specified, see book p.100 for more info.
+    @JoinTable(name="emp_project", joinColumns = @JoinColumn(name="emp_id"), inverseJoinColumns = @JoinColumn(name="project_id"))
+    private Collection<Project> projects;
 
     public int getId()
     {
@@ -231,5 +237,15 @@ public class Employee
     public void setParkingSpace( ParkingSpace parkingSpace )
     {
         this.parkingSpace = parkingSpace;
+    }
+
+    public Collection<Project> getProjects()
+    {
+        return projects;
+    }
+
+    public void setProjects( Collection<Project> projects )
+    {
+        this.projects = projects;
     }
 }

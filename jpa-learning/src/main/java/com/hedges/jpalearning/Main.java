@@ -54,5 +54,14 @@ public class Main
 
         Department dept2 = generalService.getDepartmentById( 1 ) ;
         U.print( dept2.getEmployees() );
+
+        //project will have lots of employees attached to it:
+        Project project = generalService.getProjectById( 1 );
+
+        //see how this employee has > 1 project:
+        Employee e3 = employeeService.findById( 1 );
+
+        int x=0;
+
     }
 }
