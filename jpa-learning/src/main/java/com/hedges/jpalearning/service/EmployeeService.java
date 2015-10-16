@@ -1,5 +1,6 @@
 package com.hedges.jpalearning.service;
 
+import com.hedges.jpalearning.U;
 import com.hedges.jpalearning.model.Employee;
 import com.hedges.jpalearning.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,12 @@ public class EmployeeService
 
     public Employee findById( Integer id )
     {
-        return employeeRepository.findOne( id );
+        Employee e= employeeRepository.findOne( id );
+        U.print( e.getPhones() );
+        U.print(e.getHolidays()); //note the reason why we have U.print instead of just calling the getter is because
+        //hibernate doesn't actually do the fetching until some method is called on the thing, i.e. just getting it is not enough.
+
+        return e;
     }
 
     public void saveEmployeeAndFlush( Employee e )

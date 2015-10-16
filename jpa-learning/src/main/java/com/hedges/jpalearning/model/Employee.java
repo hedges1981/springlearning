@@ -77,6 +77,22 @@ public class Employee
     @JoinTable(name="emp_project", joinColumns = @JoinColumn(name="emp_id"), inverseJoinColumns = @JoinColumn(name="project_id"))
     private Collection<Project> projects;
 
+    @OneToMany//( fetch = FetchType.EAGER) //this is a unidirectional one to many, note that there is no inverse mapping on the phone object
+    //note issue using eager fetch for more than 1 collection on the same entity, see here: .
+    @JoinTable( name="emp_phone", joinColumns = @JoinColumn(name="emp_id"), inverseJoinColumns = @JoinColumn(name="phone_id") )
+    private Collection<Phone> phones;
+
+    @Embedded
+    @AttributeOverrides( {@AttributeOverride( name="state", column=@Column(name="county")), @AttributeOverride( name="zipCode", column=@Column(name="postcode") )} )
+    //note the overrides, Address object deals in us terms (state, zip code), but columns in Emp table are uk (county, postcode)
+    private Address address;
+
+    //Collection mapping: note that the holilday class is an @Embedded, even though it has its own table. It is not really an entity
+    //as it is really an embedded object of the Employee class, but needs its own table as there are > 1 of them!
+    @ElementCollection( targetClass = Holiday.class )
+    @CollectionTable( name="holiday", joinColumns = @JoinColumn(name="emp_id"))
+    private Collection holidays;
+
     public int getId()
     {
         return id;
@@ -247,5 +263,35 @@ public class Employee
     public void setProjects( Collection<Project> projects )
     {
         this.projects = projects;
+    }
+
+    public Collection<Phone> getPhones()
+    {
+        return phones;
+    }
+
+    public void setPhones( Collection<Phone> phones )
+    {
+        this.phones = phones;
+    }
+
+    public Address getAddress()
+    {
+        return address;
+    }
+
+    public void setAddress( Address address )
+    {
+        this.address = address;
+    }
+
+    public Collection getHolidays()
+    {
+        return holidays;
+    }
+
+    public void setHolidays( Collection holidays )
+    {
+        this.holidays = holidays;
     }
 }

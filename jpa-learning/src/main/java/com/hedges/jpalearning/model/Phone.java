@@ -19,6 +19,7 @@ public class Phone
     private int id;
 
     @Enumerated( EnumType.STRING )
+    @Column(name="type")
     private PhoneType phoneType;
 
     private String number;
