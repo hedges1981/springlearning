@@ -5,10 +5,7 @@ import com.hedges.jpalearning.service.EmployeeService;
 import com.hedges.jpalearning.service.GeneralService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by rowland-hall on 12/10/15
@@ -54,6 +51,36 @@ public class Main
         e = employeeService.findById( 1 );
 
         U.print(e.getHolidays());
+
+        Set<String> nicknames= new HashSet<String>();
+
+        nicknames.add("dsdsdsoooo");
+        nicknames.add("qwqwqwoooo");
+        e.setNickNames( nicknames );
+
+        employeeService.saveEmployeeAndFlush( e );
+
+        GeneralService generalService = context.getBean( GeneralService.class );
+
+        Department department = generalService.getDepartmentById( 1 );
+
+        int x=0;
+
+        PrintJob pj1= new PrintJob();
+        pj1.setPrintOrder( 1 );
+        PrintJob pj2= new PrintJob();
+        pj1.setPrintOrder( 2 );
+
+        List<PrintJob> pjs = new ArrayList<PrintJob>();
+        pjs.add( pj1 );
+        pjs.add( pj2 );
+
+        PrintQueue pq = generalService.getPrintQueueById( 1 );
+
+        pq.setPrintJobs( pjs );
+
+        generalService.savePrintQueue( pq );
+
     }
 
     private static void chapter1Learning( ClassPathXmlApplicationContext context )

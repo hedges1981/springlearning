@@ -2,6 +2,7 @@ package com.hedges.jpalearning.model;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by rowland-hall on 13/10/15
@@ -20,7 +21,10 @@ public class Department
     //allows for the department to fetch its employees, join column is in the emp table, so the targetEntity and
     //mappedBy allow it to resolve the relationship and build up the collection.
     //note the eager fetch explicitly set, default is LAZY for joined Entities
-    private Collection<Employee> employees;
+    @OrderBy("dogName,phone desc") //note the order by, when it fetches the employees, they are ordered as specified.
+    //note that it uses the db column name, not the field/property name on the Employee entity.
+    //note how List is used, should be as it is an ordered collection.
+    private List<Employee> employees;
 
     public int getId()
     {
@@ -47,7 +51,7 @@ public class Department
         return employees;
     }
 
-    public void setEmployees( Collection<Employee> employees )
+    public void setEmployees( List<Employee> employees )
     {
         this.employees = employees;
     }

@@ -2,8 +2,10 @@ package com.hedges.jpalearning.service;
 
 import com.hedges.jpalearning.model.Department;
 import com.hedges.jpalearning.model.ParkingSpace;
+import com.hedges.jpalearning.model.PrintQueue;
 import com.hedges.jpalearning.model.Project;
 import com.hedges.jpalearning.repositories.ParkingSpaceRepository;
+import com.hedges.jpalearning.repositories.PrintQueueRepository;
 import com.hedges.jpalearning.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,6 +28,19 @@ public class GeneralService
     @Autowired
     private ProjectRepository projectRepository;
 
+    @Autowired
+    private PrintQueueRepository printQueueRepository;
+
+    public PrintQueue getPrintQueueById( int id)
+    {
+        return printQueueRepository.findOne( id );
+    }
+
+    public void savePrintQueue( PrintQueue pq )
+    {
+        printQueueRepository.saveAndFlush( pq );
+    }
+
     public ParkingSpace getParkingSpaceById( int id )
     {
         return parkingSpaceRepository.findOne( id );
@@ -34,7 +49,7 @@ public class GeneralService
     public Department getDepartmentById( int id )
     {
         Department d= departmentRepository.findOne( id );
-        d.getEmployees();
+        d.getEmployees().size();
 
         return d;
     }

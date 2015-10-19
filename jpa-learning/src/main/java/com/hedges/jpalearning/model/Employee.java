@@ -5,6 +5,7 @@ import com.hedges.jpalearning.U;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 
 /**
@@ -64,7 +65,6 @@ public class Employee
     private String notToBePersisted;
 
     @ManyToOne
-    //the whole lot. No need to save the department object first.
     @JoinColumn( name = "dept_id" )
     private Department department;
 
@@ -92,6 +92,23 @@ public class Employee
     @ElementCollection( targetClass = Holiday.class )
     @CollectionTable( name="holiday", joinColumns = @JoinColumn(name="emp_id"))
     private Collection holidays;
+    //****************note that with collection mappings,  cascade etc is always all, as
+    //the tables that house the collections are always owned completely by their entity.
+    @ElementCollection
+    @CollectionTable( name="nicknames", joinColumns = @JoinColumn(name="emp_id"))
+    @Column(name ="nickname")         //note how the specification of the single column allows it to be a set
+    //of strings, no need for a nickname entity.
+    private Set<String> nickNames;
+
+    public Set<String> getNickNames()
+    {
+        return nickNames;
+    }
+
+    public void setNickNames( Set<String> nickNames )
+    {
+        this.nickNames = nickNames;
+    }
 
     public int getId()
     {
