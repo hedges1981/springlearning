@@ -5,6 +5,7 @@ import com.hedges.jpalearning.U;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -99,6 +100,14 @@ public class Employee
     @Column(name ="nickname")         //note how the specification of the single column allows it to be a set
     //of strings, no need for a nickname entity.
     private Set<String> nickNames;
+
+
+    @ElementCollection
+    @CollectionTable(name="emp_relative", joinColumns = @JoinColumn(name="emp_id"))
+    @MapKeyColumn(name="relative_type")
+    //use e.g. @MapKeyEnumerated( EnumType.STRING ) if you want the map keys converted into an ENUM.
+    @Column(name="name")
+    private Map<String, String> relatives;
 
     public Set<String> getNickNames()
     {
@@ -310,5 +319,15 @@ public class Employee
     public void setHolidays( Collection holidays )
     {
         this.holidays = holidays;
+    }
+
+    public Map<String, String> getRelatives()
+    {
+        return relatives;
+    }
+
+    public void setRelatives( Map<String, String> relatives )
+    {
+        this.relatives = relatives;
     }
 }

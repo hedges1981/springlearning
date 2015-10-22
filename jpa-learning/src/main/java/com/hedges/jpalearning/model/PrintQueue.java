@@ -12,20 +12,20 @@ public class PrintQueue
 {
     @Id
     @Column(name="name")
-    private int id;
+    private String name;
 
     @OneToMany(targetEntity =PrintJob.class,mappedBy = "printQueue", cascade = CascadeType.ALL)
     @OrderColumn(name="print_order")
     private List<PrintJob> printJobs;
 
-    public int getId()
+    public String getName()
     {
-        return id;
+        return name;
     }
 
-    public void setId( int id )
+    public void setName( String name )
     {
-        this.id = id;
+        this.name = name;
     }
 
     public List<PrintJob> getPrintJobs()
@@ -37,4 +37,5 @@ public class PrintQueue
     {
         this.printJobs = printJobs;
     }
+
 }

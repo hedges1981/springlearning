@@ -1,9 +1,6 @@
 package com.hedges.jpalearning.service;
 
-import com.hedges.jpalearning.model.Department;
-import com.hedges.jpalearning.model.ParkingSpace;
-import com.hedges.jpalearning.model.PrintQueue;
-import com.hedges.jpalearning.model.Project;
+import com.hedges.jpalearning.model.*;
 import com.hedges.jpalearning.repositories.ParkingSpaceRepository;
 import com.hedges.jpalearning.repositories.PrintQueueRepository;
 import com.hedges.jpalearning.repositories.ProjectRepository;
@@ -11,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Created by rowland-hall on 14/10/15
@@ -31,13 +30,33 @@ public class GeneralService
     @Autowired
     private PrintQueueRepository printQueueRepository;
 
-    public PrintQueue getPrintQueueById( int id)
+    public PrintQueue getPrintQueueByName( String name)
     {
-        return printQueueRepository.findOne( id );
+        PrintQueue pq =  printQueueRepository.findOne( name );
+        pq.getPrintJobs().size();
+
+        return pq;
     }
 
     public void savePrintQueue( PrintQueue pq )
     {
+        printQueueRepository.saveAndFlush( pq );
+    }
+
+    public void addPrintJobToPrintQueue( PrintJob pj, PrintQueue pq )
+    {
+        pj.setPrintQueue( pq );
+
+        List<PrintJob> pjs = pq.getPrintJobs();
+
+        int printOrderToSet = pjs.get( pjs.size()-1).getPrintOrder()+1;
+
+        pj.setPrintOrder( printOrderToSet );
+
+        pj.setPrintQueue( pq ); //THIS line is necessary to get the link to a PQ from a PJ, jpa doesn't automatically read the relationship and do the setting.
+
+        pjs.add( pj);
+
         printQueueRepository.saveAndFlush( pq );
     }
 
@@ -50,6 +69,8 @@ public class GeneralService
     {
         Department d= departmentRepository.findOne( id );
         d.getEmployees().size();
+        d.getEmployeesByDeskId().size();
+        d.getEmployeesById().size();
 
         return d;
     }

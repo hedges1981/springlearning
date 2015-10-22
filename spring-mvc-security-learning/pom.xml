@@ -137,16 +137,16 @@
 
         <!--SAHI dependencies, note that they are 'mocked up' as currently no SAHI stuff in actual maven -->
         <dependency>
-            <groupId>dummy-sahi-group-id</groupId>
-            <artifactId>dummy-sahi-artifact-id</artifactId>
+            <groupId>dummy-sahi-group-name</groupId>
+            <artifactId>dummy-sahi-artifact-name</artifactId>
             <version>1.0.0</version>
             <scope>system</scope>      <!--MUST be a system scope if using this file path mechanism for bringing it in-->
             <systemPath>${basedir}/src/test/resources/sahi.jar</systemPath>
         </dependency>
 
         <dependency>
-            <groupId>dummy-sahi-group-id</groupId>
-            <artifactId>dummy-ant-sahi-artifact-id</artifactId>
+            <groupId>dummy-sahi-group-name</groupId>
+            <artifactId>dummy-ant-sahi-artifact-name</artifactId>
             <version>1.0.0</version>
             <scope>system</scope>      <!--MUST be a system scope if using this file path mechanism for bringing it in-->
             <systemPath>${basedir}/src/test/resources/ant-sahi.jar</systemPath>

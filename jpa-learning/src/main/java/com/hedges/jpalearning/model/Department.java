@@ -3,6 +3,7 @@ package com.hedges.jpalearning.model;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by rowland-hall on 13/10/15
@@ -25,6 +26,14 @@ public class Department
     //note that it uses the db column name, not the field/property name on the Employee entity.
     //note how List is used, should be as it is an ordered collection.
     private List<Employee> employees;
+
+    @OneToMany(targetEntity = Employee.class, mappedBy="department")
+    @MapKeyColumn(name="desk_id")  //note here that we refer to using a db column for the map key:
+    private Map<String,Employee> employeesByDeskId;
+
+    @OneToMany( targetEntity = Employee.class, mappedBy="department" )
+    @MapKey(name="id")   //note here that is be using the id attribute of the employee class, could use any of its attributes.
+    private Map<Integer,Employee> employeesById;
 
     public int getId()
     {
@@ -54,5 +63,25 @@ public class Department
     public void setEmployees( List<Employee> employees )
     {
         this.employees = employees;
+    }
+
+    public Map<String, Employee> getEmployeesByDeskId()
+    {
+        return employeesByDeskId;
+    }
+
+    public void setEmployeesByDeskId( Map<String, Employee> employeesByDeskId )
+    {
+        this.employeesByDeskId = employeesByDeskId;
+    }
+
+    public Map<Integer, Employee> getEmployeesById()
+    {
+        return employeesById;
+    }
+
+    public void setEmployeesById( Map<Integer, Employee> employeesById )
+    {
+        this.employeesById = employeesById;
     }
 }

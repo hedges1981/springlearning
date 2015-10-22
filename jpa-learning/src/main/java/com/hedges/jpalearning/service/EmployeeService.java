@@ -31,6 +31,7 @@ public class EmployeeService
         U.print( e.getPhones() );
         U.print(e.getHolidays()); //note the reason why we have U.print instead of just calling the getter is because
         //hibernate doesn't actually do the fetching until some method is called on the thing, i.e. just getting it is not enough.
+        e.getRelatives().size();
 
         return e;
     }

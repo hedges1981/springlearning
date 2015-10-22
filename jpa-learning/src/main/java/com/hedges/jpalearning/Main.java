@@ -52,6 +52,13 @@ public class Main
 
         U.print(e.getHolidays());
 
+        Map<String, String> relatives = e.getRelatives();
+
+        relatives.put( UUID.randomUUID().toString().substring( 0,30 ), "aName" );
+        relatives.put( "mother", "mother name updated" );
+
+        employeeService.saveEmployeeAndFlush( e );
+
         Set<String> nicknames= new HashSet<String>();
 
         nicknames.add("dsdsdsoooo");
@@ -64,22 +71,20 @@ public class Main
 
         Department department = generalService.getDepartmentById( 1 );
 
+        PrintQueue pq = generalService.getPrintQueueByName( "queue1" );
+
+        List<PrintJob> pjs = pq.getPrintJobs();
+
+        PrintJob pj1 = new PrintJob();
+
+        generalService.addPrintJobToPrintQueue( pj1, pq );
+
         int x=0;
 
-        PrintJob pj1= new PrintJob();
-        pj1.setPrintOrder( 1 );
-        PrintJob pj2= new PrintJob();
-        pj1.setPrintOrder( 2 );
+        Department d1 = generalService.getDepartmentById( 1 );
 
-        List<PrintJob> pjs = new ArrayList<PrintJob>();
-        pjs.add( pj1 );
-        pjs.add( pj2 );
-
-        PrintQueue pq = generalService.getPrintQueueById( 1 );
-
-        pq.setPrintJobs( pjs );
-
-        generalService.savePrintQueue( pq );
+        U.print( d1.getEmployeesByDeskId() );
+        U.print(d1.getEmployeesById());
 
     }
 
