@@ -71,6 +71,7 @@ public class GeneralService
         d.getEmployees().size();
         d.getEmployeesByDeskId().size();
         d.getEmployeesById().size();
+        d.getEmployeesByName().size();
 
         return d;
     }

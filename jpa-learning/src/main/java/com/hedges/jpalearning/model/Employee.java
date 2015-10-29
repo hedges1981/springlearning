@@ -109,6 +109,35 @@ public class Employee
     @Column(name="name")
     private Map<String, String> relatives;
 
+    private String firstName;
+
+    private String lastName;
+
+    public String getFirstName()
+    {
+        return firstName;
+    }
+
+    public void setFirstName( String firstName )
+    {
+        this.firstName = firstName;
+    }
+
+    public String getLastName()
+    {
+        return lastName;
+    }
+
+    public void setLastName( String lastName )
+    {
+        this.lastName = lastName;
+    }
+
+    public static String getLocalAreaCode()
+    {
+        return LOCAL_AREA_CODE;
+    }
+
     public Set<String> getNickNames()
     {
         return nickNames;

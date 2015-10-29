@@ -35,6 +35,23 @@ public class Department
     @MapKey(name="id")   //note here that is be using the id attribute of the employee class, could use any of its attributes.
     private Map<Integer,Employee> employeesById;
 
+
+    //Map key using embeddable type, note how the EmployeeName is not embedded as part of the EmployeeEntity, however it can still be used to
+    //build up a Map key, due to the column mappings on the EmployeeName object.
+    //NOTE::: it is not seen as good practice to use an @Embeddable as a map key, according to the book.,
+    @OneToMany( targetEntity = Employee.class, mappedBy="department" )
+    private Map<EmployeeName, Employee> employeesByName;
+
+    public Map<EmployeeName, Employee> getEmployeesByName()
+    {
+        return employeesByName;
+    }
+
+    public void setEmployeesByName( Map<EmployeeName, Employee> employeesByName )
+    {
+        this.employeesByName = employeesByName;
+    }
+
     public int getId()
     {
         return id;

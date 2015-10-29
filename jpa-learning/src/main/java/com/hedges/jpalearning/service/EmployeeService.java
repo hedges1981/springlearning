@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -39,6 +40,17 @@ public class EmployeeService
     public void saveEmployeeAndFlush( Employee e )
     {
         employeeRepository.saveAndFlush( e );
+    }
+
+    public void testUpdateEmployee()
+    {
+        //Notice how this method causes the employee changes to get saved, even though no '.save' is explicitly called,
+        // the committing of the txn causes the changes to the persistence context to get flushed out and persisted.
+
+        //this is because the Employee object is a managed object, i.e. is part of the persistence context, state changes in
+        //it are detected and flushed to the db when the txn commits.
+        Employee e= employeeRepository.findOne( 1 );
+        e.setDogName( UUID.randomUUID().toString() );
     }
 
 }

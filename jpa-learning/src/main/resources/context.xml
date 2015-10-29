@@ -31,6 +31,10 @@
     </bean>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <!-- See book p.136, where as with JAVA EE you would use an EntityManagerFactory that was pointed at a 'persistenceUnit.xml'
+        file, which gave it all the entity classes and datasource, this EMF uses i) the datasource and ii) a package scan to
+        built up the persistence unit -->
+
         <property name="dataSource" ref="dataSource"/>
         <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
         <!-- spring based scanning for entity classes-->
