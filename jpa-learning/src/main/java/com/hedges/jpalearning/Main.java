@@ -41,13 +41,146 @@ public class Main
 
         EntityManager em = entityManagerFactory.createEntityManager();
 
-        demoUseOfEntityManagerToMakeChanges( em );
+//        demoUseOfEntityManagerToMakeChanges( em );
+//
+//        demoUseOfEntityManagerRefresh( em );
+//
+//        demoUseOfEntityManagerPersist( em );
+//
+//        demoUseOfEntityManagerRemove( em );
+        
+        int empIdForCascadingDemo = demoCascadingPersist( context );
 
-        demoUseOfEntityManagerRefresh( em );
+        demoCascadingRemove( context, empIdForCascadingDemo );
+
+        demoUseOfEntityManagerDetachAndMerge( em );
 
         em.close(); //good practice to close an EntityManager when done.
 
         int x =0;
+
+    }
+
+    private static void demoUseOfEntityManagerDetachAndMerge( EntityManager em )
+    {
+        em.getTransaction().begin();
+
+        Employee e1 = em.find( Employee.class, 1 );
+
+        em.detach( e1 );
+
+        e1.setLastName( "this will not get saved as employee is detached" );
+
+        Employee e2 =  em.find( Employee.class, 2 );
+
+        e2.setLastName( "this WILL get saved as employee is  not detached" );
+
+        em.getTransaction().commit();
+
+
+        em.getTransaction().begin();
+        
+        Employee e1merged = em.merge( e1 );
+
+        e1.setLastName( "this will not get saved, as when merge is used, a different object actually enters the persistence context" );
+
+        e1merged.setLastName( "This will get saved, as e1merged is now the managed object" );
+
+        em.getTransaction().commit();
+    }
+
+
+
+    private static void demoCascadingRemove( ClassPathXmlApplicationContext context, int empIdForCascadingDemo )
+    {
+        EmployeeService employeeService = context.getBean( EmployeeService.class );
+
+        //this will remove all of the CascadeDemo objects from the db for the employee being deleted.
+        employeeService.removeEmployeeById( empIdForCascadingDemo );
+
+
+
+    }
+
+    /**
+     * NOTE: the way you need to set the employee object on the CascadeDemo object.
+     */
+    private static int demoCascadingPersist( ClassPathXmlApplicationContext context )
+    {
+        EmployeeService employeeService = context.getBean( EmployeeService.class );
+
+        //note the cascade-persist relation ship:
+
+        Employee e = new Employee();
+
+        e.setFirstName( "Mavis" );
+        e.setLastName( "Dog" );
+
+        List<CascadeDemo> cascadePersistList = new ArrayList<CascadeDemo>(  );
+
+        CascadeDemo cp1 = new CascadeDemo();
+        cp1.setName( "cp1" );
+
+        //******************without next line, it doesn't know to set the emp_id column on the CascadeDemo table,
+        //APPLICATON MUST MANAGE THE RELATIONSHIPS BETWEEN ENTITIES!
+
+        cp1.setEmployee( e );
+        cascadePersistList.add(cp1);
+
+        CascadeDemo cp2 = new CascadeDemo();
+        cp2.setName( "cp2" );
+        cp2.setEmployee( e );
+        cascadePersistList.add(cp2);
+
+        e.setCascadeDemoList( cascadePersistList );
+
+        employeeService.saveEmployee( e );
+
+        return e.getId();
+
+
+    }
+
+    private static void demoUseOfEntityManagerRemove( EntityManager em )
+    {
+        em.getTransaction().begin();
+
+        Employee e = new Employee();
+        e.setFirstName( "mr" );
+        e.setLastName( "Smith" );
+        em.persist( e );
+        em.getTransaction().commit();
+
+        //emoloyee is now in the db.
+        em.getTransaction().begin();
+        //e is not in the presistence context, as it is a transaction scoped entity manager and it left the persitence context
+        // when the last txn was committed, calling the merge gets it in there.
+        em.merge( e );
+        em.remove( e );
+        em.getTransaction().commit(); //the Employee gets deleted from the DB on the commit of the txn.
+    }
+
+    //Demos how em.persist attaches an object to the persistence context, enabling it to be saved to the db:
+    private static void demoUseOfEntityManagerPersist( EntityManager em )
+    {
+        Employee e = new Employee();
+        e.setFirstName( "Neville" );
+        e.setLastName( "Norriss" );
+
+        em.getTransaction().begin();
+
+        em.getTransaction().commit();
+
+        //new employee will not have been persisted to the db,  as it is not 'attached'.
+
+
+
+        em.getTransaction().begin();
+        em.persist( e );  //looks like the persist needs to be inside the txn.
+        //now it is attached to the EMs persitence context:
+        em.getTransaction().commit();
+
+        //after the end of the txn, new employee is in the db:
 
     }
 
@@ -82,7 +215,8 @@ public class Main
         if( true)
         {
             //even though the changes have been flushed, they need the transaction commit to actually get made permenant.
-            throw new RuntimeException();
+            //hence this exception will ruin the thing!
+            //throw new RuntimeException();
         }
 
         txn.commit();
@@ -110,7 +244,7 @@ public class Main
 
         e.setHolidays( holidays );
 
-        employeeService.saveEmployeeAndFlush( e );
+        employeeService.saveEmployee( e );
 
         e = employeeService.findById( 1 );
 
@@ -121,7 +255,7 @@ public class Main
         relatives.put( UUID.randomUUID().toString().substring( 0,30 ), "aName" );
         relatives.put( "mother", "mother name updated" );
 
-        employeeService.saveEmployeeAndFlush( e );
+        employeeService.saveEmployee( e );
 
         Set<String> nicknames= new HashSet<String>();
 
@@ -129,7 +263,7 @@ public class Main
         nicknames.add("qwqwqwoooo");
         e.setNickNames( nicknames );
 
-        employeeService.saveEmployeeAndFlush( e );
+        employeeService.saveEmployee( e );
 
         GeneralService generalService = context.getBean( GeneralService.class );
 
@@ -172,7 +306,7 @@ public class Main
 
         employee.setParkingSpace( ps );
 
-        employeeService.saveEmployeeAndFlush( employee );
+        employeeService.saveEmployee( employee );
 
         Employee e2 = employeeService.findById( employee.getId() );
 

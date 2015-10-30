@@ -3,10 +3,7 @@ package com.hedges.jpalearning.model;
 import com.hedges.jpalearning.U;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -109,9 +106,24 @@ public class Employee
     @Column(name="name")
     private Map<String, String> relatives;
 
+    @OneToMany( targetEntity = CascadeDemo.class, mappedBy ="employee" , cascade = {CascadeType.PERSIST, CascadeType.REMOVE} )
+    private List<CascadeDemo> cascadeDemoList;
+
     private String firstName;
 
     private String lastName;
+
+    //******************************getters and setters go below:***********************************************
+
+    public List<CascadeDemo> getCascadeDemoList()
+    {
+        return cascadeDemoList;
+    }
+
+    public void setCascadeDemoList( List<CascadeDemo> cascadeDemoList )
+    {
+        this.cascadeDemoList = cascadeDemoList;
+    }
 
     public String getFirstName()
     {
@@ -203,7 +215,7 @@ public class Employee
         This one gets called when it reads from the object to make a db insert.
          */
 
-        if ( phoneNum.startsWith( LOCAL_AREA_CODE ) )
+        if ( phoneNum!=null && phoneNum.startsWith( LOCAL_AREA_CODE ) )
         {
             return phoneNum;
         }

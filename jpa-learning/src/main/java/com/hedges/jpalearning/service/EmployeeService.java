@@ -37,8 +37,10 @@ public class EmployeeService
         return e;
     }
 
-    public void saveEmployeeAndFlush( Employee e )
+    public void saveEmployee( Employee e )
     {
+        //presumably this is the same as calling entityManager.persist, then flush. The committing of the outer wrapping tx causes it
+        //to eventually end up in the db.
         employeeRepository.saveAndFlush( e );
     }
 
@@ -51,6 +53,18 @@ public class EmployeeService
         //it are detected and flushed to the db when the txn commits.
         Employee e= employeeRepository.findOne( 1 );
         e.setDogName( UUID.randomUUID().toString() );
+    }
+
+    public void removeEmployee( Employee e )
+    {
+        // this is the same as causing an EntityManager.remove(..);
+        employeeRepository.delete( e );
+    }
+
+    public void removeEmployeeById( int id )
+    {
+        // this is the same as causing an EntityManager.remove(..);
+        employeeRepository.delete( id );
     }
 
 }
