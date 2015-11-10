@@ -67,4 +67,15 @@ public class EmployeeService
         employeeRepository.delete( id );
     }
 
+    public List<Employee> getAllEmployees_NQ()
+    {
+        return employeeRepository.getAllEmployees();
+    }
+
+
+    public List<Employee> getAllEmployeesByName_NQ( String name )
+    {
+        return employeeRepository.getAllEmployeesByName( name );
+    }
+
 }

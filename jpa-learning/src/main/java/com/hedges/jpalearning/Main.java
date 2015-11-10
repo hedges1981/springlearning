@@ -21,15 +21,46 @@ public class Main
 
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "classpath:context.xml" );
 
-       // chapter1Learning( context );
+//        chapter4LearningORM( context );
+//
+//        chapter5LearningCollectionMapping( context );
+//
+//        chapter6LearningEntityManager( context );
 
-        //chapter2Learning (context );
-
-        chapter3Learning( context );
+        chapter7LearningJPQL( context );
 
     }
 
-    private static void chapter3Learning( ClassPathXmlApplicationContext context )
+    private static void chapter7LearningJPQL( ClassPathXmlApplicationContext context )
+    {
+        EmployeeService employeeService = context.getBean( EmployeeService.class );
+        //DEMOING USE OF JPQL.
+        //Spring auto link up with repository and @NamedQuery
+        List<Employee> employees = employeeService.getAllEmployees_NQ();
+        U.print( employees );
+
+        //Creation of query on the fly using EntityManager:
+        EntityManager entityManager = context.getBean( EntityManager.class );
+
+        String allEmpsViaQueryStr = " SELECT e FROM Employee e";
+
+        employees = entityManager.createQuery( allEmpsViaQueryStr ).getResultList();
+        U.print( employees);
+
+        //Using the EM to find a named query:
+        employees = entityManager.createNamedQuery( "Employee.getAllEmployees" ).getResultList();
+
+        U.print( employees);
+
+        employees = employeeService.getAllEmployeesByName_NQ( "smith3" );
+
+        U.print( employees );
+
+
+
+    }
+
+    private static void chapter6LearningEntityManager( ClassPathXmlApplicationContext context )
     {
         EmployeeService employeeService = context.getBean( EmployeeService.class );
         //Notice how this method causes the employee changes to get saved, even though no '.save' is explicitly called,
@@ -222,7 +253,7 @@ public class Main
         txn.commit();
     }
 
-    private static void chapter2Learning( ClassPathXmlApplicationContext context )
+    private static void chapter5LearningCollectionMapping( ClassPathXmlApplicationContext context )
     {
         EmployeeService employeeService = context.getBean( EmployeeService.class );
 
@@ -287,7 +318,7 @@ public class Main
 
     }
 
-    private static void chapter1Learning( ClassPathXmlApplicationContext context )
+    private static void chapter4LearningORM( ClassPathXmlApplicationContext context )
     {
         EmployeeService employeeService = context.getBean( EmployeeService.class );
 

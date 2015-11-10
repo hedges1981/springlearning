@@ -13,6 +13,13 @@ import java.util.*;
 @Table( name = "emp", schema = "jpalearning" ) //would try to map to a table called Employee without this.
 //note the schema bit, it does default to jpalearning anyway, but this explicitly tells it to always talk in terms of table: jpalearning.emp
 @Access( AccessType.FIELD )
+
+//********************************** Named queries ************************************************
+//note : good practice to prefix the query name with the entity name
+@NamedQueries( {
+@NamedQuery(name = "Employee.getAllEmployees", query=" SELECT e FROM Employee e"),
+@NamedQuery(name = "Employee.getAllEmployeesByName", query=" SELECT e FROM Employee e where e.lastName= :name")
+})
 public class Employee
 {
     public static final String LOCAL_AREA_CODE = "01978";
