@@ -10,6 +10,31 @@ import java.util.Map;
  */
 @Entity
 @Table(name="department")
+
+@NamedQueries(
+        {
+                @NamedQuery( name="Department.getDepartmentsWithContractEmployee",
+                //note the way that you here join dept to the employee table, so that you can check each department-emp row for a match, note
+                //need of distinct to stop the same results coming back twice.
+
+                //note, where it is e.g. join d.employees, that effectively means, from dept table join employees table
+                //using the relation ship between dept and employees defined on the department entity.
+
+                query = "SELECT DISTINCT d from Department d JOIN d.employees e WHERE e.employeeType= 'CONTRACT_EMPLOYEE'"),
+
+                /**
+                 * equivalent sql for the below is:
+                 * SELECT jpalearning.department.name, count(*) from jpalearning.department JOIN jpalearning.emp on
+                 * jpalearning.department.id = jpalearning.emp.dept_id group by jpalearning.department.id,jpalearning.department.name
+                 */
+                //note that you can have count(e) or count(*) here and it will give the same result.
+                @NamedQuery( name="Department.getDepartmentEmployeeCount",
+                             query = "SELECT d, COUNT(e) from Department d JOIN d.employees e GROUP by d HAVING COUNT(e) > 0"),
+
+                @NamedQuery( name="Department.getDepartmentSalaryStats",
+                             query = "SELECT d, MAX(e.salary), AVG(e.salary) from Department d JOIN d.employees e GROUP by d")
+
+        })
 public class Department
 {
     @Id

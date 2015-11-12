@@ -18,7 +18,14 @@ import java.util.*;
 //note : good practice to prefix the query name with the entity name
 @NamedQueries( {
 @NamedQuery(name = "Employee.getAllEmployees", query=" SELECT e FROM Employee e"),
-@NamedQuery(name = "Employee.getAllEmployeesByName", query=" SELECT e FROM Employee e where e.lastName= :name")
+@NamedQuery(name = "Employee.getAllEmployeesByName", query=" SELECT e FROM Employee e where e.lastName= :name"),
+//Note on this one, no need to put a join in to department, as it uses the object relation mapping to make the join.
+@NamedQuery(name = "Employee.getEmployeesInSalesDept", query=" SELECT e FROM Employee e where e.department.name = 'sales'"),
+
+        //NOTE the use of the constructor expression in this
+@NamedQuery(name = "Employee.getPhoneAndDogConstructorExp",
+            query=" SELECT new com.hedges.jpalearning.otherobjs.PhoneAndDog(e.phoneNumForDb, e.dogName) FROM Employee e")
+
 })
 public class Employee
 {
@@ -120,7 +127,20 @@ public class Employee
 
     private String lastName;
 
+    private int salary;
+
     //******************************getters and setters go below:***********************************************
+
+
+    public int getSalary()
+    {
+        return salary;
+    }
+
+    public void setSalary( int salary )
+    {
+        this.salary = salary;
+    }
 
     public List<CascadeDemo> getCascadeDemoList()
     {

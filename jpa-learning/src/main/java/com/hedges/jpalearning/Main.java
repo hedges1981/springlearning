@@ -1,13 +1,12 @@
 package com.hedges.jpalearning;
 
 import com.hedges.jpalearning.model.*;
+import com.hedges.jpalearning.otherobjs.PhoneAndDog;
 import com.hedges.jpalearning.service.EmployeeService;
 import com.hedges.jpalearning.service.GeneralService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
+import javax.persistence.*;
 import java.util.*;
 
 /**
@@ -55,6 +54,86 @@ public class Main
         employees = employeeService.getAllEmployeesByName_NQ( "smith3" );
 
         U.print( employees );
+
+        employees = entityManager.createNamedQuery( "Employee.getEmployeesInSalesDept" ).getResultList();
+
+        U.print( employees );
+
+        //THIS one demonstrates a simple join
+        List<Department> departments = entityManager.createNamedQuery( "Department.getDepartmentsWithContractEmployee" ).getResultList();
+
+        U.print( departments );
+
+        //demos a count, with a join
+        List<Object[]> resultsArr = entityManager.createNamedQuery( "Department.getDepartmentEmployeeCount" ).getResultList();
+
+        for( Object[] objArr: resultsArr )
+        {
+            Department d = (Department)objArr[0];
+            Long l = (Long)objArr[1];
+
+            U.print(d.getName()+":"+l);
+        }
+
+        //demos max and avg, with a join
+        resultsArr = entityManager.createNamedQuery( "Department.getDepartmentSalaryStats" ).getResultList();
+
+        for( Object[] objArr: resultsArr )
+        {
+            U.print("Dept:max sal:avg sal");
+            Department d = (Department)objArr[0];
+            Integer max = (Integer)objArr[1];
+            Double avg = (Double)objArr[2];
+
+            U.print(d.getName()+":"+max+":"+avg);
+        }
+
+        //this one demos the use of a constructor expression
+        List<PhoneAndDog> phoneAndDogs = entityManager.createNamedQuery( "Employee.getPhoneAndDogConstructorExp" ).getResultList();
+
+        U.print(phoneAndDogs);
+
+        //DEMO the use of pagination, note that in reality page size etc would be a lot bigger:
+        int currentPage = 0;  //page start counting from 0:
+        int pageSize =5;
+        //get the first page:
+        employees = entityManager.createQuery( allEmpsViaQueryStr ).setFirstResult( currentPage * pageSize ).setMaxResults( pageSize ).getResultList();
+        U.print( "employees on first page"+employees );
+
+        pageSize ++;
+        employees = entityManager.createQuery( allEmpsViaQueryStr ).setFirstResult( currentPage * pageSize ).setMaxResults( pageSize ).getResultList();
+        U.print( "employees on second page"+employees );
+        //etc etc
+
+        //STUFF TDW FLUSH MODE:
+        U.print( "defaultFlushMode" + entityManager.getFlushMode() );//Note that the default flush mode be auto here, good idea.
+        //state of the transaction.
+        entityManager.setFlushMode( FlushModeType.COMMIT );//only flushes on a COMMIT, can cause the EMs transactional context to be different to the db,
+        //but perhaps good idea if queries aren't going to clash and u want to optimies performance.
+        //CAN be set on the EM, which makes it the default across all queries: 2 types of flush mode:
+        entityManager.setFlushMode( FlushModeType.AUTO );//will flush before a query, so the query from the db represents the
+
+
+        //CAN set the flush Mode on a specific query to tailor it to circumstances, best bet: have auto on the EM, the do COMMIT on a given query if u need to:
+        Query query = entityManager.createQuery( allEmpsViaQueryStr );
+        query.setFlushMode( FlushModeType.COMMIT );
+
+        //CAN set a timeout on a query, but is only a hint, not guaranteed to be obeyed by all providers:
+        query.setHint( "javax.persistence.query.timeout", 0 );
+
+        try
+        {
+            query.getResultList();
+        }
+        catch( QueryTimeoutException e )
+        {
+            //this be what would get thrown if it timed out,not sure why it isn't getting thrown here as time out is set to 0...
+            //perhaps a good idea to catch timeout exceptions, to avoid them rolling back the current txn.
+        }
+
+
+
+
 
 
 
