@@ -24,7 +24,8 @@ import java.util.*;
 
         //NOTE the use of the constructor expression in this
 @NamedQuery(name = "Employee.getPhoneAndDogConstructorExp",
-            query=" SELECT new com.hedges.jpalearning.otherobjs.PhoneAndDog(e.phoneNumForDb, e.dogName) FROM Employee e")
+            query=" SELECT new com.hedges.jpalearning.otherobjs.PhoneAndDog(e.phoneNumForDb, e.dogName) FROM Employee e",
+hints={@QueryHint( name="aHint", value="aVAlue ")})
 
 })
 public class Employee
@@ -398,4 +399,6 @@ public class Employee
     {
         this.relatives = relatives;
     }
+
+
 }

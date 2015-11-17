@@ -26,11 +26,119 @@ public class Main
 //
 //        chapter6LearningEntityManager( context );
 
-        chapter7LearningJPQL( context );
+        //chapter7LearningJPQL( context );
+
+        chapter8LearningJPQL( context );
+    }
+
+    private static void chapter8LearningJPQL( ClassPathXmlApplicationContext context )
+    {
+        EntityManager em = context.getBean( EntityManager.class );
+        List<Employee> emps;
+        //DEMO use of path expressions
+        String query = "SELECT e from Employee e where e.department.name='sales'";
+
+        emps = em.createQuery( query ).getResultList();
+
+        U.print(emps);
+
+        //type of list given by whats in it, e.g.:
+        query = "SELECT e.firstName from Employee e";
+        List<String> names = em.createQuery( query ).getResultList();
+        U.print(names);
+
+        //when > 1 'column' selected, u get an Object [] back, e.g.
+        query = "SELECT e.firstName,e.lastName from Employee e";
+        List<Object[]> results = em.createQuery( query ).getResultList();
+
+        for(Object[] objArr : results)
+        {
+            U.print("Fname:"+objArr[0]+" LName:"+objArr[1]);
+        }
+
+        //INHERITANCE and PLOYMORPHISM
+        //see book page 216, note couldn't get this to work, revisit when covered inheritance in the advanced ORM chapter.
+//        query = "Select p from Project p";
+//        List<Project> projects = em.createQuery( query ).getResultList();
+//
+//        int x =0;
+
+        //******************JOINS **************************************
+
+        //INNER join example:
+        query = "select p from Employee e JOIN e.phones p";//select the phones object from employee join phones, using the
+        //relationship defined on the Employee entity.
+        List<Phone> phones = em.createQuery( query ).getResultList();
+
+        int x =0;
+
+        //working with maps in joins,
+        //NOTE the use of KEY and VALUE in the statement
+        //find the names of all of the employees mothers:
+        query = "select KEY(r), VALUE(r) from Employee e join e.relatives r where KEY(r) in ('mother')";
+
+        U.print(em.createQuery( query ).getResultList()) ;
+
+        //OUTER joins vs INNER joins example:
+        //Inner join, only gets emps with a department:
+        query = "SELECT e from Employee e JOIN e.department d";
+        emps = em.createQuery( query ).getResultList();
+
+        U.print("Only "+emps.size()+" emps assigned toa department");
+
+        //LEFT join, gets those with and without a department:
+        query = "SELECT e from Employee e LEFT JOIN e.department d";
+        emps = em.createQuery( query ).getResultList();
+        U.print("TOTAL of "+emps.size()+" emps with and without a department");
+
+        //DEMO USE OF FETCH JOIN, ALONG WITH A COLLECTION EXPRESSION
+        query = "select distinct e from Employee e left join fetch e.holidays";
+        emps = em.createQuery( query ).getResultList();
+
+        for( Employee e : emps )
+        {
+            U.print(e.getHolidays().size());//holidays already there due to the fetch in the query.
+            //note some will come out as 0 size, due to the left join
+        }
+
+        //DEMO of things U can do with the where clause:
+        //between and like:
+        query = "Select  e from Employee e where e.salary between 1 and 10 and e.lastName like'__hn%'";
+        //note : here __ in the like means any 2 characters, then hn%, etc.
+        emps = em.createQuery( query ).getResultList();
+
+        //DEMO use of nested query:
+        //Note, you can also do EXISTS with nested queries.
+        query = "select e from Employee e where e.salary =(select max(e.salary) from Employee e )";
+        Employee e = em.createQuery( query, Employee.class ).getSingleResult();
+        U.print(e);
+
+        //DEMO use of collection expressions:
+        //IS NOT EMPTY:
+        query =" select e from Employee e where e.phones IS NOT EMPTY";
+        emps = em.createQuery( query ).getResultList();
+
+        U.print(emps.size());
+        //IS EMPTY:
+        query =" select e from Employee e where e.phones IS EMPTY";
+        emps = em.createQuery( query ).getResultList();
+
+        U.print(emps.size());
+
+        //MEMBER OF:
+        GeneralService gs = context.getBean( GeneralService.class);
+        Project pj1 =     gs.getProjectById( 1 );
+        //FIND all emps that are    on that project:
+        query = "select e from Employee e where :project member of e.projects";
+        Query q = em.createQuery( query );
+        q.setParameter( "project", pj1 );
+
+        emps = q.getResultList();
 
     }
 
-    private static void chapter7LearningJPQL( ClassPathXmlApplicationContext context )
+
+        private static void chapter7LearningJPQL( ClassPathXmlApplicationContext context )
     {
         EmployeeService employeeService = context.getBean( EmployeeService.class );
         //DEMOING USE OF JPQL.
@@ -119,6 +227,8 @@ public class Main
         query.setFlushMode( FlushModeType.COMMIT );
 
         //CAN set a timeout on a query, but is only a hint, not guaranteed to be obeyed by all providers:
+        //Note on hints, looks like you can set all kinds of vendor specific stuff, e.g. to control going to a cache.
+        //Note also that you can also use @NamedQuery.hints to set that stuff.
         query.setHint( "javax.persistence.query.timeout", 0 );
 
         try
@@ -131,8 +241,24 @@ public class Main
             //perhaps a good idea to catch timeout exceptions, to avoid them rolling back the current txn.
         }
 
+        /**BULK UPDATES / DELETES
+         *
+         * NOTE there is a lot of discussion in the book about how bulk operations relate to the presistence context.
+         * U basically need to remember that they are done as direct SQL, so don't expect things like e.g. cascaeType.REMOVE to work,
+         * the persistence unit and the relationships it defines are bypassed by the bulk stuff.
+         */
 
+        //DEMOS the use of the entity manger to do a bulk update.
+        //note, had to be a method on the service as reqiured a container managed transaction.
+        employeeService.demoABUlkUpdate( "Is a clown" );
+        /*
+        NOTE, the same idea can be used to do a bulk delete.
+        NOTE, the persistence context does not automatically refresh when a bulk delete/update is done, so it can get out of sync
+        with what is actually in the DB.
 
+        RECOMMENDATION then is to either i) always do the bulk stuff at the start of the transaction, i.e. before anything is actually read
+        into the persistence context, or do a bulk update/delete always in its own isolated txn.
+         */
 
 
 

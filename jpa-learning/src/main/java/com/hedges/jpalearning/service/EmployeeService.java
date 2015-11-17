@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +21,8 @@ public class EmployeeService
 {
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private EntityManager entityManager;
 
     public List<Employee> getAllEmployees()
     {
@@ -76,6 +79,13 @@ public class EmployeeService
     public List<Employee> getAllEmployeesByName_NQ( String name )
     {
         return employeeRepository.getAllEmployeesByName( name );
+    }
+
+    public void demoABUlkUpdate( String str )
+    {
+        String updateQueryStr = "UPDATE Employee e set e.comments = '"+str+"'";//" where e.employeeType='CONTRACT_EMPLOYEE'";
+
+        entityManager.createQuery( updateQueryStr ).executeUpdate();
     }
 
 }
