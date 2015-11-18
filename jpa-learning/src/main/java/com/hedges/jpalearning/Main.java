@@ -128,12 +128,27 @@ public class Main
         //MEMBER OF:
         GeneralService gs = context.getBean( GeneralService.class);
         Project pj1 =     gs.getProjectById( 1 );
-        //FIND all emps that are    on that project:
+        //FIND all emps that are on that project:
         query = "select e from Employee e where :project member of e.projects";
         Query q = em.createQuery( query );
         q.setParameter( "project", pj1 );
 
         emps = q.getResultList();
+
+        //DEMO USE OF LITERALS
+        //see book p.229, example of using a date literal
+        //couldn't get this to work for some reason;;;;
+//        query = "select e from Employee e where e.startDate =:eDate";
+//        q= em.createQuery( query );
+//        q.setParameter( "eDate", "{d {'2000-12-03'}" );
+//        emps = em.createQuery( query ).getResultList();
+//        U.print( emps );
+
+        //DEMO USE OF ENUM IN QUERY, note how u need the fq class name:
+        query = "select e from Employee e where e.employeeType = com.hedges.jpalearning.model.EmployeeType.CONTRACT_EMPLOYEE";
+        emps = em.createQuery( query ).getResultList();
+        U.print( emps );
+
 
     }
 
