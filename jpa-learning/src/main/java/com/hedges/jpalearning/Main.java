@@ -35,8 +35,8 @@ public class Main
     {
         EntityManager em = context.getBean( EntityManager.class );
         List<Employee> emps;
-        //DEMO use of path expressions
-        String query = "SELECT e from Employee e where e.department.name='sales'";
+        //DEMO use of path expressions, AND also the order by clause.
+        String query = "SELECT e from Employee e where e.department.name='sales' order by e.firstName";
 
         emps = em.createQuery( query ).getResultList();
 
@@ -149,7 +149,38 @@ public class Main
         emps = em.createQuery( query ).getResultList();
         U.print( emps );
 
+        //DEMO USE OF ANY, ALL AND SOME:
+        query = "select e from Employee e where e.salary < ALL (SELECT s.salary from Salary s)";
+        emps = em.createQuery( query ).getResultList();
 
+        query = "select e from Employee e where e.salary < ANY (SELECT s.salary from Salary s)";
+        emps = em.createQuery( query ).getResultList();
+
+        //NOTE: SOME is an alias for any, which is strange, as some implies > 1.....
+        query = "select e from Employee e where e.salary < SOME (SELECT s.salary from Salary s)";
+        emps = em.createQuery( query ).getResultList();
+
+        //DEMO USE OF functions:
+        //NOTE there are lots of functions, see p.230.
+        query = "select e from Employee e where CONCAT(e.firstName,e.lastName) = 'john24smith24' ";
+        emps = em.createQuery( query ).getResultList();
+
+        //CASE EXPRESSION:
+        query = "SELECT case " +
+                "       when e.employeeType ='CONTRACT_EMPLOYEE' then 'CONTRACTOR' " +
+                "       when e.employeeType is null then 'not known' ELSE 'need to have an else to make it work' " +
+                "       end" +
+                "       from Employee e";
+
+        List<String> resultsOfCase  = em.createQuery( query ).getResultList();
+        U.print( resultsOfCase );
+
+        //COALESCE EXPRESSION, basically selects the first non null value in the list:
+        query = "select coalesce(e.dogName,e.id) from Employee e";
+        List<Object> resultsOfCoalesce  = em.createQuery( query ).getResultList();
+        U.print( resultsOfCoalesce );
+
+        //NULLIF EXPRESSION:
     }
 
 
