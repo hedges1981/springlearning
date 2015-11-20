@@ -1,6 +1,7 @@
 package com.hedges.jpalearning.service;
 
 import com.hedges.jpalearning.U;
+import com.hedges.jpalearning.model.Department;
 import com.hedges.jpalearning.model.Employee;
 import com.hedges.jpalearning.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -86,6 +90,74 @@ public class EmployeeService
         String updateQueryStr = "UPDATE Employee e set e.comments = '"+str+"'";//" where e.employeeType='CONTRACT_EMPLOYEE'";
 
         entityManager.createQuery( updateQueryStr ).executeUpdate();
+    }
+
+    /**
+     * Only includes the parameters in the query if they are not null, typical example of this would be a search form where you can search
+     * based on different criteria.
+     *
+     * What a load of fucking hassle just to do something dead simple.
+     */
+    public List<Employee> getEmployeesDynamicQuery( String firstName, String lastName, String departmentName )
+    {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+
+        CriteriaQuery<Employee> c = cb.createQuery( Employee.class );
+        Root<Employee> emp = c.from( Employee.class );   //NOTE that the query root is efectively the thing to the right of from,
+        //e.g. here: 'from Employee e'
+
+        c.select( emp );
+        c.distinct( true );
+
+        Join<Employee, Department> deptJoin = emp.join("department", JoinType.LEFT);
+
+        List<Predicate> criteria = new ArrayList<Predicate>();
+
+        if( firstName != null )
+        {
+            ParameterExpression<String>  p =
+                    cb.parameter( String.class, "firstName" );
+            criteria.add(cb.equal(emp.get("firstName"),p));  //note that firstName here effectively refers to a named parameter, see below for further:
+        }
+
+        if( lastName != null )
+        {
+            ParameterExpression<String>  p =
+                    cb.parameter( String.class, "lastName" );
+            criteria.add(cb.equal(emp.get("lastName"),p));
+        }
+
+        if( departmentName != null )
+        {
+            ParameterExpression<String>  p =
+                    cb.parameter( String.class, "departmentName" );
+
+            //NOTE: this bit here demos the use of a path expression.
+            criteria.add(cb.equal(emp.get("department").get("name"),p));
+        }
+
+        //now put the predicates into the where clause:
+        c.where( cb.and(criteria.toArray( new Predicate[criteria.size()] )));
+
+        //now set the parameters:
+        TypedQuery<Employee> q = entityManager.createQuery( c );
+
+        if( firstName !=null)
+        {
+            q.setParameter( "firstName",firstName );
+        }
+
+        if( lastName !=null)
+        {
+            q.setParameter( "lastName",lastName );
+        }
+
+        if( departmentName !=null)
+        {
+            q.setParameter( "departmentName",departmentName );
+        }
+
+        return q.getResultList();
     }
 
 }

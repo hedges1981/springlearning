@@ -7,6 +7,9 @@ import com.hedges.jpalearning.service.GeneralService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.*;
 
 /**
@@ -28,7 +31,67 @@ public class Main
 
         //chapter7LearningJPQL( context );
 
-        chapter8LearningJPQL( context );
+      //  chapter8LearningJPQL( context );
+
+        chapter9LearningCriteriaAPI( context );
+    }
+
+    private static void chapter9LearningCriteriaAPI( ClassPathXmlApplicationContext context )
+    {
+        EmployeeService es = context.getBean( EmployeeService.class );
+        EntityManager em = context.getBean( EntityManager.class );
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        //simple initial example, same as 'select e from Employee e where e.firstName='john1'
+        CriteriaQuery<Employee> criteriaQuery = cb.createQuery( Employee.class );
+        Root<Employee> emp = criteriaQuery.from( Employee.class );    //is basically the 'from Employee e' bit
+
+        criteriaQuery.select( emp )   // select e from Employee e
+                .where( cb.equal( emp.get( "firstName" ), "john1" ) );   // where e.firstName = 'john1'
+
+        List<Employee> emps = em.createQuery( criteriaQuery ).getResultList();
+        U.print(emps);
+
+        //DEMO USE OF DYNAMIC QUERY:
+        //should return the lot:
+        emps = es.getEmployeesDynamicQuery( null,null,null );
+        U.print( emps );
+
+        //should only give those with name john1
+        emps = es.getEmployeesDynamicQuery( "john1",null,null );
+        U.print( emps );
+
+        //should only give those with last name smith1, i.e. none
+        emps = es.getEmployeesDynamicQuery( null, "smith1",null );
+        U.print( emps );
+
+        //should give any that have last name starting with smith,but note how we've used equal in the criteria building, so doesn't.
+        emps = es.getEmployeesDynamicQuery( null, "smith%",null );
+        U.print( emps );
+
+        //demos the join to the department table:
+        emps = es.getEmployeesDynamicQuery( null, null, "sales" );
+        U.print( emps );
+
+        //DEMO OF HAVING MULTIPLE QUERY ROOTS:
+        //E.G. for doing joins in the non 'JOIN' way.
+        // e.g. in JPQL: select distinct d from Department d, Employee e where d = e.dpartment  - all departments with employees.
+        // note the 'Department d, Employee e' multiple root.
+        CriteriaQuery<Department> cq = cb.createQuery( Department.class );
+        Root<Department> deptRoot = cq.from( Department.class );
+        Root<Employee> empRoot = cq.from( Employee.class );
+        cq.select( deptRoot ).distinct( true ).where(cb.equal(deptRoot, empRoot.get("department")));
+
+        List<Department> deps = em.createQuery( cq ).getResultList();
+        U.print(deps);
+
+        //DEMO OF VARIOUS THINGS U CAN DO WITH THE SELECT CLAUSE:
+        //e.g. to select a list of Strings:
+        CriteriaQuery<String> cqs = cb.createQuery( String.class ); //note how the type in CriteriaQuery<T> must match that in the
+        //cqs.select(emp.<T>.get("...");
+        Root<Employee> empRoot2 = cqs.from( Employee.class );
+        cqs.select( emp.<String>get("firstName") );
+        U.print(em.createQuery( cqs ).getResultList());
     }
 
     private static void chapter8LearningJPQL( ClassPathXmlApplicationContext context )
@@ -181,6 +244,17 @@ public class Main
         U.print( resultsOfCoalesce );
 
         //NULLIF EXPRESSION:
+        //basically if they are both the same, it returns null, else the first is picked:
+        query = "select nullif(e.firstName,'john1') from Employee e";
+        List<Object> res  = em.createQuery( query ).getResultList();
+
+        U.print(res);
+
+        //EXAMPLE OF AGGREGATE STUFF..basically you can have avg,sum, max, min, count, group by and having, same as with SQL.
+        query = "select AVG(e.salary) from Employee e";
+        Double resDouble = em.createQuery( query, Double.class ).getSingleResult();
+
+        U.print( resDouble );
     }
 
 
@@ -305,6 +379,8 @@ public class Main
         RECOMMENDATION then is to either i) always do the bulk stuff at the start of the transaction, i.e. before anything is actually read
         into the persistence context, or do a bulk update/delete always in its own isolated txn.
          */
+
+        /** NOTE: U can have a bulk delete as well, just like what you can do with normal SQL   **/
 
 
 

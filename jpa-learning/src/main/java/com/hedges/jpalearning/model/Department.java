@@ -126,4 +126,9 @@ public class Department
     {
         this.employeesById = employeesById;
     }
+
+    public String toString()
+    {
+        return name;
+    }
 }

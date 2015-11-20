@@ -400,5 +400,9 @@ public class Employee
         this.relatives = relatives;
     }
 
+    public String toString()
+    {
+        return firstName+" "+lastName;
+    }
 
 }
