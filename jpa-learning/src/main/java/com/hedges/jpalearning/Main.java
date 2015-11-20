@@ -108,7 +108,7 @@ public class Main
         //Result list contains EmployeeName objects:
         U.print(em.createQuery( cq4 ).getResultList());
 
-        //
+        //USE OF ALIASES:
 
     }
 
