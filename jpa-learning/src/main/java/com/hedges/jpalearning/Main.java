@@ -92,6 +92,24 @@ public class Main
         Root<Employee> empRoot2 = cqs.from( Employee.class );
         cqs.select( emp.<String>get("firstName") );
         U.print(em.createQuery( cqs ).getResultList());
+
+        //SELECTING MULTIPLE EXPRESSIONS:
+        CriteriaQuery<Object[]>  cq2 = cb.createQuery( Object[].class );
+        Root<Employee> empRoot3 = cq2.from( Employee.class );
+        cq2.multiselect( empRoot3.get("firstName"), empRoot3.get("lastName") );
+        //each member of the result list is an array, like: [firstName,lastName]
+        U.print(em.createQuery( cq2 ).getResultList());
+
+        //USE OF A CONSTRUCTOR EXPRESSION:
+        CriteriaQuery<EmployeeName> cq4 = cb.createQuery( EmployeeName.class );
+        Root<Employee> empRoot4 = cq4.from(Employee.class);
+        //it is clever enough to figure out how to build the result objs from the returned list of stuff, else u coud use cb.construct(...)
+        cq4.multiselect( empRoot4.get("firstName"), empRoot4.get("lastName") );
+        //Result list contains EmployeeName objects:
+        U.print(em.createQuery( cq4 ).getResultList());
+
+        //
+
     }
 
     private static void chapter8LearningJPQL( ClassPathXmlApplicationContext context )

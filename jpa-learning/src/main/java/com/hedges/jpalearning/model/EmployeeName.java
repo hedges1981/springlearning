@@ -14,6 +14,12 @@ public class EmployeeName
     @Column( name="lastName", insertable = false, updatable = false )
     private String lastName;
 
+    public EmployeeName( String firstName, String lastName )
+    {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public String getFirstName()
     {
         return firstName;
@@ -32,5 +38,14 @@ public class EmployeeName
     public void setLastName( String lastName )
     {
         this.lastName = lastName;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "EmployeeName{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 }
