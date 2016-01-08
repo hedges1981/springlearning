@@ -1,0 +1,111 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>Chapter&nbsp;14.&nbsp;Building RESTful applications with Spring MVC</title><link rel="stylesheet" href="css/html.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.70.0"><link rel="start" href="index.html" title="Core Spring - Lab Documentation"><link rel="up" href="index.html" title="Core Spring - Lab Documentation"><link rel="prev" href="security-lab.html" title="Chapter&nbsp;13.&nbsp;Securing the Web Tier"><link rel="next" href="jms-lab.html" title="Chapter&nbsp;15.&nbsp;Simplifying Messaging with Spring JMS"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div xmlns="http://www.w3.org/TR/xhtml1/transitional" style="background-color:white;border:none;height:73px;border:1px solid black;"><a style="border:none;" href="http://www.pivotal.io" title="Pivotal"><img style="border:none;" src="images/heading-logo-lhs.jpg"></img></a><a style="border:none;" href="http://www.spring.io" title="The Spring Framework"><img style="border:none;position:absolute;padding-top:5px;right:42px;" src="images/heading-logo-rhs.jpg"></img></a></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="mvc-rest-lab"></a>Chapter&nbsp;14.&nbsp;Building RESTful applications with Spring MVC</h2></div></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="mvc-rest-lab-introduction"></a>14.1.&nbsp;Introduction</h2></div></div></div><p>
+      In this lab you'll use some of the features that were added in Spring 3 to support RESTful
+			applications. Note that there's more than we can cover in this lab, please refer back to the
+			presentation for a good overview. 
+    </p><div class="orderedlist"><p class="title"><b>What you will learn:</b></p><ol type="1"><li><p>Working with RESTful URLs that expose resources</p></li><li><p>Treating browser form submits as DELETE or PUT methods</p></li><li><p>Performing content negotiation to support multiple resource representations</p></li></ol></div><div class="orderedlist"><p class="title"><b>Specific subjects you will gain experience with:</b></p><ol type="1"><li><p>Processing URI Templates using <code class="interfacename">@PathVariable</code></p></li><li><p>Using the <code class="classname">HiddenHttpMethodFilter</code></p></li><li><p>Using the <code class="classname">ContentNegotiatingViewResolver</code></p></li></ol></div><p>Estimated time to complete: 30 minutes</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="mvc-rest-lab-instructions"></a>14.2.&nbsp;Instructions</h2></div></div></div><p>
+      The instructions for this lab are organized into three sections. In the first section you'll
+			explore the existing application and implement an option to to add a new
+			<code class="classname">Beneficiary</code> to a given account. In the second section you'll configure
+			a <code class="classname">HiddenHttpMethodFilter</code> to support a DELETE operation that removes a
+			<code class="classname">Beneficiary</code>. In the third section you'll add a
+			<code class="classname">ContentNegotiatingViewResolver</code> to support a JSON view of your
+			account-related	resources. 
+    </p><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5064"></a>14.2.1.&nbsp;Processing requests to RESTful URLs</h3></div></div></div><p>
+        In this section you'll work with Spring's support for URI templates to process information
+				that's part of the URL a request was made to. 
+      </p><div class="section" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e5069"></a>14.2.1.1.&nbsp;Inspect the current application</h4></div></div></div><p>
+          First deploy the mvc-rest application to your local server and exercise the
+					application. You'll notice that it's very similar to the solution of the
+					<code class="literal">mvc-solution</code> application: a key difference is that the application
+					uses URLs like <code class="literal">http://localhost:8080/mvc-rest/app/accounts</code>
+					and <code class="literal">http://localhost:8080/mvc-rest/app/accounts/0</code> instead of
+					<code class="literal">http://localhost:8080/mvc-rest/accounts/accountSummary</code> and
+					<code class="literal">http://localhost:8080/mvc-rest/accounts/accountDetails?entityId=0</code>.
+					Also, the details page contains a link to show a JSON representation that doesn't work yet
+					and a form to add a new beneficiary that returns a 404 Not Found if you try to use it.
+        </p><p>Open the <code class="classname">AccountController</code> and look at how the two controller
+				methods handle GETs to the URLs you just used. A method to handle the form submit to add a
+				new beneficiary is still missing: let's fix that first.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e5094"></a>14.2.1.2.&nbsp;Add a new controller method</h4></div></div></div><p>
+					Add a new controller method to process a POST (<code class="literal">TODO 01</code>): 
+					look at the form action in the
+					<code class="filename">accountDetails.jsp</code> to determine the URI template to use and the path
+					variables to extract from it.
+					You'll find a method on the <code class="interfacename">AccountManager</code> to add a
+					<code class="classname">Beneficiary</code>.
+					Let the method return a redirect to the URL that shows the account details: since your
+					controller method is mapped to a URL that's a child of the account details URL, 
+					you can simply use a relative path of <code class="literal">"."</code>. 
+					This saves you from having to know the servlet mapping of the
+					<code class="classname">DispatcherServlet</code> in your controller methods for redirects, 
+					as Spring-MVC does not support servlet-relative redirects like Spring WebFlow does. 
+					You do need to know the extension in your JSPs, unfortunately. 
+				</p><p>
+					Restart your local server and now try to add a new beneficiary. Verify that it's added to
+					the given account and that the browser is redirected to show that account's details after
+					adding. When that worked, move on to next section. 
+				</p></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5119"></a>14.2.2.&nbsp;Removing a beneficiary</h3></div></div></div><p>
+				Just like it's useful to be able to add a beneficiary, we also want to be able to remove
+				one. It would be easy enough to come up with a URL for that and to POST to it. However, per
+				REST's best practices, we should really use a DELETE for that. Of course an HTML form won't
+				allow that, so we'll use a filter that wraps a POST request into a DELETE request instead.
+			</p><div class="section" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e5124"></a>14.2.2.1.&nbsp;Add a new controller method</h4></div></div></div><p>
+					Switch back to the <code class="classname">AccountController</code>.  Add another method to
+					remove a beneficiary from an account (<code class="literal">TODO 02</code>). 
+					Beneficiaries are identified uniquely by name, so	use the following URI template: 
+					<code class="literal">"/accounts/{accountId}/beneficiaries/{beneficiaryName}"</code>.
+					Make sure to map this to DELETE methods and redirect to the account details again. This
+					time your URL is an extra level down compared to the previous case, so use
+					<code class="literal">".."</code> as the relative path for your redirect.
+				</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e5141"></a>14.2.2.2.&nbsp;Add the <code class="classname">HiddenHttpMethodFilter</code></h4></div></div></div><p>
+					Open the <code class="filename">web.xml</code> and add the
+					<code class="classname">HiddenHttpMethodFilter</code> as a filter definition
+					(<code class="literal">TODO 03</code>). 
+					Add a filter mapping to map it to the <code class="literal">accounts</code> servlet. 
+				</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e5160"></a>14.2.2.3.&nbsp;Add a 'Remove' button to the account details page</h4></div></div></div><p>
+					Open the <code class="filename">accountDetails.jsp</code> page and add a &lt;form&gt; within a new
+					&lt;td&gt; that submits to your new controller method. To make sure that it's treated as a
+					DELETE, add a hidden form parameter to that effect (check the presentation slides for
+					details).
+				</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e5168"></a>14.2.2.4.&nbsp;Test the application</h4></div></div></div><p>
+					Restart the server and test your application: you should now be able to remove
+					existing beneficiaries from an account using your new button, which results in a POST that
+					will be wrapped in a DELETE by the filter you registered before.
+				</p></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5173"></a>14.2.3.&nbsp;Supporting content negotiationg to add a JSON representation</h3></div></div></div><p>
+				In this section you're going to add support for rendering a JSON view when the client
+				specifically requests that. We'll just use the current HTML representation for all other
+				requests. This means two things: a view that supports JSON, and a mechanism to select the
+				correct view. Spring 3 ships with support for both out of the box, as you'll see during
+				this section.
+			</p><div class="section" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e5178"></a>14.2.3.1.&nbsp;Add a <code class="classname">ContentNegotiatingViewResolver</code></h4></div></div></div><p>
+					Open the <code class="filename">accounts-servlet-config.xml</code> and add a
+					<code class="classname">ContentNegotiatingViewResolver</code> bean definition
+					(<code class="literal">TODO 04</code>). 
+					Set its <code class="literal">mediaTypes</code> property to a <code class="literal">&lt;map&gt;</code> with a
+					single <code class="literal">&lt;entry&gt;</code> that maps the extension <code class="literal">json</code> to
+					the media type <code class="literal">application/json</code>. Set its
+					<code class="literal">defaultViews</code> property to an inner bean of type
+					<code class="classname">MappingJacksonJsonView</code> (use Ctrl+Space to auto-complete the full
+					classname). 
+				</p><p>
+					This <code class="interfacename">ViewResolver</code> will automatically pick up the existing
+					<code class="classname">InternalResourceViewResolver</code> (which resolves
+					<code class="literal">text/html</code> supporting views by default), and will fall back to the 
+					<code class="classname">MappingJacksonJsonView</code> if that resolver can't come up with a view
+					that matches the desired name <span class="emphasis"><em>and</em></span> media type. This is an easy way to
+					add JSON support: since you don't need different <code class="interfacename">View</code>
+					instances for each JSON-based view (it just marshalls in a generic fashion), you can simply
+					add it as a default view implementation. 
+				</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e5235"></a>14.2.3.2.&nbsp;Test the application</h4></div></div></div><p>
+					Restart your server again and test the 'show as JSON' link in the account details page.
+					This time you should get a JSON-based representation, which you'll probably have to
+					download to a file and can then view locally in any text editor.
+				</p><p>
+					Note that you can also add <code class="literal">.json</code> after the URL of the accounts
+					summary page to get a list of all accounts and their beneficiaries as a single JSON
+					document. Most of the mapping is performed automatically by the Jackson library, we've
+					just provided some additional info for mapping the <code class="classname">MonetaryAmount</code>
+					and <code class="classname">PercentageType</code> classes: have a look at the
+					<code class="filename">common.money</code> package if you're interested in the details.
+				</p></div></div></div></div><div xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navfooter"><hr></hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="security-lab.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="jms-lab.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter&nbsp;13.&nbsp;Securing the Web Tier&nbsp;</td><td width="20%" align="center"><span style="color:white;font-size:90%;"><a href="http://www.spring.io" title="The Spring Framework">Spring By Pivotal</a></span></td><td width="40%" align="right" valign="top">&nbsp;Chapter&nbsp;15.&nbsp;Simplifying Messaging with Spring JMS</td></tr></table></div></body></html>

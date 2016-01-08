@@ -40,6 +40,7 @@
         such services -->
         <sec:intercept-url pattern="/test/greetingService" access="permitAll" />
 
+        <!--Disables cross site request forgery protection, is enable by default in Spring 4.0 and made testing learning a pita, hence turned off -->
         <sec:csrf disabled="true"/>
 
         <sec:intercept-url pattern="/test/securitylearning/user**" access="hasRole('ROLE_user')"/>

@@ -35,6 +35,7 @@ public class AnAspect
         System.out.println("Executing beforeAnyGetNameAdvice()");
     }
 
+    //NOTE that in an execution expression, only Ret type, method name and args are mandatory to br dysyrf.
     // this method will execute when a public String getName() is called on any spring bean.
     @After("execution(public String getName())") //the execution..... is called a pointCut, defines the point at which it cuts in."
     public void afterAnyGetNameAdvice()   //this gets executed before pointCutHook1(), as it defines the 'pointcut' explicitly rather than indirectly.
@@ -43,6 +44,7 @@ public class AnAspect
     }
 
     //Only gets executed before the AOPTargetObject2.getName() method.
+    //expression means a method called getName() (no args) on the specific class, with ANY return type.
     @Before("execution(* com.hedges.aoplearning.AOPTargetObject2.getName())")
     public void beforeAOPTargetObject2GetName()
     {
@@ -88,7 +90,7 @@ public class AnAspect
 
     }
 
-
+    //specific class and method name, any return type, any number of arguments,
     @Around("execution(* com.hedges.aoplearning.AOPTargetObject2.doThingWithArguments(..))")
     //note the ".." in the method (..), allows it to match the signature with any args.
     public Object aroundAspectWithArguments( ProceedingJoinPoint proceedingJoinPoint )
@@ -110,6 +112,7 @@ public class AnAspect
     
     @Before("execution(* com.hedges.aoplearning.AOPTargetObject2.doThingWithArguments(..)) && args(s1,..)")
     //note the ".." in the method (..), allows it to match the signature with any args.
+    // the &args(s1,..) means any method that has as string as the first argument, 0 or more other arguments.
     public void beforeAspectWithArgs( String s1 )
     {
         U.print("fetched string argument using args:"+s1);
@@ -122,7 +125,8 @@ public class AnAspect
     {
         U.print("matched method with two String arguments:"+s1+","+s2);
     }
-    
+
+    //Any method where there is 1 argument and it is annotated with @Interceptable
     @Before("@args(com.hedges.aoplearning.Interceptable)")
     public void beforeAnyMethodWithAnnotatedArgument(  )
     {

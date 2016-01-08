@@ -1,0 +1,298 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>Chapter&nbsp;12.&nbsp;spring-boot: Creating a Web Application using Spring Boot
+  </title><link rel="stylesheet" href="css/html.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.70.0"><link rel="start" href="index.html" title="Core Spring - Lab Documentation"><link rel="up" href="index.html" title="Core Spring - Lab Documentation"><link rel="prev" href="mvc-lab.html" title="Chapter&nbsp;11.&nbsp;Spring MVC Essentials"><link rel="next" href="security-lab.html" title="Chapter&nbsp;13.&nbsp;Securing the Web Tier"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div xmlns="http://www.w3.org/TR/xhtml1/transitional" style="background-color:white;border:none;height:73px;border:1px solid black;"><a style="border:none;" href="http://www.pivotal.io" title="Pivotal"><img style="border:none;" src="images/heading-logo-lhs.jpg"></img></a><a style="border:none;" href="http://www.spring.io" title="The Spring Framework"><img style="border:none;position:absolute;padding-top:5px;right:42px;" src="images/heading-logo-rhs.jpg"></img></a></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="spring-boot"></a>Chapter&nbsp;12.&nbsp;spring-boot: Creating a Web Application using Spring Boot
+  </h2></div></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="spring-boot-introduction"></a>12.1.&nbsp;Introduction</h2></div></div></div><p> In this lab you will gain experience how to start a Spring Project from scratch using Spring Boot.
+    </p><div class="orderedlist"><p class="title"><b>What you will learn:</b></p><ol type="1" compact><li><p>How to create a Spring Boot project in STS</p></li><li><p>How to create a Spring MVC web application using Spring Boot</p></li></ol></div><p>Estimated time to complete: 30 minutes</p><p>
+      URL for this project
+      <a href="http://localhost:8080/spring-boot" target="_top">http://localhost:8080/spring-boot</a>
+    </p></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="spring-boot-general"></a>12.2.&nbsp;General notes about this lab</h2></div></div></div><p>This lab is very different then all the other labs you have done so far.
+    </p><p>In this lab, you start from scratch in nothing is prepared for you. But don't be scared. Spring Boot and STS
+      will do the boilerplate stuff for you.
+    </p><p> For this lab, you also need a working Internet connection, as you need to download a very small zip file
+      right at the beginning.
+    </p><p>As nothing is prepared, we also don't have TODOs in the code. Instead of having quick and detailed
+      instructions, we have only one set of instructions which sometimes references items from a "cheat sheet" at the
+      bottom of this document. You can refer to that cheat sheet every time you struggle to find the correct solution.
+    </p><p> If you do NOT have a working Internet connection at the moment, we've provided a shortcut.  A project named 
+    spring-boot-offline is available in your workspace.  This project contains the result of the starter project, so using
+    this project you can skip down to the <code class="literal">Inspect the newly created project</code> section.
+    </p></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="spring-boot-lab-instructions"></a>12.3.&nbsp;Lab instructions</h2></div></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="create-spring-boot-project"></a>12.3.1.&nbsp;Create a Spring Boot project in STS</h3></div></div></div><p>
+        Create a new Spring Boot project. For this task, STS offers the
+        <code class="literal">Spring Starter Project</code>
+        wizard. This wizard creates a Spring Boot project in STS including Maven and Gradle scripts.
+      </p><p>
+        Create a new Spring Boot project inside of the
+        <code class="literal">spring-boot</code>
+        workingset with the following parameters:
+      </p><pre class="programlisting">
+      Name: boot-lab
+Type:  Maven project
+Packaging:  WAR
+Java Version:  1.8
+Group: com.spring.training.core-spring (or any value)
+Artifact: spring-boot
+Package Name: accounts
+Style: Web
+
+</pre><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td align="left" valign="top">
+        Click
+        <a href="spring-boot.html#sbcs.create-project" title="12.4.1.&nbsp;Creating a new Spring Boot Project in STS">here</a>
+        for more detailed information.
+      </td></tr></table></div><p>
+        The newly created project should look similar to this:
+        <!--NEW FIGURE DIV--><div xmlns="http://www.w3.org/TR/xhtml1/transitional" style="text-align: center"><div xmlns="" class="figure"><a name="d0e4141"></a><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/spring-boot/empty-spring-boot-project.png" align="middle" alt="Empty Spring Boot project"></div></div><p class="title"><b>Figure&nbsp;12.1.&nbsp;Empty Spring Boot project</b></p></div><br xmlns="" class="figure-break"></div>
+      </p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4148"></a>12.3.2.&nbsp;Verify everything is working</h3></div></div></div><p>
+        You already have a working Spring Boot application now. You can test your project by executing the
+        <code class="literal">BootLabApplicationTests</code>
+        using JUnit.  Run the test and make sure it passes.
+      </p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4156"></a>12.3.3.&nbsp;Inspect the newly created project</h3></div></div></div><p> Let's have a look what STS created for us:</p><div class="orderedlist"><ol type="1"><li><p>The standard Java project folder structure.</p></li><li><p>
+            A Maven build file. Boot works perfectly well with Gradle but this lab environment is established for Maven.
+          </p><p>
+            Open the Maven build file (<code class="literal">pom.xml</code>) and click on the pom.xml tab on the bottom of the editor.
+          </p><p>
+            The pom has the <code class="literal">spring-boot-starter-parent</code>
+            as a parent and <code class="literal">spring-boot-starter-web</code>
+            as well as <code class="literal">spring-boot-starter-test</code>
+            as dependencies.
+          </p></li><li><p>
+            A simple JUnit test class (<code class="literal">BootLabApplicationTest.java</code>)
+          </p></li><li><p>
+            A Bootstrap class (<code class="literal">BootLabApplication.java</code>)
+          </p><p>This class contains the main method needed to start a Spring Boot application.</p><p>
+            The single <code class="literal">@SpringBootApplication</code> annotation is a meta-annotation containing the 
+            <code class="literal">@Configuration</code>, <code class="literal">@EnableAutoConfiguration</code>, and <code class="literal">@ComponentScan</code> 
+            annotations.
+          </p></li><li><p>
+            A ServletInitializer class (<code class="literal">ServletInitializer.java</code>)
+          </p><p>This class contains a callback method that is executed when the web container starts.  It
+          allows us to indicate which <code class="literal">@Configuration</code> class(es) should be loaded.  
+          For simplicity it refers to the <code class="literal">BootLabApplication.java</code> class, which you can easily change if you like.</p></li></ol></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4226"></a>12.3.4.&nbsp;Start the application</h3></div></div></div><p>
+        Your application is now ready to start. But first, make sure you don't have a server running from a
+        previous lab.  If you do, stop it; it will cause a conflict on port 8080 if it is running.
+      </p><p>
+		There are actually TWO ways that you can run your application.  The first is running within a container: 
+		<a href="appendix-wtp-server.html" title="Appendix&nbsp;D.&nbsp;Using Web Tools Platform (WTP)">deploy the web application</a> as you would normally. 
+		Once deployed, open <a href="http://localhost:8080/spring-boot" target="_top">http://localhost:8080/spring-boot</a>
+        in your browser. You should get a 404, as we haven't created anything yet.		
+      </p><p>
+		The second way is to run as a standard Java application.  Stop the server (if you just started it), right-click
+		on the (<code class="classname">BootLabApplication</code>) and select (<code class="literal">Run As / Spring Boot Application</code>).
+		Once running, open <a href="http://localhost:8080" target="_top">http://localhost:8080</a>
+        in your browser. You should get a 404, as we haven't created anything yet. 
+      </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top">When running outside of a container, there is no need to specify the application's context in 
+      the servlet container, since there is only one application.  This is why the "/spring-boot" is not needed.
+      </td></tr></table></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top">Spring Boot packages the embedded Tomcat JARs to allow it to run without a container.  If you never
+      intend to run outside of a container, you can simply exclude these JARs using Maven/Gradle.
+      </td></tr></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4254"></a>12.3.5.&nbsp;Create a simple "Hello" controller and web page</h3></div></div></div><p>
+        Create now a new Spring MVC controller in the package <code class="literal">accounts</code>. 
+        You can pick any name for your controller class, as long as it resides in the
+        <code class="literal">accounts</code> package.
+      </p><p>
+        The controller should only contain one method which is mapped to
+        <code class="literal">/hello</code> and should return the String "hello".
+      </p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td align="left" valign="top">
+        Click
+        <a href="spring-boot.html#sbcs.welcome-controller" title="12.4.2.&nbsp;Create a &#34;Hello&#34; controller">here</a> if you need detailed hints to create this controller.
+      </td></tr></table></div><p>
+		Next, we'll need a web page to display.  Navigate to <code class="literal">src/main/webapp</code> and create a "WEB-INF/views" folder structure.
+		Within the <code class="literal">views</code> folder create a file named "hello.jsp".  Within this file, add the text "Hello World from a JSP page!" -
+		we don't need a formal web page, just something to confirm that all the pieces are working together. 
+		Save your work.
+      </p><p>
+		Next, you may recall from Spring MVC that we typically need a <code class="classname">InternalResourceViewResolver</code> setup.  
+		Spring Boot will take care of this for us, but does not know what to use for prefix and suffix.  Boot has
+		a default property file called <code class="literal">application.properties</code> that we can use to configure this kind of thing very 
+		easily.  Open this file and add the following lines:
+      </p><pre class="programlisting">
+# Control the InternalResourceViewResolver:
+spring.view.prefix=/WEB-INF/views/
+spring.view.suffix=.jsp
+
+</pre><p>
+          Next, open the <code class="literal">pom.xml</code> file and add the following to the dependencies section:
+        </p><pre class="programlisting">
+		&lt;!-- These dependencies enable JSP usage --&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;
+			&lt;artifactId&gt;tomcat-embed-jasper&lt;/artifactId&gt;
+			&lt;scope&gt;provided&lt;/scope&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+			&lt;artifactId&gt;jstl&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		
+</pre><p>
+          As mentioned in the comment, these dependencies enable JSP web applications, which is not straightforward when running
+          outside of a container.  Save your work and Restart your application.  Open
+        <a href="http://localhost:8080/spring-boot/hello" target="_top">http://localhost:8080/spring-boot/hello</a>
+        (in container), or <a href="http://localhost:8080/hello" target="_top">http://localhost:8080/hello</a>
+        (outside container).  Either way, You should see <code class="literal">Hello World from a JSP page!</code>.
+      </p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td align="left" valign="top">
+        If running outside of a container, you can use the
+        <code class="literal">Relaunch Application</code>
+        icon in the STS Toolbar to restart your application.
+        <div class="mediaobject" align="center"><img src="images/spring-boot/relaunch-app.png" align="middle"><div class="caption"><p> Relaunch a Java application in STS.
+            </p></div></div></td></tr></table></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td align="left" valign="top">
+        If you are having trouble running your application, make sure STS understands that it is a Maven project.
+        Right-click on the project, Configure / Convert to Maven project.  If this option is not present, your project
+        is already correct.
+      </td></tr></table></div><p>At this point we have a working web application.  Next we will add the same infrastructure we used
+      in previous labs to have a full-fledged application.
+      </p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4326"></a>12.3.6.&nbsp;Add Database, Data, and Account Management</h3></div></div></div><p>In this section, we will add a database, some data, and the AccountManagement object that we used
+      in prior labs.  Then we will copy the JSPs and controllers from the last lab and re-create the account 
+      listing system.
+      </p><div class="section" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4331"></a>12.3.6.1.&nbsp;Add additional dependencies.</h4></div></div></div><p>
+          Open the <code class="literal">pom.xml</code> file and add the following to the dependencies section:
+        </p><pre class="programlisting">
+		&lt;!-- These dependencies enable JPA and an in-memory DB --&gt;
+ 		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+		&lt;/dependency&gt; 
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.hsqldb&lt;/groupId&gt;
+			&lt;artifactId&gt;hsqldb&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+
+		&lt;!-- These dependencies bring in the classroom files --&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;io.pivotal.education.core-spring&lt;/groupId&gt;
+			&lt;artifactId&gt;rewards-common&lt;/artifactId&gt;
+			&lt;version&gt;4.1.a.SNAPSHOT&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;io.pivotal.education.core-spring&lt;/groupId&gt;
+			&lt;artifactId&gt;rewards-db&lt;/artifactId&gt;
+			&lt;version&gt;4.1.a.SNAPSHOT&lt;/version&gt;
+		&lt;/dependency&gt;
+		
+</pre><div class="orderedlist"><ol type="1" compact><li><p><code class="literal">spring-boot-starter-data-jpa</code> - This is a "Starter" POM that defines a typical set of 
+        dependencies needed to work with JPA.  This single dependency eliminates the need for us to 
+        define &gt; 10 separate dependencies related to Spring ORM, JPA, and Hibernate.</p></li><li><p><code class="literal">hsqldb</code> - This is the HSQL in-memory database.  On startup, Spring Boot will notice
+        this JAR, notice that we have not defined a dataSource, and will define one for us.</p></li><li><p><code class="literal">rewards-common / rewards-db</code> - These contain the lab classes that we have been working with throughout
+        this course.  Account, Beneficiary, AccountManager, etc. are all defined here.</p></li></ol></div><p>
+          Save your work, you also may need to tell the Maven plugin to update your project (Right-click on project / Maven / Update project)
+          and open the <code class="classname">BootLabApplication</code> class.  In order to work with our Account
+          objects we will need to tell Spring Boot where our JPA annotated classes are.  Add the 
+          <code class="literal">@EntityScan("rewards")</code> annotation to the class definition.
+        </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top">If our JPA annotated classes were located under the "accounts" package structure, we would not need to
+      use <code class="literal">@EntityScan("rewards")</code>.
+      </td></tr></table></div><p>
+          Next, there is one bean that we will need to define manually; our account manager.  Add this bean definition to
+          the <code class="classname">BootLabApplication</code> class:
+        </p><pre class="programlisting">
+	@Bean
+	public AccountManager accountManager(){
+		return new JpaAccountManager();
+	}
+	
+</pre><p>
+          This bean simply instantiates our AccountManager, the same one used in previous labs.  One interesting thing to
+          note here is that we do NOT need to define a dataSource, TransactionManager, or JPA EntityManagerFactory - Spring
+          Boot will deduce that we need these, based on the fact that we have JDBC data source and JPA JARs on our classpath!
+        </p><p>
+          Save your work.  Next, open <code class="literal">application.properties</code> again and add the following lines:
+        </p><pre class="programlisting">
+# Select a default profile:
+spring.profiles.active: jpa
+
+# Control how Boot loads data when it starts:
+spring.jpa.hibernate.ddl-auto=none
+spring.datasource.schema=classpath:/rewards/testdb/schema.sql
+spring.datasource.data=classpath:/rewards/testdb/data.sql
+
+</pre><div class="orderedlist"><ol type="1" compact><li><p>spring.profiles.active - A quick easy way to select the default profile.  This is easily overrideable
+        via a system property if needed.</p></li><li><p>spring.jpa.hibernate.ddl-auto - Instruction to Hibernate on what its policy should be regarding
+        automatically creating database tables based on annotated classes.  Ordinarily it tries to do this for us
+        when using an in-memory database, so we are asking it not to.</p></li><li><p>spring.datasource.schema / data - Locations of any SQL files to be executed on application startup.</p></li></ol></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td align="left" valign="top">
+        There are many quick settings that you can control via application.properties.  
+        See <a href="http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#common-application-properties" target="_top">Spring Boot Reference / Appendix A. Common application properties</a> for details.
+      </td></tr></table></div><p>
+        Before going further, let's make sure the last few steps were done correctly.  Save all your work and Restart your application.  Open
+        <a href="http://localhost:8080/spring-boot/hello" target="_top">http://localhost:8080/spring-boot/hello</a>
+        (container), or <a href="http://localhost:8080/hello" target="_top">http://localhost:8080/hello</a>
+        (outside container).  Either way, You should still see <code class="literal">Hello World from a JSP page!</code>.  
+        If you do not you probably made a mistake on one of the previous steps.  Be sure the application starts before
+        proceeding.  In the next section, we will add the account listing pages.
+      </p></div><div class="section" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4412"></a>12.3.6.2.&nbsp;Add Account Web Artifacts</h4></div></div></div><p>Next we want to re-create the account listing pages from the MVC lab.  Rather than create them from
+        scratch we will simply copy most of this.</p><p>
+		COPY the following files / folders from the <code class="literal">mvc-solution project</code>:
+        </p><div class="orderedlist"><ol type="1" compact><li><p>Copy the entire <code class="literal">accounts.web</code> package to our spring-boot project</p></li><li><p>Copy the entire <code class="literal">webapp/WEB-INF/views</code> folder to <code class="literal">webapp/WEB-INF/views</code></p></li></ol></div><p>
+        Save all your work and Restart your application.  
+        Open <a href="http://localhost:8080/spring-boot/accountList" target="_top">http://localhost:8080/spring-boot/accountList</a>
+        if running in a container, or 
+        <a href="http://localhost:8080/accountList" target="_top">http://localhost:8080/accountList</a>
+        if running outside of a container.  
+        You should see the account listing page from the last lab, and the links to the detail pages should all work.
+      </p><p>
+        Congratulations, you have completed this lab!  But before moving on, consider all of the items that you did NOT
+        have to do, because Spring Boot did them for you:
+      </p><div class="orderedlist"><ol type="1" compact><li><p>
+        You did NOT define a dataSource - Spring Boot noticed that you did not, and noticed HSQL on the
+        classpath, and created one for you.
+        </p></li><li><p>
+        You did NOT define an EntityManagerFactoryBean, or a JpaVendorAdapter - Spring Boot noticed a JPA implementation on the classpath and
+        set this up for you, using the dataSource.
+        </p></li><li><p>
+        You did NOT define a PlatformTransactionManager - Spring Boot assumed you would need one when working with JPA.
+        </p></li><li><p>
+        There is no web.xml file.  Spring Boot is using a Servlet Initializer.
+        </p></li><li><p>
+        You did NOT define the DispatcherServlet, or a Servlet Mapping - Spring Boot noticed Spring MVC JARs on the classpath
+        and defined this for you.
+        </p></li><li><p>
+        You did NOT define an InternalResourceViewResolver - Spring Boot did this for you, and allowed you to easily override
+        the prefix and suffix.
+        </p></li></ol></div></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4466"></a>12.3.7.&nbsp;Bonus: Adding Actuator</h3></div></div></div><p>Now let's add Spring Boot Actuator to get some runtime information.</p><p>
+        In order to activate Actuator, we just need to add it as a dependency to our
+        <code class="literal">pom.xml</code>
+        file. Add the following XML snippet as additional child elements of the
+        <code class="literal">
+          &lt;dependencies&gt;
+        </code>
+        tag.
+      </p><a name="actuator-dep"></a><pre class="programlisting">
+	&lt;dependency&gt;
+		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+		&lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+	&lt;/dependency&gt;
+
+</pre><p>
+        Now restart your application and try out the several Spring Boot Actuator URLs, like
+        <a href="http://localhost:8080/spring-boot/beans" target="_top">http://localhost:8080/spring-boot/beans</a>
+        if you run inside of a container or
+        <a href="http://localhost:8080/beans" target="_top">http://localhost:8080/beans</a>
+        if you run in embedded mode.
+      </p></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="spring-boot-cheat-sheet"></a>12.4.&nbsp;Cheat sheet</h2></div></div></div><p> This paragraph contains code snippets and screenshots, referenced by the lab instructions. There is no need
+      to read through it from top to bottom.
+    </p><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="sbcs.create-project"></a>12.4.1.&nbsp;Creating a new Spring Boot Project in STS</h3></div></div></div><!--NEW FIGURE DIV--><div xmlns="http://www.w3.org/TR/xhtml1/transitional" style="text-align: center"><div xmlns="" class="figure"><a name="d0e4497"></a><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/spring-boot/new-other.png" align="middle" alt="Opening the Spring Starter Project Wizard (1)"><div class="caption"><p>
+              Right click on the
+              <code class="literal">spring-boot</code>
+              workingset and select
+              <code class="literal">New/Other...</code>
+              .
+            </p></div></div></div><p class="title"><b>Figure&nbsp;12.2.&nbsp;Opening the Spring Starter Project Wizard (1)</b></p></div><br xmlns="" class="figure-break"></div><!--NEW FIGURE DIV--><div xmlns="http://www.w3.org/TR/xhtml1/transitional" style="text-align: center"><div xmlns="" class="figure"><a name="d0e4512"></a><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/spring-boot/new-spring-starter.png" align="middle" alt="Opening the Spring Starter Project Wizard (1)"><div class="caption"><p>
+              Select
+              <code class="literal">Spring/Spring Starter Project</code>
+              .
+            </p></div></div></div><p class="title"><b>Figure&nbsp;12.3.&nbsp;Opening the Spring Starter Project Wizard (1)</b></p></div><br xmlns="" class="figure-break"></div><!--NEW FIGURE DIV--><div xmlns="http://www.w3.org/TR/xhtml1/transitional" style="text-align: center"><div xmlns="" class="figure"><a name="d0e4524"></a><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/spring-boot/create-spring-starter-project.png" align="middle" alt="Settings for the Spring Starter Project"><div class="caption"><p>Enter the values from the screenshot and click on Finish.
+            </p></div></div></div><p class="title"><b>Figure&nbsp;12.4.&nbsp;Settings for the Spring Starter Project</b></p></div><br xmlns="" class="figure-break"></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="sbcs.welcome-controller"></a>12.4.2.&nbsp;Create a "Hello" controller</h3></div></div></div><p>Here is an example how a Hello controller could look like. Ask your instructor if you don't fully
+        understand the code.
+      </p><pre class="programlisting">
+package accounts;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@Controller
+public class HelloController {
+
+	@RequestMapping("/hello")
+	public String hi() {
+		return "hello";
+	}
+}
+
+</pre></div></div></div><div xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navfooter"><hr></hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="mvc-lab.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="security-lab.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter&nbsp;11.&nbsp;Spring MVC Essentials&nbsp;</td><td width="20%" align="center"><span style="color:white;font-size:90%;"><a href="http://www.spring.io" title="The Spring Framework">Spring By Pivotal</a></span></td><td width="40%" align="right" valign="top">&nbsp;Chapter&nbsp;13.&nbsp;Securing the Web Tier</td></tr></table></div></body></html>

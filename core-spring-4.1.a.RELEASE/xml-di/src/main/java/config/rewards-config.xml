@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<!-- DONE-02:  Use STS to add the "context" namespace to this XML configuration file -->
+	
+	<!-- DONE-03:  Add the component-scan element to this configuration.  Be
+	sure to set the base-package to the same "rewards" value used in the RewardsConfig.java
+	file (this XML configuration will replace the RewardsConfig.java file) -->
+
+    <!--commented out as per step 14:<context:component-scan base-package="rewards"/>-->
+
+	<!-- DONE-05:  Add a bean definition to instantiate the JdbcAccountRepository.
+	give the bean any id you like.  Use a property sub-element to set the dataSource
+	property to a ref to a bean named "dataSource".  (note that this bean is defined
+	elsewhere, so the editor may give you a warning.)  -->
+    <bean id="accountRepository" class="rewards.internal.account.JdbcAccountRepository">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+	
+	<!-- DONE-06:  Add a bean definition to instantiate the JdbcRestaurantRepository.
+	It should have its dataSource property set the same way as the last bean.
+	Use the "init-method" attribute to call the "populateRestaurantCache" method
+	on startup.  -->
+    <bean id="restaurantRepository" class="rewards.internal.restaurant.JdbcRestaurantRepository" init-method="populateRestaurantCache">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+	
+	<!-- DONE-07:  Add a bean definition to instantiate the JdbcRewardRepository.
+	It should have its dataSource property set the same way as the other beans.  -->
+    <bean id="rewardRepository" class="rewards.internal.reward.JdbcRewardRepository">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+	
+	<!-- DONE-08:  Add a bean definition to instantiate the RewardNetworkImpl.
+	give the bean the id "rewardNetwork".  Use three constructor-arg sub elements
+	to set its dependencies.  -->
+    <bean class="rewards.internal.RewardNetworkImpl">
+        <constructor-arg index="0" ref="accountRepository"/>
+        <constructor-arg index="1" ref="restaurantRepository"/>
+        <constructor-arg index="2" ref="rewardRepository"/>
+    </bean>
+	
+	
+
+	<!-- DONE-14 (Bonus):  Now that we explicitly defined XML bean definitions
+	for all of our objects, does the <context:component-scan /> entry above
+	serve any purpose?  Remove it and re-run the test.  It should pass.  -->
+	
+	
+</beans>

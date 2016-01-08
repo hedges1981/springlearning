@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="spring-boot-offline:war">
+    <output-path>$PROJECT_DIR$/core-spring-4.1.a.RELEASE/spring-boot-offline/target</output-path>
+    <root id="archive" name="spring-boot-offline-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="spring-boot-offline:war exploded" />
+    </root>
+  </artifact>
+</component>

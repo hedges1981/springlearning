@@ -25,5 +25,6 @@
   <modules>
 		<module>spring-mvc-learning</module>
       <module>jpa-learning</module>
+      <module>spring-boot-web4-webflow-learning</module>
   </modules>
 </project>

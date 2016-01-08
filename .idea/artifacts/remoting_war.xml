@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="remoting:war">
+    <output-path>$PROJECT_DIR$/core-spring-4.1.a.RELEASE/remoting/target</output-path>
+    <root id="archive" name="remoting-4.1.a.SNAPSHOT.war">
+      <element id="artifact" artifact-name="remoting:war exploded" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EntryPointsManager">
+    <entry_points version="2.0" />
+  </component>
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jmx" />
+    <file type="web" url="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jmx-solution" />
+    <file type="web" url="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/mvc" />
+    <file type="web" url="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/mvc-solution" />
+    <file type="web" url="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/remoting" />
+    <file type="web" url="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/remoting-solution" />
+    <file type="web" url="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/rest-ws" />
+    <file type="web" url="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/rest-ws-solution" />
+    <file type="web" url="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/security" />
+    <file type="web" url="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/security-solution" />
+    <file type="web" url="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/spring-boot-offline" />
+    <file type="web" url="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/spring-boot-solution" />
+    <file type="web" url="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/ws" />
+    <file type="web" url="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/ws-solution" />
+    <file type="web" url="file://$PROJECT_DIR$/spring-boot-web4-webflow-learning" />
+    <file type="web" url="file://$PROJECT_DIR$/spring-mvc-security-learning" />
+    <file type="web" url="file://$PROJECT_DIR$/spring_in_practice_book_code/sip06-01" />
+  </component>
+  <component name="IdProvider" IDEtalkID="83680B234898DDBF29CF5391F60A55FB" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/spring-learning/pom.xml" />
+        <option value="$PROJECT_DIR$/mockitolearning/pom.xml" />
+        <option value="$PROJECT_DIR$/spring_in_practice_book_code/sip06-01/pom.xml" />
+        <option value="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/classes" />
+  </component>
+</project>
+

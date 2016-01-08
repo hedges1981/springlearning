@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="com.springinpractice.06_01:war exploded">
+    <output-path>$PROJECT_DIR$/spring_in_practice_book_code/sip06-01/target/com.springinpractice.06_01-1.0-RELEASE</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="com.springinpractice.06_01/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="com.springinpractice.06_01" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

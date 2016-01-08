@@ -9,6 +9,7 @@
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <!-- this will pick up the @ManagedResource annotations so that they get made into mbeans-->
     <context:component-scan base-package="com.hedges.jmxexample" />
 
     <!--NOTE, this enables you to create your own MBean server. -->
@@ -27,6 +28,7 @@
 
     <!-- Expose JMX over JMXMP -->
     <!-- this is a connector that conntects to the MBean Server and allows the various MBeanProxyFactoyBeans to connect to the MBeans -->
+    <!-- rigs it up so that the mbeans are available on the below listed url-->
     <bean id="serverConnector" class="org.springframework.jmx.support.ConnectorServerFactoryBean"/>
 
     <!-- Client connector to JMX over JMXMP -->

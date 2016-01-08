@@ -1,0 +1,123 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>Appendix&nbsp;D.&nbsp;Using Web Tools Platform (WTP)</title><link rel="stylesheet" href="css/html.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.70.0"><link rel="start" href="index.html" title="Core Spring - Lab Documentation"><link rel="up" href="index.html" title="Core Spring - Lab Documentation"><link rel="prev" href="eclipse.html" title="Appendix&nbsp;C.&nbsp;Eclipse Tips"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div xmlns="http://www.w3.org/TR/xhtml1/transitional" style="background-color:white;border:none;height:73px;border:1px solid black;"><a style="border:none;" href="http://www.pivotal.io" title="Pivotal"><img style="border:none;" src="images/heading-logo-lhs.jpg"></img></a><a style="border:none;" href="http://www.spring.io" title="The Spring Framework"><img style="border:none;position:absolute;padding-top:5px;right:42px;" src="images/heading-logo-rhs.jpg"></img></a></div><div class="appendix" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="appendix-wtp-server"></a>Appendix&nbsp;D.&nbsp;Using Web Tools Platform (WTP)</h2></div></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="appendix-wtp-server-intro"></a>D.1.&nbsp;Introduction</h2></div></div></div><p>This section of the lab documentation describes the general
+    configuration and use of the <a href="http://www.eclipse.org/webtools/" target="_top">Web Tools Platform</a> plugin
+    for Eclipse to run applications on Tomcat or Pivotal tc Server.  You will need
+    to do this to run the course labs and samples.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="appendix-wtp-server-verify-or-install"></a>D.2.&nbsp;Verify and/or Install the Server</h2></div></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="appendix-wtp-server-verify-view"></a>D.2.1.&nbsp;Does A Server Exist?</h3></div></div></div><p>The <span class="emphasis"><em>Servers</em></span> view provided by the WTP plugin
+        needs to be open, so that you can see the status of any existing servers.
+        Verify that you can see the Servers view. The tab for this view will typically
+        be at the bottom, either in the bottom-left hand corner or with other views such as
+        <span class="emphasis"><em>Problems</em></span>, <span class="emphasis"><em>Progress</em></span> and
+        <span class="emphasis"><em>Console</em></span>. If the view is not open, open it now via the
+        '<span class="emphasis"><em>Window -&gt; Show View -&gt; Other ... -&gt; Server -&gt; Servers</em></span>'
+        menu sequence.</p><div class="orderedlist"><ol type="1"><li><p>Your workspace may already contain a pre-created entry for a Tomcat 
+            server instance, visible in the <span class="emphasis"><em>Servers</em></span> view as
+            '<span class="emphasis"><em>Tomcat XX Server at localhost</em></span>' where XX is the version
+            number. If it does, skip ahead to <a href="appendix-wtp-server.html#appendix-wtp-server-deploy" title="D.3.&nbsp;Starting &amp; Deploying the Server">Section&nbsp;D.3, &#8220;Starting &amp; Deploying the Server&#8221;</a>
+          </p></li><li><p>Alternatively there may already be a tc Server instance in the Servers
+            view, called something like
+            '<span class="emphasis"><em>Pivotal tc Server v3.x</em></span>' or perhaps the older  
+            '<span class="emphasis"><em>tc Server VMware vFabric tc Server V2.5 - V2.9</em></span>'.  Again, skip
+            ahead to <a href="appendix-wtp-server.html#appendix-wtp-server-deploy" title="D.3.&nbsp;Starting &amp; Deploying the Server">Section&nbsp;D.3, &#8220;Starting &amp; Deploying the Server&#8221;</a>
+          </p></li><li><p>
+            Otherwise, you will need to install a new server runtime.
+          </p></li></ol></div><p>Since there are no servers at all, there is a link to click to create one.
+        Click on that link now.</p><!--NEW FIGURE DIV--><div xmlns="http://www.w3.org/TR/xhtml1/transitional" style="text-align: center"><div xmlns="" class="figure"><a name="appendix-wtp-start-new-server-figure"></a><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/wtp-server/no-servers-link.png" align="middle" alt="Create a New Server"></div></div><p class="title"><b>Figure&nbsp;D.1.&nbsp;Create a New Server</b></p></div><br xmlns="" class="figure-break"></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="appendix-wtp-new-server-dialog"></a>D.2.2.&nbsp;Creating a New Server Instance</h3></div></div></div><p>The popup
+        that appears has a long list of server products - the first in the list is
+        Apache (for Tomcat) or, if you have it, you could install tc Server (this will
+        be in the list under Pivotal or VMware depending on what brand is current when
+        you take this course).</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top">The 'New Server' dialog supports
+        tc Server right back thru version 2.5 to 2.9, when it was VMware branded,
+        back to early versions 2.0/2.1, when it was SpringSource branded.
+        Choose '<span class="emphasis"><em>Pivotal tc Server v3.x'</em></span>' if available, or
+        '<span class="emphasis"><em>tc Server VMware vFabric tc Server 2.x</em></span>' otherwise.</td></tr></table></div><!--NEW FIGURE DIV--><div xmlns="http://www.w3.org/TR/xhtml1/transitional" style="text-align: center"><div xmlns="" class="figure"><a name="appendix-wtp-new-server-figure"></a><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/wtp-server/new-server.png" align="middle" alt="Create a New Server"></div></div><p class="title"><b>Figure&nbsp;D.2.&nbsp;Create a New Server</b></p></div><br xmlns="" class="figure-break"></div><p>Either Apache Tomcat 7 (or later)  or tc Server 3.0 (or later) can be
+        used.  Check in the course installation folder/directory to see what is provided
+        (You should find a Tomcat or tc Server sub-directory):</p><p>The default course installation folder is:</p><div class="itemizedlist"><ul type="disc"><li><p>MS Windows: <code class="code">C:\&lt;course-name&gt;</code></p></li><li><p>MacOS:&nbsp;<code class="code">/Applications/&lt;course-name&gt;</code></p></li><li><p>Linux:&nbsp;<code class="code">/home/&lt;user-name&gt;/&lt;course-name&gt;</code></p></li></ul></div><p>
+          Pick the right server-type and follow the instructions to create a new server.
+      </p><div class="simplesect" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="appendix-wtp-create-tomcat-server"></a>Option I - Creating a Tomcat Server</h4></div></div></div><p>If Apache Tomcat is bundled with your course, perform the following steps.
+          tc Server users, please skip to the next section</p><div class="orderedlist"><ol type="1"><li><p>
+              Select the Tomcat version you wish to use (you need at least Tomcat 7
+              for Servlet 3 support). If you aren't sure, use the latest version.
+              If the <code class="code">Finish</code> button is enabled, click it and you
+              should be done - skip the next step.
+            </p></li><li><p>However if <code class="code">Finish</code> is disabled, click <code class="code">Next</code>.
+              You now need to tell STS where to find a Tomcat installation, so you will
+              see this dialog:
+            </p><!--NEW FIGURE DIV--><div xmlns="http://www.w3.org/TR/xhtml1/transitional" style="text-align: center"><div xmlns="" class="figure"><a name="appendix-wtp-locate-tomcat-figure"></a><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/wtp-server/locate-tomcat.png" align="middle" alt="Locate Tomcat"></div></div><p class="title"><b>Figure&nbsp;D.3.&nbsp;Locate Tomcat</b></p></div><br xmlns="" class="figure-break"></div><p>
+              Tomcat <span class="emphasis"><em>should</em></span> have been installed with the rest of
+              the lab materials.  Click on the <code class="code">Browse...</code> button and
+              locate the Tomcat installation.  By default the file-explorer dialog
+              opens in the current workspace directory.  Your tomcat installation
+              should be in an adjacent directory.  Click <code class="code">Open</code> to select
+              the Tomcat directory and, when you return to the
+              '<span class="emphasis"><em>New Server</em></span>' dialog, click <code class="code">Finish</code>.
+            </p></li><li><p>Finally verify that a server runtime has appeared in the
+                <span class="emphasis"><em>Servers</em></span> view. </p><p>If you have not done this before, can't find Apache Tomcat or have
+              any other problems, ask your instructor for help.  Once this is setup, you
+              won't have to do it again.
+            </p></li></ol></div><p>Skip to <a href="appendix-wtp-server.html#appendix-wtp-server-deploy" title="D.3.&nbsp;Starting &amp; Deploying the Server">Section&nbsp;D.3, &#8220;Starting &amp; Deploying the Server&#8221;</a> below.</p></div><div class="simplesect" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="appendix-wtp-create-tc-server"></a>Option II - Creating a tc Server Instance</h4></div></div></div><p>If Pivotal (or VMware) tc Server is bundled with your course, perform the
+        following steps.  Tomcat users, skip to
+        <a href="appendix-wtp-server.html#appendix-wtp-server-deploy" title="D.3.&nbsp;Starting &amp; Deploying the Server">Section&nbsp;D.3, &#8220;Starting &amp; Deploying the Server&#8221;</a> below.</p><div class="orderedlist"><ol type="1"><li><p>
+              Select the tc Server version you wish to use (the latest version in the
+              Pivotal group is preferred).  Failing that, select
+              '<span class="emphasis"><em>tc Server VMware vFabric tc Server V2.5 - V2.9</em></span>'
+              in the VMware group.  If the <code class="code">Finish</code> button is enabled,
+              click it and you should be done.  Skip to the last of these steps.
+            </p></li><li><p>However if <code class="code">Finish</code> is disabled, click <code class="code">Next</code>.
+              You now need to tell STS where to find a tc Server installation, so you will
+              see this dialog:
+            </p><!--NEW FIGURE DIV--><div xmlns="http://www.w3.org/TR/xhtml1/transitional" style="text-align: center"><div xmlns="" class="figure"><a name="appendix-wtp-locate-tc-server-figure"></a><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/wtp-server/locate-tc-server.png" align="middle" alt="Locate tc Server Installation"></div></div><p class="title"><b>Figure&nbsp;D.4.&nbsp;Locate tc Server Installation</b></p></div><br xmlns="" class="figure-break"></div><p>
+              tc Server <span class="emphasis"><em>should</em></span> have been installed with the rest of
+              the lab materials.  Click on the <code class="code">Browse...</code> button and
+              locate the tc Server installation.  By default the file-explorer dialog
+              opens in the current workspace directory.  Your tc Server installation
+              should be in an adjacent directory.  Click <code class="code">Open</code> to select
+              the Tomcat directory and, when you return to the
+              '<span class="emphasis"><em>New Server</em></span>' dialog, you should find the Version:
+              field has been filled in automatically to show the Tomcat version tc
+              Server is using. Click <code class="code">Next</code>.
+            </p></li><li><p>tc Server requires the instance to be created on disk as well as in
+            STS.  In the next dialog (on left in diagram below), select
+            '<span class="emphasis"><em>Create new instance</em></span>' and click <code class="code">Next</code></p><!--NEW FIGURE DIV--><div xmlns="http://www.w3.org/TR/xhtml1/transitional" style="text-align: center"><div xmlns="" class="figure"><a name="appendix-wtp-new-tc-server-instance-figure"></a><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/wtp-server/new-tc-server-instance.png" align="middle" alt="New tc Server Instance"></div></div><p class="title"><b>Figure&nbsp;D.5.&nbsp;New tc Server Instance</b></p></div><br xmlns="" class="figure-break"></div></li><li><p>In the next dialog (on right in diagram above), give the
+            instance a name (here we have used <code class="code">MyServer</code>) and under
+            templates select <code class="code">base</code>.  Retain the other defaults
+            (<span class="emphasis"><em>Separate</em></span> under Layout and
+            <span class="emphasis"><em>Use default instance location</em></span>).
+            Click <code class="code">Finish</code> to create the server in STS</p></li><li><p>Finally verify that a server runtime has appeared in the
+                <span class="emphasis"><em>Servers</em></span> view. </p><p>If you have not done this before, can't find tc Server or have
+              any other problems, ask your instructor for help.  Once this is setup, you
+              won't have to do it again.
+            </p></li></ol></div></div></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="appendix-wtp-server-deploy"></a>D.3.&nbsp;Starting &amp; Deploying the Server</h2></div></div></div><p>The easiest way to deploy and run an application using WTP is to
+    right-click on the project and select '<span class="emphasis"><em>Run As</em></span>' then
+    '<span class="emphasis"><em>Run On Server</em></span>'.</p><!--NEW FIGURE DIV--><div xmlns="http://www.w3.org/TR/xhtml1/transitional" style="text-align: center"><div xmlns="" class="figure"><a name="appendix-wtp-run-as-server-figure"></a><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/wtp-server/run-as-run-on-server.png" align="middle" alt="Run On Server"></div></div><p class="title"><b>Figure&nbsp;D.6.&nbsp;Run On Server</b></p></div><br xmlns="" class="figure-break"></div><p>The console view should show status and log information as Tomcat
+    starts up, including any exceptions due to project
+    misconfiguration.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top">Tomcat or tc Server will not fail to start even if your project fails
+    to load.  The server will run, but your application cannot be accessed because
+    it is not running.</td></tr></table></div><p>After everything starts up, it should show as a deployed project
+    under the server in the `<span class="emphasis"><em>Servers</em></span>` tab.</p><!--NEW FIGURE DIV--><div xmlns="http://www.w3.org/TR/xhtml1/transitional" style="text-align: center"><div xmlns="" class="figure"><a name="appendix-wtp-running-on-server-figure"></a><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/wtp-server/deployed-to-running-server.png" align="middle" alt="Running On Server"></div></div><p class="title"><b>Figure&nbsp;D.7.&nbsp;Running On Server</b></p></div><br xmlns="" class="figure-break"></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td align="left" valign="top">Once you have deployed the first time, the server can be shut down (stopped
+    by pressing the red  box in the toolbar of the Servers tab.  It can be started
+    again using the green arrow button.</td></tr></table></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td align="left" valign="top"><p>When you run the server as described above, you are running it
+      against the project in-place (with no separate deployment step). Changes
+      to JSP pages will not require a restart. Changes to Java code will force the
+      server to restart automatically (may take a few seconds).</p><p>However, changes to Spring
+      Application Context definition files will require stopping and restarting
+      the server manually for them to be picked up, since the application
+      context is only loaded once at web app startup.</p></td></tr></table></div><p>WTP will launch a browser window opened to the root of your
+    application, making it easy to start testing the functionality.  If you close
+    it, you can get it back using the world icon in the STS main toolbar (you
+    must be in the Spring Perspective).  Alternatively, open the URL in an external
+    browser (such Firefox or Chrome). You will need to use an external browser
+    to access tools like Firebug or Web Developer.</p><!--NEW FIGURE DIV--><div xmlns="http://www.w3.org/TR/xhtml1/transitional" style="text-align: center"><div xmlns="" class="figure"><a name="appendix-wtp-browser-figure"></a><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/wtp-server/start-browser-screen.png" align="middle" alt="Show in Browser"></div></div><p class="title"><b>Figure&nbsp;D.8.&nbsp;Show in Browser</b></p></div><br xmlns="" class="figure-break"></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td align="left" valign="top"><p>It is generally recommended that you only run one project at a
+      time on a server. This will ensure that as you start or restart the
+      server, you only see log messages in the console from the project you
+      are actively working in. To remove projects that you are no longer
+      working with from the server, right click on them under the server in
+      the <span class="emphasis"><em>Servers</em></span> view and select
+      '<span class="emphasis"><em>Remove</em></span>'.</p></td></tr></table></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td align="left" valign="top">
+    If you use <code class="code">Run As -&gt; Run On Server</code> the first time for each
+    new project you can unselect the old project at the same time.  After that
+    use the stop and start buttons in the Servers view.</td></tr></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="appendix-wtp-more-servers"></a>D.4.&nbsp;Adding More Servers</h2></div></div></div><p>More servers can be added at any time.  To do so, right-click in the
+    blank area in the Servers View.  There is a New option and, if you select
+    it, Server is the only option.</p><!--NEW FIGURE DIV--><div xmlns="http://www.w3.org/TR/xhtml1/transitional" style="text-align: center"><div xmlns="" class="figure"><a name="appendix-wtp-new-server-start"></a><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/wtp-server/new-server-start.png" align="middle" alt="Show in Browser"></div></div><p class="title"><b>Figure&nbsp;D.9.&nbsp;Show in Browser</b></p></div><br xmlns="" class="figure-break"></div><p>This will popup the `<span class="emphasis"><em>New Server</em></span>` dialog and you
+    can continue as described in <a href="appendix-wtp-server.html#appendix-wtp-new-server-dialog" title="D.2.2.&nbsp;Creating a New Server Instance">Section&nbsp;D.2.2, &#8220;Creating a New Server Instance&#8221;</a>
+    above.</p></div></div><div xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navfooter"><hr></hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="eclipse.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right">&nbsp;</td></tr><tr><td width="40%" align="left" valign="top">Appendix&nbsp;C.&nbsp;Eclipse Tips&nbsp;</td><td width="20%" align="center"><span style="color:white;font-size:90%;"><a href="http://www.spring.io" title="The Spring Framework">Spring By Pivotal</a></span></td><td width="40%" align="right" valign="top">&nbsp;</td></tr></table></div></body></html>

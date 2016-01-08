@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="ws-solution:war">
+    <output-path>$PROJECT_DIR$/core-spring-4.1.a.RELEASE/ws-solution/target</output-path>
+    <root id="archive" name="ws-solution-4.1.a.SNAPSHOT.war">
+      <element id="artifact" artifact-name="ws-solution:war exploded" />
+    </root>
+  </artifact>
+</component>

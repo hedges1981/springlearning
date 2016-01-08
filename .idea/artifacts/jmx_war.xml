@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="jmx:war">
+    <output-path>$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jmx/target</output-path>
+    <root id="archive" name="jmx-4.1.a.SNAPSHOT.war">
+      <element id="artifact" artifact-name="jmx:war exploded" />
+    </root>
+  </artifact>
+</component>

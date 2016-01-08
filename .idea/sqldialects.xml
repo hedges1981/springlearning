@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/javaconfig-dependency-injection/src/test/java/rewards/testdb/schema.sql" dialect="HSQLDB" />
+    <file url="file://$PROJECT_DIR$/jpa-learning/src/main/resources/schemaDef.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/spring-boot-web4-webflow-learning/src/main/resources/db/data.sql" dialect="HSQLDB" />
+    <file url="file://$PROJECT_DIR$/spring-boot-web4-webflow-learning/src/main/resources/db/schema.sql" dialect="HSQLDB" />
+  </component>
+</project>
+

@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.jvnet.opendmk:jmxremote_optional:1.0_01-ea">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jvnet/opendmk/jmxremote_optional/1.0_01-ea/jmxremote_optional-1.0_01-ea.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jvnet/opendmk/jmxremote_optional/1.0_01-ea/jmxremote_optional-1.0_01-ea-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jvnet/opendmk/jmxremote_optional/1.0_01-ea/jmxremote_optional-1.0_01-ea-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

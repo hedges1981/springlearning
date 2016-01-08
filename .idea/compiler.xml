@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <option name="DEFAULT_COMPILER" value="Javac" />
+    <resourceExtensions />
+    <wildcardResourcePatterns>
+      <entry name="!?*.java" />
+      <entry name="!?*.form" />
+      <entry name="!?*.class" />
+      <entry name="!?*.groovy" />
+      <entry name="!?*.scala" />
+      <entry name="!?*.flex" />
+      <entry name="!?*.kt" />
+      <entry name="!?*.clj" />
+    </wildcardResourcePatterns>
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="false">
+        <processorPath useClasspath="true" />
+      </profile>
+      <profile default="false" name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="annotations" />
+        <module name="annotations-solution" />
+        <module name="aop" />
+        <module name="aop-solution" />
+        <module name="com.springinpractice.06_01" />
+        <module name="hibernate" />
+        <module name="hibernate-solution" />
+        <module name="javaconfig-dependency-injection" />
+        <module name="javaconfig-dependency-injection-solution" />
+        <module name="jdbc" />
+        <module name="jdbc-solution" />
+        <module name="jms" />
+        <module name="jms-demo" />
+        <module name="jms-solution" />
+        <module name="jmx" />
+        <module name="jmx-demo" />
+        <module name="jmx-solution" />
+        <module name="jpa-learning" />
+        <module name="jpa-spring-data" />
+        <module name="jpa-spring-data-solution" />
+        <module name="mockitolearning" />
+        <module name="mvc" />
+        <module name="mvc-solution" />
+        <module name="remoting" />
+        <module name="remoting-solution" />
+        <module name="rest-ws" />
+        <module name="rest-ws-solution" />
+        <module name="rewards-common" />
+        <module name="rewards-db" />
+        <module name="security" />
+        <module name="security-solution" />
+        <module name="spring-boot-offline" />
+        <module name="spring-boot-solution" />
+        <module name="spring-boot-web4-webflow-learning" />
+        <module name="spring-intro" />
+        <module name="spring-intro-solution" />
+        <module name="spring-learning" />
+        <module name="spring-mvc-learning" />
+        <module name="test" />
+        <module name="test-solution" />
+        <module name="tx" />
+        <module name="tx-solution" />
+        <module name="ws" />
+        <module name="ws-solution" />
+        <module name="xml-dependency-injection-best-practices" />
+        <module name="xml-dependency-injection-best-practices-solution" />
+        <module name="xml-di" />
+        <module name="xml-di-solution" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="spring-boot-offline" target="1.6" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
+
