@@ -1,4 +1,4 @@
-package com.hedges.persistence.config;
+package com.sage.lspcs.sls.intouchproxy.persistence.config;
 
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Configuration;

@@ -1,6 +1,5 @@
 package com.hedges.persistencelearning.jdbc;
 
-import com.hedges.persistencelearning.jdbc.TestTable;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 

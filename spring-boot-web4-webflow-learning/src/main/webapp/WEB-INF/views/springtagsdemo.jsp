@@ -32,8 +32,14 @@
       <form:form method="POST" action="#" modelAttribute="person" >
           <table>
               <tr>
-                  <td><form:label path="name">Name</form:label></td>
+                  <td><form:label path="name">Name( enter something that is length <1 or length > 30 to see validation</form:label></td>
                   <td><form:input path="name" /></td>
+                  <td><form:errors path="name" /></td>     <!-- NOTE: this one that shows any errors that relate to name -->
+              </tr>
+              <tr>
+                  <td><form:label path="age">Age</form:label></td>
+                  <td><form:input path="age" /></td>
+                  <td><form:errors path="age" /></td>
               </tr>
 
                   <td colspan="2">

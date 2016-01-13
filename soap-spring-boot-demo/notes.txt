@@ -1,0 +1,13 @@
+This project basically demos the examples at:
+
+https://spring.io/guides/gs/consuming-web-service/
+
+
+
+when this builds, in the target folder you get to wars, .war and .war.original.
+the .war one can is the standaline embedded tomcat one, can be executed using java -jar xxx.war
+
+to run this web app: java -jar spring-boot-web4-learning-0.0.1-SNAPSHOT.war
+or mvnDebug spring-boot:run
+when done this way, it is at localhost:8080/
+note there is not application path, as the tomcat will only ever have one application in it.

@@ -29,6 +29,7 @@
         <module name="com.springinpractice.06_01" />
         <module name="hibernate" />
         <module name="hibernate-solution" />
+        <module name="intouch-proxy-service" />
         <module name="javaconfig-dependency-injection" />
         <module name="javaconfig-dependency-injection-solution" />
         <module name="jdbc" />
@@ -55,6 +56,7 @@
         <module name="security-solution" />
         <module name="spring-boot-offline" />
         <module name="spring-boot-solution" />
+        <module name="spring-boot-web4-learning" />
         <module name="spring-boot-web4-webflow-learning" />
         <module name="spring-intro" />
         <module name="spring-intro-solution" />
@@ -73,7 +75,51 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="annotations" target="1.6" />
+      <module name="annotations-solution" target="1.6" />
+      <module name="aop" target="1.6" />
+      <module name="aop-solution" target="1.6" />
+      <module name="hibernate" target="1.6" />
+      <module name="hibernate-solution" target="1.6" />
+      <module name="javaconfig-dependency-injection" target="1.6" />
+      <module name="javaconfig-dependency-injection-solution" target="1.6" />
+      <module name="jdbc" target="1.6" />
+      <module name="jdbc-solution" target="1.6" />
+      <module name="jms" target="1.6" />
+      <module name="jms-demo" target="1.6" />
+      <module name="jms-solution" target="1.6" />
+      <module name="jmx" target="1.6" />
+      <module name="jmx-demo" target="1.6" />
+      <module name="jmx-solution" target="1.6" />
+      <module name="jpa-spring-data" target="1.6" />
+      <module name="jpa-spring-data-solution" target="1.6" />
+      <module name="mvc" target="1.6" />
+      <module name="mvc-solution" target="1.6" />
+      <module name="parentCoreSpringProject" target="1.6" />
+      <module name="remoting" target="1.6" />
+      <module name="remoting-solution" target="1.6" />
+      <module name="rest-ws" target="1.6" />
+      <module name="rest-ws-solution" target="1.6" />
+      <module name="rewards-common" target="1.6" />
+      <module name="rewards-db" target="1.6" />
+      <module name="security" target="1.6" />
+      <module name="security-solution" target="1.6" />
       <module name="spring-boot-offline" target="1.6" />
+      <module name="spring-boot-solution" target="1.6" />
+      <module name="spring-boot-web4-learning" target="1.6" />
+      <module name="spring-boot-web4-webflow-learning" target="1.6" />
+      <module name="spring-intro" target="1.6" />
+      <module name="spring-intro-solution" target="1.6" />
+      <module name="test" target="1.6" />
+      <module name="test-solution" target="1.6" />
+      <module name="tx" target="1.6" />
+      <module name="tx-solution" target="1.6" />
+      <module name="ws" target="1.6" />
+      <module name="ws-solution" target="1.6" />
+      <module name="xml-dependency-injection-best-practices" target="1.6" />
+      <module name="xml-dependency-injection-best-practices-solution" target="1.6" />
+      <module name="xml-di" target="1.6" />
+      <module name="xml-di-solution" target="1.6" />
     </bytecodeTargetLevel>
   </component>
 </project>

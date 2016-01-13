@@ -18,6 +18,7 @@
     <file type="web" url="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/spring-boot-solution" />
     <file type="web" url="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/ws" />
     <file type="web" url="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/ws-solution" />
+    <file type="web" url="file://$PROJECT_DIR$/soap-spring-boot-demo" />
     <file type="web" url="file://$PROJECT_DIR$/spring-boot-web4-webflow-learning" />
     <file type="web" url="file://$PROJECT_DIR$/spring-mvc-security-learning" />
     <file type="web" url="file://$PROJECT_DIR$/spring_in_practice_book_code/sip06-01" />
@@ -31,6 +32,7 @@
         <option value="$PROJECT_DIR$/mockitolearning/pom.xml" />
         <option value="$PROJECT_DIR$/spring_in_practice_book_code/sip06-01/pom.xml" />
         <option value="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/pom.xml" />
+        <option value="$PROJECT_DIR$/intouch-proxy-service/pom.xml" />
       </list>
     </option>
   </component>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.hedges</groupId>
+    <artifactId>soap-spring-boot-demo</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>     <!-- NOTE:, with war it produces a hybrid war file, one that can be executed standalone using the embedded tomcat, a
+    and one that can be deployed to a tomcat .. is the one that is called .....war.original that looks like it is the one for deployment to a tomcat-->
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.2.0.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Dependencies for using SOAP stuff -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-ws</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>wsdl4j</groupId>
+            <artifactId>wsdl4j</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!--NOTE: These dependencies enable JSP usage when running embedded tomcat -->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+
+        <!-- NOTE this for enabling data-jpa, hibernate is the default JPA provider -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!-- NOTE this one brings in a hsql embedded db.
+        ON start up, Spring will notice this JAR and rig us up an embedded db to use. -->
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- NOTE: the start class tells it what the main class is to hit when run as standalone, i.e. set the main class in the jar/war manifest bit-->
+        <start-class>com.hedges.web.config.WebConfig</start-class>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <!-- NOTE: this plugin allows it to build the standalone war and the container deployable one. -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- this one for the contries service we provide -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>xjc</id>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <schemaDirectory>${project.basedir}/src/main/resources/</schemaDirectory>
+                    <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+                    <clearOutputDir>false</clearOutputDir>
+                </configuration>
+            </plugin>
+
+            <!-- this stuff for the weather service that we consume -->
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>0.12.3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <schemaLanguage>WSDL</schemaLanguage>
+                    <generatePackage>hello.wsdl</generatePackage>
+                    <generateDirectory>${project.basedir}/src/main/java</generateDirectory>
+                    <schemas>
+                        <schema>
+                            <url>http://wsf.cdyne.com/WeatherWS/Weather.asmx?wsdl</url>
+                        </schema>
+                    </schemas>
+                </configuration>
+            </plugin>
+
+
+        </plugins>
+    </build>
+
+</project>

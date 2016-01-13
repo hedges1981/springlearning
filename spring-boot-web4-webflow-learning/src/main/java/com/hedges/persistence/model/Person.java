@@ -12,8 +12,12 @@ public class Person
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private int id;
+
     @Column(name="NAME")
     private String name;
+
+    @Column(name="AGE")
+    private Integer age;
 
     @Override
     public String toString()
@@ -43,4 +47,15 @@ public class Person
     {
         this.name = name;
     }
+
+    public Integer getAge()
+    {
+        return age;
+    }
+
+    public void setAge( Integer age )
+    {
+        this.age = age;
+    }
+
 }

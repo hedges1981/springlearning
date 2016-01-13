@@ -9,6 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/spring_in_practice_book_code/sip06-01/com.springinpractice.06_01.iml" filepath="$PROJECT_DIR$/spring_in_practice_book_code/sip06-01/com.springinpractice.06_01.iml" />
       <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/hibernate/hibernate.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/hibernate/hibernate.iml" />
       <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/hibernate-solution/hibernate-solution.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/hibernate-solution/hibernate-solution.iml" />
+      <module fileurl="file://$PROJECT_DIR$/soap-spring-boot-demo/intouch-proxy-service.iml" filepath="$PROJECT_DIR$/soap-spring-boot-demo/intouch-proxy-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/javaconfig-dependency-injection/javaconfig-dependency-injection.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/javaconfig-dependency-injection/javaconfig-dependency-injection.iml" />
       <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/javaconfig-dependency-injection-solution/javaconfig-dependency-injection-solution.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/javaconfig-dependency-injection-solution/javaconfig-dependency-injection-solution.iml" />
       <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jdbc/jdbc.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jdbc/jdbc.iml" />
