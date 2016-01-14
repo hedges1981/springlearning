@@ -34,20 +34,38 @@
               <tr>
                   <td><form:label path="name">Name( enter something that is length <1 or length > 30 to see validation</form:label></td>
                   <td><form:input path="name" /></td>
-                  <td><form:errors path="name" /></td>     <!-- NOTE: this one that shows any errors that relate to name -->
+                  <td><form:errors cssClass="error" path="name" /></td>     <!-- NOTE: this one that shows any errors that relate to name -->
               </tr>
               <tr>
-                  <td><form:label path="age">Age</form:label></td>
+                  <td><form:label path="age">Age(try putting a string in here), note the 'typeMismatch' mesage</form:label></td>
                   <td><form:input path="age" /></td>
-                  <td><form:errors path="age" /></td>
+                  <td><form:errors cssClass="error" path="age" /></td>
               </tr>
+              <tr>
+                  <td><form:label path="weightInKilos">WeightInKilos<br/>Note that not messages are given for this
+                  validation, so it picks the default based on the @Min and @NotNull annotations, break it and check it out:</form:label></td>
+                  <td><form:input path="weightInKilos" /></td>
+                  <td><form:errors cssClass="error" path="weightInKilos" /></td>
+              </tr>
+
+              <tr>
+                  <td><form:label path="birthDate">DOB( check the use of the @Past validation)</form:label></td>
+                  <!--NOTE here how we set the type to be date, although type is not an official attribute of form:input, looks like
+                  spring passes it through to the HTML, so the browser shows it as a date picker -->
+                  <td><form:input type="date" path="birthDate" /></td>
+                  <td><form:errors cssClass="error" path="birthDate" /></td>
+              </tr>
+
+
 
                   <td colspan="2">
                       <input type="submit" value="Submit"/>
                   </td>
               </tr>
           </table>
+          <c:out escapeXml="false" value="${formNotes}" />
       </form:form>
+
 
 </body>
 </html>

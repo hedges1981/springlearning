@@ -4,6 +4,7 @@ import com.hedges.web.forms.ValidatedPersonForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,6 +39,29 @@ public class GeneralController
     //NOTE: the @Valid means that the validation will kick in, see the Person.class for the validation annotations.
     public String postPersonObject( Model model, @Valid @ModelAttribute("person") ValidatedPersonForm personForm, BindingResult bindingResult)
     {
+        if( bindingResult.hasErrors() )
+        {
+            String formErrorNotes = "";
+            //NOTE: code to deal with any special actions from the validation.
+            for( ObjectError objectError:  bindingResult.getAllErrors())
+            {
+                formErrorNotes+="<br/><br/> Field:"+objectError.getObjectName()+" has the following auto generated error codes that could be resolved through settings in ValidationMessages.properties";
+
+                for( String code: objectError.getCodes())
+                {
+                    formErrorNotes +=","+code;
+                }
+            }
+            model.addAttribute( "formNotes", formErrorNotes );
+        }
+
+        if( false )//if some validation thing has failed:
+        {
+            //NOTE: this is what you would use to reject a value based on some kind of validation here or in a service.
+            bindingResult.rejectValue( "fieldName", "aMessage" );
+
+        }
+
         model.addAttribute("person", personForm );
         return "springtagsdemo";
     }
