@@ -109,7 +109,7 @@ public class EmployeeService
         c.select( emp );
         c.distinct( true );
 
-        Join<Employee, Department> deptJoin = emp.join("department", JoinType.LEFT);
+        //Join<Employee, Department> deptJoin = emp.join("department", JoinType.LEFT);
 
         List<Predicate> criteria = new ArrayList<Predicate>();
 

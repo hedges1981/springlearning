@@ -43,14 +43,16 @@ public class Main
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         //simple initial example, same as 'select e from Employee e where e.firstName='john1'
-        CriteriaQuery<Employee> criteriaQuery = cb.createQuery( Employee.class );
+        CriteriaQuery<Employee> criteriaQuery = cb.createQuery( Employee.class );            //note that how here it is setting Employee as the result class.
         Root<Employee> emp = criteriaQuery.from( Employee.class );    //is basically the 'from Employee e' bit
-
+        //note that the root is the equivalent of the e in 'select e from Employee e, see below where it is used to make the equivalent of e.firstName
         criteriaQuery.select( emp )   // select e from Employee e
                 .where( cb.equal( emp.get( "firstName" ), "john1" ) );   // where e.firstName = 'john1'
 
         List<Employee> emps = em.createQuery( criteriaQuery ).getResultList();
         U.print(emps);
+
+        //////////////////////////////////////////////////////
 
         //DEMO USE OF DYNAMIC QUERY:
         //should return the lot:
