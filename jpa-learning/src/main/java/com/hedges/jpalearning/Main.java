@@ -7,9 +7,7 @@ import com.hedges.jpalearning.service.GeneralService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.*;
 
 /**
@@ -90,9 +88,10 @@ public class Main
         //DEMO OF VARIOUS THINGS U CAN DO WITH THE SELECT CLAUSE:
         //e.g. to select a list of Strings:
         CriteriaQuery<String> cqs = cb.createQuery( String.class ); //note how the type in CriteriaQuery<T> must match that in the
-        //cqs.select(emp.<T>.get("...");
+        //cqs.select(emp.<T>.get("...");... the line above always specifies the result type
         Root<Employee> empRoot2 = cqs.from( Employee.class );
-        cqs.select( emp.<String>get("firstName") );
+        cqs.select( empRoot2.<String>get("firstName") ); //i.e. is same as select e.firstName .....
+        //i.e. so rather than selecting the whole Employee object as per the previous queries, we are explicitly picking the name:
         U.print(em.createQuery( cqs ).getResultList());
 
         //SELECTING MULTIPLE EXPRESSIONS:
@@ -101,16 +100,69 @@ public class Main
         cq2.multiselect( empRoot3.get("firstName"), empRoot3.get("lastName") );
         //each member of the result list is an array, like: [firstName,lastName]
         U.print(em.createQuery( cq2 ).getResultList());
+        //the result of the above query is a list of String[], each String[] contains the dual-headed result of the query.
 
         //USE OF A CONSTRUCTOR EXPRESSION:
         CriteriaQuery<EmployeeName> cq4 = cb.createQuery( EmployeeName.class );
         Root<Employee> empRoot4 = cq4.from(Employee.class);
-        //it is clever enough to figure out how to build the result objs from the returned list of stuff, else u coud use cb.construct(...)
+        //it is clever enough to figure out how to build the result objs from the returned list of stuff, else u coud use cb.construct(...) , see book p.251
         cq4.multiselect( empRoot4.get("firstName"), empRoot4.get("lastName") );
         //Result list contains EmployeeName objects:
         U.print(em.createQuery( cq4 ).getResultList());
 
         //USE OF ALIASES:
+        //NOTE how in this query we alias lastName as 'lastNameO' and then use lastNameO to work on the results set:
+        CriteriaQuery<Tuple> tupleCriteriaQuery  = cb.createTupleQuery();
+        Root<Employee> empRoot5 = tupleCriteriaQuery.from( Employee.class );
+        tupleCriteriaQuery.multiselect( empRoot3.get( "firstName" ), empRoot3.get( "lastName" ).alias( "lastNameO" ) );
+        TypedQuery<Tuple> tupleTypedQuery= em.createQuery( tupleCriteriaQuery );
+
+        for(Tuple t: tupleTypedQuery.getResultList())
+        {
+            U.print(t.get("lastNameO"));//note how the Tuple is keyed by the alias of lastNameO;
+        }
+
+        //DEMO of joins:  select d.name, e,firstName from department d inner join employee e:
+        CriteriaQuery<Object[]> departmentCriteriaQuery = cb.createQuery( Object[].class );
+        Root<Department> departmentRoot = departmentCriteriaQuery.from( Department.class );
+        Join<Department, Employee>  employeesJoin = departmentRoot.join( "employees" ); //defaults to inner, could spcify e.g.: JoinType.LEFT as a parameter.
+        //NOTE: you would write departmentRoot.fetch("employees") to make it a fetch join, i.e. ...from Department d join fetch employee e:
+
+        departmentCriteriaQuery.multiselect( departmentRoot.get("name"), employeesJoin.get("firstName") ) ;    //note how we use the join object to get at data that is brought in by the join:
+        List<Object[]> aList = em.createQuery( departmentCriteriaQuery ).getResultList();
+
+        for( Object[] sa: aList)
+        {
+            U.print(sa[0]+":"+sa[1]);
+        }
+
+        //DEMO of using a fairly complicate where clause:
+        //select d.name, e.first name from department d join employee e where (d.name=sales and e.firstName = john1) or (d.name=marketing and e.firstName = john13)
+        CriteriaQuery<Object[]> cq1 = cb.createQuery( Object[].class );
+        Root<Department> departmentRoot2 = cq1.from( Department.class );
+        Join<Department, Employee>  employeesJoin2 = departmentRoot2.join( "employees" );
+        cq1.multiselect( departmentRoot.get( "name" ), employeesJoin.get( "firstName" ) ) ;    //note how we use the join object to get at data that is brought in by the join:
+
+        Predicate predicate1 = cb.equal( departmentRoot2.get( "name" ),"sales" );
+        Predicate predicate2 = cb.equal( employeesJoin2.get( "firstName" ),"john1" );
+
+        Predicate firstAnd = cb.and( predicate1, predicate2 );
+
+        Predicate predicate3 = cb.equal( departmentRoot2.get( "name" ),"marketing" );
+        Predicate predicate4 = cb.equal( employeesJoin2.get( "firstName" ),"john13" );
+
+        Predicate secondAnd = cb.and( predicate3, predicate4 );
+
+        cq1.where( cb.or( firstAnd, secondAnd ) );
+
+        List<Object[]> aList2 = em.createQuery( cq1 ).getResultList();
+
+        for( Object[] sa: aList2)
+        {
+            U.print(sa[0]+":"+sa[1]);
+        }
+
+        //NOTE: you can put loads of different functions and operators in the where clause, e.g. length(....) see book page 254-256.
 
     }
 

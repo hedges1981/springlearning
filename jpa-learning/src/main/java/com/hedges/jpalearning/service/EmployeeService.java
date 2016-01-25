@@ -109,7 +109,6 @@ public class EmployeeService
         c.select( emp );
         c.distinct( true );
 
-        //Join<Employee, Department> deptJoin = emp.join("department", JoinType.LEFT);
 
         List<Predicate> criteria = new ArrayList<Predicate>();
 
@@ -127,13 +126,31 @@ public class EmployeeService
             criteria.add(cb.equal(emp.get("lastName"),p));
         }
 
-        if( departmentName != null )
-        {
-            ParameterExpression<String>  p =
-                    cb.parameter( String.class, "departmentName" );
+        boolean useJoinForDepartmentName = true;
 
-            //NOTE: this bit here demos the use of a path expression.
-            criteria.add(cb.equal(emp.get("department").get("name"),p));
+        //note the two ways here for adding department name to the query, either use a join, or a path expression.
+        if( useJoinForDepartmentName)
+        {
+            if( departmentName != null )
+            {
+                Join<Employee, Department> deptJoin = emp.join("department", JoinType.LEFT);
+                ParameterExpression<String>  p =
+                        cb.parameter( String.class, "departmentName" );
+
+                //NOTE: this bit here demos the use of a path expression.
+                criteria.add(cb.equal(deptJoin.get( "name" ), p));
+            }
+        }
+        else
+        {
+            if( departmentName != null )
+            {
+                ParameterExpression<String>  p =
+                        cb.parameter( String.class, "departmentName" );
+
+                //NOTE: this bit here demos the use of a path expression.
+                criteria.add(cb.equal(emp.get("department").get("name"),p));
+            }
         }
 
         //now put the predicates into the where clause:
