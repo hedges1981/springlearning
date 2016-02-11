@@ -1,0 +1,1 @@
+INSERT INTO PERSON(NAME) VALUES ('King Kong');

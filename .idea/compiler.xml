@@ -29,7 +29,6 @@
         <module name="com.springinpractice.06_01" />
         <module name="hibernate" />
         <module name="hibernate-solution" />
-        <module name="intouch-proxy-service" />
         <module name="javaconfig-dependency-injection" />
         <module name="javaconfig-dependency-injection-solution" />
         <module name="jdbc" />

@@ -1,5 +1,7 @@
 package com.hedges.jpalearning;
 
+import com.hedges.jpalearning.advancedormchapter.model.AORMEmployee;
+import com.hedges.jpalearning.advancedormchapter.services.AORMEmployeeService;
 import com.hedges.jpalearning.model.*;
 import com.hedges.jpalearning.otherobjs.PhoneAndDog;
 import com.hedges.jpalearning.service.EmployeeService;
@@ -31,7 +33,31 @@ public class Main
 
       //  chapter8LearningJPQL( context );
 
-        chapter9LearningCriteriaAPI( context );
+      //  chapter9LearningCriteriaAPI( context );
+
+        chapter10AdvancedORM();
+    }
+
+    private static void chapter10AdvancedORM( )
+    {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "classpath:advancedOrmChapterContext.xml" );
+
+        AORMEmployeeService employeeService = context.getBean( AORMEmployeeService.class );
+
+        List<AORMEmployee>  employees = employeeService.getAllEmployees();
+
+        for( AORMEmployee employee: employees )
+        {
+            if( employee.getContactInfo().getResidence() != null )
+            {
+                U.print("Employee found with embedded contactInfo that is embedded with an address:"+  employee.getContactInfo().getResidence());
+            }
+
+            if( employee.getContactInfo().getPhones()!= null && !employee.getContactInfo().getPhones().isEmpty() )
+            {
+                U.print("Employee found with embedded contactInfo that houses the phones:"+ employee.getContactInfo().getPhones() );
+            }
+        }
     }
 
     private static void chapter9LearningCriteriaAPI( ClassPathXmlApplicationContext context )
@@ -163,6 +189,81 @@ public class Main
         }
 
         //NOTE: you can put loads of different functions and operators in the where clause, e.g. length(....) see book page 254-256.
+
+        //TODO: DEMO nested queries
+
+        //Use of IN
+        //e.g. select e from Employee e where e.name in( "john1","john12")
+        CriteriaQuery<Employee> cqIn = cb.createQuery( Employee.class );
+        Root<Employee> empRootIn = cqIn.from( Employee.class );
+        cqIn.select( emp ).where(emp.get("firstName").in("john1","john12"));   //NOTE the use of a comma separated list for the IN bit.
+
+        U.print( em.createQuery( cqIn ).getResultList());
+
+        //DEMO OF Case expression:  e.g.
+        //"SELECT case " +
+        //        "       when e.employeeType ='CONTRACT_EMPLOYEE' then 'CONTRACTOR' " +
+         //       "       when e.employeeType is null then 'not known' ELSE 'need to have an else to make it work' " +
+         //       "       end" +
+         //       "       from Employee e";
+
+        CriteriaQuery<String> cqCase = cb.createQuery( String.class );
+        Root<Employee> empRootCase = cqCase.from( Employee.class );
+
+        cqCase.select(
+
+                cb.<String,String>selectCase( empRootCase.<String>get( "employeeType") )
+                //note the <String,String> bit paramerising the method, is <C,R> C= type of thing being tested, R = type of result.
+                        .when( "CONTRACT_EMPLOYEE", "CONTRACTOR" )
+                        .when("null", "not known")
+                        .otherwise( "result of else in case" )
+        );
+
+      // U.print( em.createQuery( cqCase ).getResultList());   // -- giving an exception for some stupid reason Hibernate bug?
+
+        //DEMO use of ORDER BY:
+//        SELECT d.name, e.name
+//        FROM Employee e JOIN e.dept d
+//        ORDER BY d.name DESC, e.name
+
+        CriteriaQuery<Object[]> orderByQuery = cb.createQuery( Object[].class);
+        Root<Employee> empRoot9 = orderByQuery.from(Employee.class);
+        Join<Employee,Department> dept = empRoot9.join("department");
+        orderByQuery.multiselect( dept.get( "name" ), empRoot9.get( "firstName" ) );
+        orderByQuery.orderBy( cb.desc( dept.get( "name" ) ),
+                              cb.asc( empRoot9.get( "firstName" ) ) );
+
+        List<Object[]> stringarrays = em.createQuery( orderByQuery ).getResultList() ;
+
+        for( Object[] sa: stringarrays )
+        {
+           U.print(sa[0]+","+sa[1]);
+        }
+
+        //DEMO USE OF GROUP BY AND HAVING:
+//        SELECT d, COUNT(e)
+//            FROM Department d JOIN d.employees e
+//        GROUP BY d
+//        HAVING COUNT(e) >= 2
+
+        CriteriaQuery<Object[]> gbhQuery = cb.createQuery(Object[].class);
+        Root<Department> deptRoot5 = gbhQuery.from( Department.class);
+        Join<Department,Employee> deptEmpJoin = deptRoot5.join("employees");
+        gbhQuery.multiselect( deptRoot5, cb.count( deptRoot5 ) )
+                .groupBy(deptRoot5)
+                .having(cb.ge(cb.count(deptEmpJoin),2));
+
+        List<Object[]> gbhResults = em.createQuery( gbhQuery ).getResultList();
+
+        for( Object[] objArr: gbhResults )
+        {
+            U.print( objArr[0]+","+objArr[1]);
+        }
+
+        //TODO: stuff from p.265 on? Stronlgy type queries and canonical metamodel?  Worth looking at?
+
+
+
 
     }
 
