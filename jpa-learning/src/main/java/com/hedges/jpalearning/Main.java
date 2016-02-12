@@ -97,7 +97,49 @@ public class Main
 
         //NOTE: embedded primary keys require special treatment in queries, note how the id object must be traversed:
         String query = "Select e from AORMElephant e where e.elephantId.firstName=?1";
-        U.print(em.createQuery( query ).setParameter( 1,"hhh" ).getResultList());
+        U.print( em.createQuery( query ).setParameter( 1, "hhh" ).getResultList() );
+
+
+        //********************DERIVED IDENTIFIERS****************************************
+        //basically cases when the pk of one table is made up entirely or partially of the pk from one or more other tables,
+        //e.g. think back to rental result where it was order has lines which have individual items. line pk must reference order pk, etc.
+
+        //shared primary key:
+        //look at the AORMEmployeeHistory class and see how it is set up with its @MapsId to share the same pk as its AORMEmployee object.
+        AORMEmployeeHistory employeeHistory = generalService.findEmployeeHistoryById( 1 );
+        U.print( employeeHistory );
+
+        //Dependant identifier, look how AORMDogWalk has the same pk as AORMDog, but with the additional walk number:
+        List<AORMDogWalk> dogWalks = generalService.findAllDogWalks();
+        U.print(dogWalks);    //note how on the AORMDogWalk object the AORMDogWalkId object contains the nested embedded AORMDogId object.
+
+
+        //**************************ADVANCED MAPPING ELEMENTS***************************
+        //DEMO of how to make an object read only:
+        List<AORMReadOnly> aormReadOnlies = generalService.findAllAORMReadOnly();
+
+        //NOTE: how trying to update stuff causes exceptions:
+        for( AORMReadOnly aormReadOnly:aormReadOnlies )
+        {
+            try
+            {
+                generalService.updateAStringOnAormReadOnly( aormReadOnly.getId(), " some rubbish" );
+            }
+            catch( Exception e )
+            {
+                //NOTE; no exception seems to be thrown, appears that it just doesnt carry the update through to the db when you
+                //try to update a column that has: updatable= false on it.
+            }
+        }
+
+        AORMReadOnly aormReadOnly = new AORMReadOnly();
+        aormReadOnly.setId( 999 );
+        aormReadOnly.setaString( "qwqwq" );
+
+        generalService.tryToPersistReadOnly( aormReadOnly );
+        //TODO: note the above object is still getting its ID persisted to the db, even though it shouldn't be, investigate.
+
+
     }
 
     private static void chapter9LearningCriteriaAPI( ClassPathXmlApplicationContext context )

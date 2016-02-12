@@ -26,6 +26,12 @@ public class AORMGeneralService
     private AORMDogRepository dogRepository;
     @Autowired
     private AORMElephantRepository elephantRepository;
+    @Autowired
+    private AORMEmployeeHistoryRepository employeeHistoryRepository;
+    @Autowired
+    private AORMDogWalkRepository dogWalkRepository;
+    @Autowired
+    private AORMReadOnlyRepository aormReadOnlyRepository;
 
     @Autowired
     private EntityManager entityManager;
@@ -82,6 +88,31 @@ public class AORMGeneralService
         return elephantRepository.findOne( elephantId );
     }
 
+    public AORMEmployeeHistory findEmployeeHistoryById( int id )
+    {
+        return employeeHistoryRepository.findOne( id );
+    }
+
+    public List<AORMDogWalk> findAllDogWalks()
+    {
+        return dogWalkRepository.findAll();
+    }
+
+    public List<AORMReadOnly> findAllAORMReadOnly()
+    {
+        return aormReadOnlyRepository.findAll();
+    }
+
+    public void updateAStringOnAormReadOnly( int aormReadOnlyId , String newValue )
+    {
+        AORMReadOnly aormReadOnly = aormReadOnlyRepository.findOne( aormReadOnlyId );
+        aormReadOnly.setaString( newValue );
+    }
+
+    public void tryToPersistReadOnly( AORMReadOnly aormReadOnly )
+    {
+        aormReadOnlyRepository.save( aormReadOnly );
+    }
 
 
 }
