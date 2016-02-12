@@ -16,7 +16,6 @@ public class AORMContactInfo
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable( name="emp_phone", joinColumns = @JoinColumn(name="emp_id"), inverseJoinColumns = @JoinColumn(name="phone_id") )
-
     private Collection<AORMPhone> phones;
 
     public AORMAddress getResidence()

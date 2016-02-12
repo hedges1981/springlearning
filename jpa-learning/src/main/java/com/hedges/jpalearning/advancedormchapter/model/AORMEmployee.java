@@ -12,7 +12,6 @@ public class AORMEmployee
 {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
-
     private int id;
 
     public int getId()

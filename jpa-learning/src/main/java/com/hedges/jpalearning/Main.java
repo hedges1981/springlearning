@@ -1,7 +1,7 @@
 package com.hedges.jpalearning;
 
-import com.hedges.jpalearning.advancedormchapter.model.AORMEmployee;
-import com.hedges.jpalearning.advancedormchapter.services.AORMEmployeeService;
+import com.hedges.jpalearning.advancedormchapter.model.*;
+import com.hedges.jpalearning.advancedormchapter.services.AORMGeneralService;
 import com.hedges.jpalearning.model.*;
 import com.hedges.jpalearning.otherobjs.PhoneAndDog;
 import com.hedges.jpalearning.service.EmployeeService;
@@ -42,12 +42,15 @@ public class Main
     {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "classpath:advancedOrmChapterContext.xml" );
 
-        AORMEmployeeService employeeService = context.getBean( AORMEmployeeService.class );
+        AORMGeneralService generalService = context.getBean( AORMGeneralService.class );
+        EntityManager em = context.getBean( EntityManager.class );
 
-        List<AORMEmployee>  employees = employeeService.getAllEmployees();
+        List<AORMEmployee>  employees = generalService.getAllEmployees();
 
+        //NOTE: DEMOS USE OF 'CHAINED' EMBEDABLES'
+        //NOTE: how we have a bended object structure with contactInfo and address objects, same as in book page ~276.
         for( AORMEmployee employee: employees )
-        {
+        {   //stuff in here just verifies that object link employee-> contactInfo->Address and phones is working ok.
             if( employee.getContactInfo().getResidence() != null )
             {
                 U.print("Employee found with embedded contactInfo that is embedded with an address:"+  employee.getContactInfo().getResidence());
@@ -58,6 +61,43 @@ public class Main
                 U.print("Employee found with embedded contactInfo that houses the phones:"+ employee.getContactInfo().getPhones() );
             }
         }
+
+        //NOTE: proves that the link from AORMPhone to its employees is working.
+
+        List<AORMPhone> phones = generalService.getAllPhones();
+
+        for( AORMPhone phone : phones )
+        {
+            if( !phone.getEmployees().isEmpty() )
+            {
+                U.print( phone.getEmployees() );
+            }
+        }
+
+        //DEMO USE OF @AssociationOverride:
+        List<AORMCustomer>  customers = generalService.getAllCustomers();
+
+        for( AORMCustomer customer: customers)
+        {
+            //NOTE: this shows that the @AssociationOverride to use the customer_phone table to get the phones has worked.
+            U.print( customer.getContactInfo().getPhones() );
+            //NOTE; this shows that the @AttributeOverride for the post_code column on the AORMCustomer object has worked:
+            U.print( customer.getContactInfo().getResidence().getZipCode() );
+        }
+
+        //DEMO USE OF COMPOUND PRIMARY KEY
+        //NOTE: how the AORMDog object is set up so that the AORMDogId can be used as its pk, pk on the table is (firstName, lastName)
+        //NOTE: this does not demo an embedded pk, as the dog class still has the firstName and lastName fields.
+        AORMDog mavis = generalService.findDogById( new AORMDogId( "mavis", "hall" ) );
+        U.print( mavis );
+
+        //DEMO use of embedded Primary Key:
+        AORMElephant elephant = generalService.findElephantById( new AORMElephantId( "brial","ele" ) );
+        U.print(elephant);
+
+        //NOTE: embedded primary keys require special treatment in queries, note how the id object must be traversed:
+        String query = "Select e from AORMElephant e where e.elephantId.firstName=?1";
+        U.print(em.createQuery( query ).setParameter( 1,"hhh" ).getResultList());
     }
 
     private static void chapter9LearningCriteriaAPI( ClassPathXmlApplicationContext context )
