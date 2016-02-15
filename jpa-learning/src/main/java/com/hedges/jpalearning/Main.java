@@ -10,6 +10,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.persistence.*;
 import javax.persistence.criteria.*;
+import javax.validation.constraints.AssertTrue;
 import java.util.*;
 
 /**
@@ -138,6 +139,18 @@ public class Main
 
         generalService.tryToPersistReadOnly( aormReadOnly );
         //TODO: note the above object is still getting its ID persisted to the db, even though it shouldn't be, investigate.
+
+
+        //*******************SELF REFERENCING RELATIONSHIPS ****************************
+        //Employee has a manager, that is also an employee:
+        //employee 1 has a few minions:
+        AORMEmployee manager = generalService.findEmployeeById( 1 );
+        U.print( manager.getMinions()) ;
+
+        //Employee 2 is managed by employee 1:
+        AORMEmployee minion = generalService.findEmployeeById( 2 );
+        assert( minion.getManager().getId() ==1 );
+        assert( minion.getMinions().isEmpty());
 
 
     }

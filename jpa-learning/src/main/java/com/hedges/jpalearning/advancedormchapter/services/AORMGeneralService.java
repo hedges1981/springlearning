@@ -53,6 +53,16 @@ public class AORMGeneralService
         return emps;
     }
 
+    public AORMEmployee findEmployeeById( int id )
+    {
+        AORMEmployee emp = employeeRepository.findOne( id );
+        //shit necessary for getting round the lazy fetching:
+        if(emp.getManager() != null) emp.getManager().getId();
+        emp.getMinions().size();
+
+        return emp;
+    }
+
     public List<AORMPhone> getAllPhones()
     {
         List<AORMPhone> phones = phoneRepository.findAll();
