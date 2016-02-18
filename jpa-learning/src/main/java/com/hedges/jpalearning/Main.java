@@ -10,7 +10,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.persistence.*;
 import javax.persistence.criteria.*;
-import javax.validation.constraints.AssertTrue;
 import java.util.*;
 
 /**
@@ -151,6 +150,95 @@ public class Main
         AORMEmployee minion = generalService.findEmployeeById( 2 );
         assert( minion.getManager().getId() ==1 );
         assert( minion.getMinions().isEmpty());
+
+        //************************Compound Join Columns********************************
+        //note how there are two join columns used to join dog_bed to dog.
+        AORMDogId dogId = new AORMDogId( "mavis", "hall" );
+        AORMDog mavis2 = generalService.findDogById( dogId );
+        U.print(mavis2.getDogBeds());
+
+        //*********************ORPHAN REMOVAL**********************************
+        AORMEmployee employee = generalService.createAnEmployeeWithSomeChildren();
+        //check the db now, some emp_child1 rows should have been made.
+
+        generalService.deleteEmployeeById( employee.getId() );
+        //Check the db now, the emp_child1 rows should have gone, due to the orphanRemoval = true on the realtionship in the AORMEmployee object.
+        //NOTE the hibernate SQL logs, see how it has done a delete for every child row.
+
+
+        //*********************MULTIPLE TABLES, note how the AORMEmployee entity also is set to bring in info from the emp_additional_info table:
+        AORMEmployee emp = generalService.findEmployeeById( 1 );
+        U.print( emp.getAdditionalInfo1() ) ;
+        U.print( emp.getAdditionalInfo2() ) ;
+        //NOTE: you can have @SecondaryTables to use > 1 sec table.  Seel book page 299 for an example of a more complicated secondary table situation.
+
+        //***********************INHERITANCE*************************************************
+
+        //TODO: p.302, the @MappedSuperClass stuff ?
+
+        //*****************USING SUPERCLASS TO HOLD TRANSIENT STATE
+        //NOTE: how the AORMEmployee class extends CachedEntity, to allow for the time it was made, and therefore cached to be recorded:
+        List<AORMEmployee> employeeList = generalService.getAllEmployees();
+
+        for( AORMEmployee empo: employeeList )
+        {
+            U.print("Emp with id="+empo.getId()+" has been in the cache for "+empo.getCacheAgeMs()+" ms");
+        }
+
+        //**************SINGLE TABLE STRATEGY*********************************************
+        //NOTE how the kid table holds boy specific data and girl specific data, and that is reflected in the object model
+        //NOTE how here we can use a repository for the abstract super class (AORMKid) to find all instances of the abstract class
+        List<AORMKid> kids = generalService.getAllKids();
+
+        for( AORMKid kid: kids )
+        {
+            if( kid instanceof AORMBoy )
+            {
+                U.print("Boy found: boyspecificDataIs:"+ ( ( AORMBoy ) kid ).getBoySpecificField() );
+            }
+            else if ( kid instanceof AORMGirl )
+            {
+                U.print("Girl found: girlspecificDataIs:"+ ( ( AORMGirl ) kid ).getGirlSpecificField() );
+            }
+        }
+
+        //NOTE how we can also have a repository specific to one of the concrete sub classes and make queries on that:
+        List<AORMBoy>  boys = generalService.getAllBoys();
+        U.print( boys );
+
+        //NOTE: when you create a boy how the discriminator column is automatically filled in with 'boy'
+        generalService.createBoyWithName( "John" );
+
+
+        //************************JOINED STRATEGY *********************
+        //NOTE: how the ineritance Hierachy of the AORMApple class uses joins between tables  to add in the concrete
+        //sub class stuff, note the use of the AORMColouredFruit as an @MappedSuperClass to hold the color field, that is common to both the apple and the oranges.
+        //but see how there is no table for the AORMColouredFruit object, the colour column is on both the apple and orange tables.
+
+        List<AORMFruit> fruits = generalService.getAllFruits();
+
+        for( AORMFruit fruit: fruits )
+        {
+            if( fruit instanceof AORMOrange )
+            {
+                  U.print("Orange found:"+fruit);
+            }
+            else if( fruit instanceof AORMApple )
+            {
+                U.print( "Apple found:"+fruit );
+            }
+        }
+
+        //NOTE: again we can make queries based on just the concrete sub classes:
+        List<AORMApple> apples  = generalService.getAllApples();
+        U.print( apples );
+
+        //NOTE: how when you make an apple, you get two rows, one in the 'parent' table and one in the joined in 'child' table:
+        AORMApple apple = generalService.createAnApple();
+        U.print( apple );
+
+
+        //******************TABLE PER CONCRETE CLASS STRATEGY***************************
 
 
     }

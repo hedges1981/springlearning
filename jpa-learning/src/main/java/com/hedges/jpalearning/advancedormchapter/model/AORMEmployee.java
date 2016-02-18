@@ -8,8 +8,12 @@ import java.util.List;
  */
 @Entity
 @Table( name = "emp", schema = "jpalearning" )
+@SecondaryTable( name="emp_additional_info" , pkJoinColumns = @PrimaryKeyJoinColumn(name="emp_id"))
+//NOTE: above tells it that emp_additional_info is the secondary table and that emp_id is the join column
+//NOTE: to ensure a 1-1 for the link from emp to the secondary tables, make the pk of the sec table same as the main table.
+//NOTE: you can have @SecondaryTables to use > 1 sec table.  Seel book page 299 for an example of a more complicated secondary table situation.
 @Access( AccessType.FIELD )
-public class AORMEmployee
+public class AORMEmployee  extends CachedEntity
 {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -29,6 +33,26 @@ public class AORMEmployee
 
     @OneToMany(mappedBy = "manager")
     private List<AORMEmployee> minions;
+
+    @OneToMany( mappedBy = "employee", orphanRemoval = true, cascade = CascadeType.PERSIST ) //NOTE that orphan removal is effectively the same as cascade remove
+    private List<AORMEmpChild1> child1s;
+
+
+    //NOTE: how these two fields are set to get pulled from the secondary table:
+    @Column(name = "additional_info_1",  table= "emp_additional_info")
+    private String additionalInfo1;
+    @Column(name = "additional_info_2",  table= "emp_additional_info")
+    private String additionalInfo2;
+
+    public List<AORMEmpChild1> getChild1s()
+    {
+        return child1s;
+    }
+
+    public void setChild1s( List<AORMEmpChild1> child1s )
+    {
+        this.child1s = child1s;
+    }
 
     public AORMContactInfo getContactInfo()
     {
@@ -68,5 +92,25 @@ public class AORMEmployee
     public void setMinions( List<AORMEmployee> minions )
     {
         this.minions = minions;
+    }
+
+    public String getAdditionalInfo1()
+    {
+        return additionalInfo1;
+    }
+
+    public void setAdditionalInfo1( String additionalInfo1 )
+    {
+        this.additionalInfo1 = additionalInfo1;
+    }
+
+    public String getAdditionalInfo2()
+    {
+        return additionalInfo2;
+    }
+
+    public void setAdditionalInfo2( String additionalInfo2 )
+    {
+        this.additionalInfo2 = additionalInfo2;
     }
 }

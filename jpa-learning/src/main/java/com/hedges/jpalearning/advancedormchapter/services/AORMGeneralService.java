@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,9 +33,80 @@ public class AORMGeneralService
     private AORMDogWalkRepository dogWalkRepository;
     @Autowired
     private AORMReadOnlyRepository aormReadOnlyRepository;
-
     @Autowired
     private EntityManager entityManager;
+    @Autowired
+    private AORMKidRepository kidRepository;
+    @Autowired
+    private AORMBoyRepository boyRepository;
+    @Autowired
+    private AORMFruitRepository fruitRepository;
+    @Autowired
+    private AORMAppleRepository appleRepository;
+    @Autowired
+    private AORMOrangeRepository orangeRepository;
+
+    public List<AORMOrange> getAllOranges()
+    {
+        return orangeRepository.findAll();
+    }
+
+    public AORMApple createAnApple()
+    {
+        //need to get the max id of the fruits:
+
+        List<AORMFruit> fruits = getAllFruits();
+
+        int maxId =0;
+
+        for( AORMFruit fruit: fruits )
+        {
+            if( fruit.getId() > maxId )
+            {
+                maxId = fruit.getId();
+            }
+        }
+
+        int newId = maxId + 1;
+
+        AORMApple apple = new AORMApple();
+        apple.setAppleType( "grannySmith" );
+        apple.setColour( "green" );
+        apple.setId( newId );
+        apple.setWeight( 300 );
+
+        appleRepository.save( apple );
+
+        return apple;
+    }
+
+
+    public List<AORMFruit> getAllFruits()
+    {
+        return fruitRepository.findAll();
+    }
+
+    public List<AORMApple> getAllApples()
+    {
+        return appleRepository.findAll();
+    }
+
+    public List<AORMKid> getAllKids()
+    {
+        return kidRepository.findAll();
+    }
+
+    public List<AORMBoy> getAllBoys()
+    {
+        return boyRepository.findAll();
+    }
+
+    public void createBoyWithName( String name )
+    {
+        AORMBoy boy = new AORMBoy();
+        boy.setName( name );
+        boyRepository.save( boy );
+    }
 
     public List<AORMEmployee> getAllEmployees()
     {
@@ -51,6 +123,31 @@ public class AORMGeneralService
         }
 
         return emps;
+    }
+
+    public AORMEmployee createAnEmployeeWithSomeChildren()
+    {
+        AORMEmployee employee = new AORMEmployee();
+
+        List<AORMEmpChild1>  children = new ArrayList<AORMEmpChild1>();
+
+        for( int i =0; i<10; i++ )
+        {
+            AORMEmpChild1 child = new AORMEmpChild1();
+            child.setEmployee( employee );
+            children.add( child );
+        }
+
+        employee.setChild1s( children );
+
+        employeeRepository.save( employee );
+
+        return employee;
+    }
+
+    public void deleteEmployeeById( int id )
+    {
+        employeeRepository.delete( id );
     }
 
     public AORMEmployee findEmployeeById( int id )
@@ -88,9 +185,15 @@ public class AORMGeneralService
         return customers;
     }
 
+    @Transactional(readOnly = true)    // had to put the read only on for some reason, as something about this caused an hibernate identifier of an instance of was altered from exception,
+    //probably due to the fact that the dog-bed join columns make up the ID of the dog object.
     public AORMDog findDogById( AORMDogId dogId )
     {
-        return dogRepository.findOne( dogId );
+        AORMDog dog= dogRepository.findOne( dogId );
+        //shit necessary to get round lazy fetching:
+        dog.getDogBeds().size();
+
+        return dog;
     }
 
     public AORMElephant findElephantById( AORMElephantId elephantId )

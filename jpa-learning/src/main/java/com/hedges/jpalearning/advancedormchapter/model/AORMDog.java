@@ -1,9 +1,7 @@
 package com.hedges.jpalearning.advancedormchapter.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by rowland-hall on 12/02/16
@@ -18,6 +16,9 @@ public class AORMDog
     private String firstName;
     @Id
     private String lastName;
+
+    @OneToMany(mappedBy="dog")
+    private List<AORMDogBed> dogBeds;
 
     public String getFirstName()
     {
@@ -37,5 +38,15 @@ public class AORMDog
     public void setLastName( String lastName )
     {
         this.lastName = lastName;
+    }
+
+    public List<AORMDogBed> getDogBeds()
+    {
+        return dogBeds;
+    }
+
+    public void setDogBeds( List<AORMDogBed> dogBeds )
+    {
+        this.dogBeds = dogBeds;
     }
 }
