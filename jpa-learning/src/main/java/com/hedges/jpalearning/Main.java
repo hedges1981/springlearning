@@ -239,8 +239,22 @@ public class Main
 
 
         //******************TABLE PER CONCRETE CLASS STRATEGY***************************
+        //NOTE: the example in the book uses @AttributeOverrides to override column names in the sub classes.
+        //THIS DID NOT WORK, see the java doc for @AttributeOverrides, implies it must be used with @MappedSuperclass, not @Entity on the superclass.
+        //Hence the origin_country column is the same on both pizza and curry classes.
+         List<AORMFood> foodList = generalService.getAllFood();
+         U.print(foodList);
 
 
+        //NOTE: can also do queries against concrete classes
+        List<AORMCurry> curries = generalService.getAllCurry();
+        U.print(curries);
+
+        List<AORMPizza> pizzas = generalService.getAllPizza();
+        U.print(pizzas) ;
+
+        //********************MIXED INHERITANCE ****************************
+        //NOTE: NOT looked into this as apparently it is not in the JPA specification.
     }
 
     private static void chapter9LearningCriteriaAPI( ClassPathXmlApplicationContext context )

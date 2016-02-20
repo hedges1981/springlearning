@@ -10,11 +10,15 @@ import javax.persistence.*;
 public abstract class AORMFood
 {
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    //@GeneratedValue( strategy = GenerationType.IDENTITY )
+
+    //NOTE: can't have generation type IDENTITY or AUTO when on the super class of a table per class set up
+    @GeneratedValue( strategy = GenerationType.TABLE )
     private int id;
 
     //NOTE: how the countryOfOrigin colum on the concrete pizza and curry tables has different column names, and @AttributeOverride is used
     //to sort it out.
+    @Column( name="origin_country" )
     private String countryOfOrigin;
 
     public int getId()

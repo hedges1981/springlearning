@@ -45,6 +45,27 @@ public class AORMGeneralService
     private AORMAppleRepository appleRepository;
     @Autowired
     private AORMOrangeRepository orangeRepository;
+    @Autowired
+    private AORMFoodRepository foodRepository;
+    @Autowired
+    private AORMCurryRepository curryRepository;
+    @Autowired
+    private AORMPizzaRepository pizzaRepository;
+
+    public List<AORMCurry> getAllCurry()
+    {
+        return curryRepository.findAll();
+    }
+
+    public List<AORMPizza> getAllPizza()
+    {
+        return pizzaRepository.findAll();
+    }
+
+    public List<AORMFood> getAllFood()
+    {
+        return foodRepository.findAll();
+    }
 
     public List<AORMOrange> getAllOranges()
     {
