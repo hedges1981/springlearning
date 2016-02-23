@@ -30,4 +30,11 @@ public class AORMLifeCycleCallBackDemoEntityListener1
     {
         U.print( obj + " has been persisted" );
     }
+
+    // NOTE: you can only annotate one method on an entity listener with a given callback annotation, if there is > 1, that application startup fails.
+//    @PostPersist
+//    public void logPersisted2( Object obj )
+//    {
+//        U.print( obj + " has been persisted 2" );
+//    }
 }

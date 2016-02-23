@@ -6,10 +6,12 @@ import com.hedges.jpalearning.model.*;
 import com.hedges.jpalearning.otherobjs.PhoneAndDog;
 import com.hedges.jpalearning.service.EmployeeService;
 import com.hedges.jpalearning.service.GeneralService;
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.persistence.*;
 import javax.persistence.criteria.*;
+import javax.validation.ConstraintViolationException;
 import java.util.*;
 
 /**
@@ -99,9 +101,13 @@ public class Main
         entityManager.refresh() is called.
 
         NOTE: with all the event firings, they also get fired if things like persist, remove, etc are cascaded down entity trees.
+
+        NOTE: you can only annotate one method on an entity with a given callback annotation, if there is > 1, that application startup fails.
          */
 
         //NOTE: when on entities, callback methods are executed from within the context of the current transaction and entity manager.
+
+        //NOTE: methods on entities get called AFTER those on an entity listener.
 
         //AORMLifecycleCallbackDemo is annotated with all of the above callback methods, see the output of this code to see them in action:
 
@@ -117,6 +123,10 @@ public class Main
         //check the logs for this operation to see i) that the entity listeners have been called and ii) that the order fired reflects the order declared on the class:
         generalService.createLifeCycleCallbackDemoWithString( "validString" );
 
+        //NOTE: methods on entity listeners get called BEFORE those on an entity.
+
+        //NOTE: you can only annotate one method on an entity listener with a given callback annotation, if there is > 1, that application startup fails.
+
         //NOTE: how this one causes AORMLifeCycleCallBackDemoEntityListener1 to throw an exception, demos how the entity listeners
         //can be used for validation, and how  an exception from the validation stops a txn getting committed.
         try
@@ -125,7 +135,7 @@ public class Main
         }
         catch( Exception e )
         {
-            e.printStackTrace();
+           U.print( "Expected exception occurred");
         }
 
         //***************DEFAULT ENTITY LISTENERS**************************
@@ -135,7 +145,69 @@ public class Main
         - order rules are:
         i) default listeners executed in order declared in the xml mappings file
         ii) they fire before any of the more specific ones declared at the entity level
+
+        USE: @ExcludeDefaultListeners to exclude an entity from all of the default listeners
          */
+
+        //******************ORDER OF CALL BACK METHODS WHEN INHERITANCE IS INVOLVED*****************
+
+        //see book pages: 331-332,
+        /*
+        CALLBACK METHODS ON ENTITY CLASSES: get called in the order of the inheritance hierachy, with the super class first
+        THEY NEED TO BE IN A CLASS THAT IS ANNOTATED WITH @Entity or @MappedSuperClass
+
+        CALLBACK METHODS ON ENTITY LISTENERS: the superclass' entity listeners get called before sub classes,
+
+        BASIC RULES FOR ORDERING ARE:
+        - default listeners in the order defined in the XML mapping file.
+        - entity listeners in the order defined on each class, descending down the hierarchy.
+        - entity callback methods, descending down the class hierarchy
+
+        */
+
+
+        //********************************VALIDATION************************************************
+        //NOTE; see how the ValidationExample has various validations on it:
+
+        //NOTE: to get the validation to work automatically, it was necessary to have: org.hibernate.validator.HibernateValidator on the class path,
+        //see the pom.xml for the inclusion of: <artifactId>hibernate-validator</artifactId>
+
+        ValidationExample valex = new ValidationExample();
+        //these settings mean it will fail validation:
+        valex.setLengthLessThan5String( "123456");
+        valex.setNotNullString( null );
+        try
+        {
+            generalService.saveValidationExample( valex );
+        }
+        catch( ConstraintViolationException e )
+        {
+            U.print( " validation failed: exception was: "+e.getMessage());
+        }
+
+        //so lets get it to pass the validation:
+        valex.setLengthLessThan5String( "1234" );
+        valex.setNotNullString( "notNULL" );
+        Date yesterday = DateUtils.addHours( new Date(), -24 );
+        valex.setDateInThePast( yesterday );
+
+        generalService.saveValidationExample( valex );
+
+        //NOTE: what happens if we pull an entity out of the db that it not valid, but has got in there some how?
+        //see how the entity with id = 5 has a 'lengthLessThan5String' with a length > 5.
+        ValidationExample valex2 = generalService.findValidationExampleById( 5 );
+
+        //NOTE how it has come out of the db fine, but if we try to do a valid update on it, what happens?
+        try
+        {
+            generalService.doAValidUpdateOnAPreExistingInvalidEntity();
+        }
+        catch( ConstraintViolationException e )
+        {   //basically it revalidates it and fails it.
+            U.print( " validation failed, it has revalidated the object and failed on the pre-existing invalid data, exception was: "+e.getMessage());
+        }
+
+
 
 
 
@@ -799,7 +871,7 @@ public class Main
         int pageSize =5;
         //get the first page:
         employees = entityManager.createQuery( allEmpsViaQueryStr ).setFirstResult( currentPage * pageSize ).setMaxResults( pageSize ).getResultList();
-        U.print( "employees on first page"+employees );
+        U.print( "employees on first page" + employees );
 
         pageSize ++;
         employees = entityManager.createQuery( allEmpsViaQueryStr ).setFirstResult( currentPage * pageSize ).setMaxResults( pageSize ).getResultList();

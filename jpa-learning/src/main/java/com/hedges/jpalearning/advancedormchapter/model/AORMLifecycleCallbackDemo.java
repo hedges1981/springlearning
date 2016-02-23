@@ -50,6 +50,14 @@ public class AORMLifecycleCallbackDemo
         U.print(this+" in pre persist");
     }
 
+
+    //NOTE: you can only annotate one method on an entity with a given callback annotation, if there is > 1, that application startup fails.
+//    @PrePersist
+//    public void prePersistCallback2()
+//    {
+//        U.print(this+" in pre persist call back 2");
+//    }
+
     @PostPersist
     public void postPersistCallback()
     {

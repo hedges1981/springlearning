@@ -55,6 +55,26 @@ public class AORMGeneralService
     private AORMPizzaRepository pizzaRepository;
     @Autowired
     private AORMLifecycleCallbackRepository lifecycleCallbackRepository;
+    @Autowired
+    private ValidationExampleRepository validationExampleRepository;
+
+    public void doAValidUpdateOnAPreExistingInvalidEntity()
+    {
+        ValidationExample valex = validationExampleRepository.findOne( 5 );
+        //valex has an invalid 'lengthLessThan5String' field already there in the db.
+        //lets not change that but change something else, so it will try to update the object:
+        valex.setNotNullString( UUID.randomUUID().toString() );
+    }
+
+    public void saveValidationExample( ValidationExample validationExample )
+    {
+        validationExampleRepository.save( validationExample );
+    }
+
+    public ValidationExample findValidationExampleById( int id )
+    {
+        return validationExampleRepository.findOne( id );
+    }
 
     public void createLifeCycleCallbackDemoWithString( String s )
     {
