@@ -190,6 +190,7 @@ public class Main
         valex.setNotNullString( "notNULL" );
         Date yesterday = DateUtils.addHours( new Date(), -24 );
         valex.setDateInThePast( yesterday );
+        valex.setEvenInteger( 8 );
 
         generalService.saveValidationExample( valex );
 
@@ -202,7 +203,7 @@ public class Main
         {
             generalService.doAValidUpdateOnAPreExistingInvalidEntity();
         }
-        catch( ConstraintViolationException e )
+        catch( Exception e )
         {   //basically it revalidates it and fails it.
             U.print( " validation failed, it has revalidated the object and failed on the pre-existing invalid data, exception was: "+e.getMessage());
         }
@@ -212,6 +213,26 @@ public class Main
 
         //**************************CREATING NEW CONSTRAINTS***************************************
         //book pages 340-341
+        //NOTE: how we have set up the @Even annotation with the EvenNumberValidator class, lets set an odd number and see it fail...
+        valex = new ValidationExample();
+
+        valex.setDateInThePast( yesterday );
+        valex.setEvenInteger( 7 ); //NOTE: invalid setting of odd number.
+        valex.setLengthLessThan5String( "1234" );
+        valex.setNotNullString( "notNULL" );
+
+        try
+        {
+            generalService.saveValidationExample( valex );
+        }
+        catch( Exception e )
+        {
+            U.print( " validation failed, odd number was set, exception was: "+e.getMessage());
+        }
+
+
+
+
 
 
 

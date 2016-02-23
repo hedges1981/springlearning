@@ -1,5 +1,7 @@
 package com.hedges.jpalearning.advancedchapters.model;
 
+import com.hedges.jpalearning.advancedchapters.validation.Even;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -28,6 +30,19 @@ public class ValidationExample
 
     @Past //can also have @Future, note that a null date passes both the @Past and @Future validations.
     private Date dateInThePast;
+
+    @Even//NOTE: how this is using the custom made @Even to make sure that the value is even:
+    private int evenInteger;
+
+    public int getEvenInteger()
+    {
+        return evenInteger;
+    }
+
+    public void setEvenInteger( int evenInteger )
+    {
+        this.evenInteger = evenInteger;
+    }
 
     public int getId()
     {
