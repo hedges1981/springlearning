@@ -1,7 +1,7 @@
 package com.hedges.jpalearning;
 
-import com.hedges.jpalearning.advancedormchapter.model.*;
-import com.hedges.jpalearning.advancedormchapter.services.AORMGeneralService;
+import com.hedges.jpalearning.advancedchapters.model.*;
+import com.hedges.jpalearning.advancedchapters.services.AORMGeneralService;
 import com.hedges.jpalearning.model.*;
 import com.hedges.jpalearning.otherobjs.PhoneAndDog;
 import com.hedges.jpalearning.service.EmployeeService;
@@ -206,6 +206,12 @@ public class Main
         {   //basically it revalidates it and fails it.
             U.print( " validation failed, it has revalidated the object and failed on the pre-existing invalid data, exception was: "+e.getMessage());
         }
+
+        //*****************************VALIDATION GROUPS*******************************************
+        //TODO: some examples of this, see book page 338-339.
+
+        //**************************CREATING NEW CONSTRAINTS***************************************
+        //book pages 340-341
 
 
 
