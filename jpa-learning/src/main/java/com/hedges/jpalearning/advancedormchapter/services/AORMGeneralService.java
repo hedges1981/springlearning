@@ -8,7 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by rowland-hall on 11/02/16
@@ -51,6 +53,50 @@ public class AORMGeneralService
     private AORMCurryRepository curryRepository;
     @Autowired
     private AORMPizzaRepository pizzaRepository;
+    @Autowired
+    private AORMLifecycleCallbackRepository lifecycleCallbackRepository;
+
+    public void createLifeCycleCallbackDemoWithString( String s )
+    {
+        AORMLifecycleCallbackDemo lifecycleCallbackDemo = new AORMLifecycleCallbackDemo();
+        lifecycleCallbackDemo.setString( s );
+        lifecycleCallbackRepository.save( lifecycleCallbackDemo );
+    }
+
+    public void updateAllLifecycleCallbackDemos()
+    {
+        List<AORMLifecycleCallbackDemo> list = lifecycleCallbackRepository.findAll();
+
+        for( AORMLifecycleCallbackDemo lifecycleCallbackDemo: list )
+        {
+            lifecycleCallbackDemo.setString( UUID.randomUUID().toString() );
+        }
+    }
+
+    public void create10LifeCycleCallBackDemos()
+    {
+        for( int i = 0; i<10; i++ )
+        {
+            AORMLifecycleCallbackDemo lifecycleCallbackDemo = new AORMLifecycleCallbackDemo();
+            lifecycleCallbackDemo.setString( UUID.randomUUID().toString() );
+            lifecycleCallbackRepository.save( lifecycleCallbackDemo );
+        }
+    }
+
+    public void deleteAllLifecycleCallBackDemos()
+    {
+        List<AORMLifecycleCallbackDemo> list = lifecycleCallbackRepository.findAll();
+
+        for( AORMLifecycleCallbackDemo lifecycleCallbackDemo : list )
+        {
+            lifecycleCallbackRepository.delete( lifecycleCallbackDemo );
+        }
+    }
+
+    public void executeNativeSql( String sql )
+    {
+        entityManager.createNativeQuery( sql ).executeUpdate(); //note how execute update is used, this would be used for both an insert and an update.
+    }
 
     public List<AORMCurry> getAllCurry()
     {

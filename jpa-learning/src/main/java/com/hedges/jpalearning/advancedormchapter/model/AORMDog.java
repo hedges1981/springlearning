@@ -6,6 +6,7 @@ import java.util.List;
 /**
  * Created by rowland-hall on 12/02/16
  */
+@NamedNativeQuery( name="findAllDogs", query="select * from dog", resultClass = AORMDog.class ) //NOTE: without putting the resultClass in, it didn't work, got ArrayIndexOutOfBounds exception.
 @Entity
 @Table( name="dog")
 //NOTE: the use of @IdClass to allow the use of the compound pk.

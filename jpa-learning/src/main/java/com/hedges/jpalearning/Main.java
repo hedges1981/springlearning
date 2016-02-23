@@ -35,7 +35,110 @@ public class Main
 
       //  chapter9LearningCriteriaAPI( context );
 
-        chapter10AdvancedORM();
+        //chapter10AdvancedORM();
+
+        chapter11AdvancedTopics();
+    }
+
+    private static void chapter11AdvancedTopics()
+    {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "classpath:advancedOrmChapterContext.xml" );
+
+        AORMGeneralService generalService = context.getBean( AORMGeneralService.class );
+        EntityManager em = context.getBean( EntityManager.class );
+
+        //*********************NATIVE SQL QUERIES*******************************************
+        //OPTION1, creating the sql in-line:
+
+        String sql = "select * from dog";
+
+        List<AORMDog> dogs = em.createNativeQuery( sql, AORMDog.class ).getResultList();
+        //NOTE: how with this it goes to the dog object and works out from the column names of the returned results set, how to map the results to
+        //an AORMDog object.
+        U.print( dogs);
+        //TODO: there is probably a way to use th SpringDataJPA repositories to run native sql also.
+
+        //OPTION2: Using @NamedNativeQuery
+        //see the AORMDog class where this named native query is defined,
+        dogs = em.createNamedQuery( "findAllDogs", AORMDog.class ).getResultList();
+        U.print(dogs);
+
+        //NOTE: SEE  BOOK PAGE 319 regarding dangers of un expectedly modifying the db by using sql, basically if a native sql query gets mapped to an entity,
+        // then the resulting entities are managed, therefore you need to be careful about changes to them getting persisted
+
+        //NOTE: native sql can also be used to do inserts and updates, example of an insert:
+        sql = "insert into curry  (origin_country, hotnessLevel) values ('UK' , '999')";
+        generalService.executeNativeSql( sql ); //NOTE: had to put the executeUpdate(...) code in the service class as it requires a transaction.
+
+        //*********************SQL RESULT SET MAPPING***************************************
+        //SEE book pages 320-325 about this.
+        //TODO: work through this section, ( looks very very dull )
+
+        //*******************LIFECYCLE CALLBACKS *******************************************
+        //JPA has the following lifecycle events, on which actions can be fired:
+        //PrePersist, PostPersist, PreUpdate, PostUpdate, PreRemove, PostRemove, and PostLoad.
+
+        /*
+        Pre-persist : - is called when entityManager.persist(,,) is called on an entity. If an entity tree has persist: cascade on it the each entity
+        in the cascade gets the event fired.
+
+        Post-persist :- called when the entities insert statement is actually done, normally in the process of flushing the persisence context and committing the
+        transaction. The firing of post-persist does not mean the txn has successfully committed, it can still get rolled back even if post-persist has been fired.
+
+        PreRemove:- gets called when entityManager.remove(..) is called.
+
+        PostRemove:- gets called when the delete statement is sent to the db. Again, it's calling doesn't indicate success, as the overall txn could still get rolled back.
+
+        PreUpdate: - called at some point between an entity being updated and the change being pushed to the db. The point at which it is called is
+        implementation specific, also the number of times it gets called if an entity is updated > 1 time in a txn is also vendor specific.
+
+        PostUpdate: - called after the update statement is fired at the db. Again as with the others the enclosing transaction could be rolled back, so there is no guarantee that it
+        means the change has been permanently made.
+
+        PostLoad :- called after an entity has been read from the db and its object constructed. Will also fire as a result of a lazy initialisation, Can also fire if
+        entityManager.refresh() is called.
+
+        NOTE: with all the event firings, they also get fired if things like persist, remove, etc are cascaded down entity trees.
+         */
+
+        //NOTE: when on entities, callback methods are executed from within the context of the current transaction and entity manager.
+
+        //AORMLifecycleCallbackDemo is annotated with all of the above callback methods, see the output of this code to see them in action:
+
+        //triggers the pre and post persist:
+        generalService.create10LifeCycleCallBackDemos();
+        //triggers the PostLoad, pre update and post update:
+        generalService.updateAllLifecycleCallbackDemos();
+        //triggers the pre-remove and post-remove methods:
+        generalService.deleteAllLifecycleCallBackDemos();
+
+        //*****************************ENTITY LISTENERS ***********************
+        //--allow you to move the call-back code off the entity into another class.
+        //check the logs for this operation to see i) that the entity listeners have been called and ii) that the order fired reflects the order declared on the class:
+        generalService.createLifeCycleCallbackDemoWithString( "validString" );
+
+        //NOTE: how this one causes AORMLifeCycleCallBackDemoEntityListener1 to throw an exception, demos how the entity listeners
+        //can be used for validation, and how  an exception from the validation stops a txn getting committed.
+        try
+        {
+            generalService.createLifeCycleCallbackDemoWithString( "invalidString" );
+        }
+        catch( Exception e )
+        {
+            e.printStackTrace();
+        }
+
+        //***************DEFAULT ENTITY LISTENERS**************************
+        /*
+        See book p.330 about these,
+        - can only be declared in an XML mapping file, not via annotations.
+        - order rules are:
+        i) default listeners executed in order declared in the xml mappings file
+        ii) they fire before any of the more specific ones declared at the entity level
+         */
+
+
+
     }
 
     private static void chapter10AdvancedORM( )
