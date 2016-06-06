@@ -1,4 +1,7 @@
+package utils;
+
 import org.junit.Test;
+import utils.SizeLimitedHashMap;
 
 /**
  * Created by rowland-hall on 22/04/15

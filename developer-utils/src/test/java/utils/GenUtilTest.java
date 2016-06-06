@@ -1,7 +1,8 @@
-
+package utils;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
+import utils.GenUtil;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.File;

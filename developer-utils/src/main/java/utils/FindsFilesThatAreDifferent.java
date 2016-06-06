@@ -1,3 +1,5 @@
+package utils;
+
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -71,36 +73,36 @@ public class FindsFilesThatAreDifferent
         }
 
         //output the differences:
-        U.p("*******************DIFFERNCES**************************");
+        U.p( "*******************DIFFERNCES**************************" );
 
         for( String relativePath: differentLines.keySet() )
         {
             if( differentLines.get( relativePath ).size() > 0 )
             {
-                U.p(relativePath+":::"+differentLines.get( relativePath ));
+                U.p( relativePath + ":::" + differentLines.get( relativePath ) );
             }
         }
 
         //output files with different nunmbers of lines:
-        U.p("*******************FILES WITH DIFFERENT NUMBERS OF LINES **************");
-        U.p(filesWithDifferentNumbersOfLines);
+        U.p( "*******************FILES WITH DIFFERENT NUMBERS OF LINES **************" );
+        U.p( filesWithDifferentNumbersOfLines );
 
         //finally, output files that are not there in each folder:
-        U.p("************files in folder1 but not folder2" );
+        U.p( "************files in folder1 but not folder2" );
         for( String folder1RelativePath: folder1Files.keySet() )
         {
             if( ! folder2Files.keySet().contains( folder1RelativePath ))
             {
-                U.p(folder1RelativePath);
+                U.p( folder1RelativePath );
             }
         }
 
-        U.p("************files in folder2 but not folder1" );
+        U.p( "************files in folder2 but not folder1" );
         for( String folder2RelativePath: folder2Files.keySet() )
         {
             if( ! folder1Files.keySet().contains( folder2RelativePath ))
             {
-                U.p(folder2RelativePath);
+                U.p( folder2RelativePath );
             }
         }
 
