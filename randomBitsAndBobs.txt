@@ -1,0 +1,24 @@
+This is what you would need to set up a db driven propertyplaceholderconfiguratior in Spring:
+
+
+<bean id="dataSource" class="some kind of datasource"/>
+
+    <bean id="dbPropertyPlaceholderConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="properties" ref="CommonsConfigurationFactoryBean"/>
+    </bean>
+    <bean name="CommonsConfigurationFactoryBean"
+          class="org.springmodules.commons.configuration.CommonsConfigurationFactoryBean">
+        <constructor-arg ref="DatabaseConfiguration"/>
+    </bean>
+
+    ***NOTE how this bit gives us 1 the table to look in and 2 the key : value columns: ***
+
+    <bean name="DatabaseConfiguration"
+          class="org.apache.commons.configuration.DatabaseConfiguration">
+        <constructor-arg type="javax.sql.DataSource" ref="dataSource"/>
+        <constructor-arg index="1" value="bo_config"/>
+        <constructor-arg index="2" value="config_key"/>
+        <constructor-arg index="3" value="config_value"/>
+    </bean>
