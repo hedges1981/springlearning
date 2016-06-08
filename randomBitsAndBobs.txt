@@ -1,3 +1,5 @@
+************SPRING PROPERTY PLACEHOLDER CONFIGURER *****************
+
 This is what you would need to set up a db driven propertyplaceholderconfiguratior in Spring:
 
 
@@ -22,3 +24,11 @@ This is what you would need to set up a db driven propertyplaceholderconfigurati
         <constructor-arg index="2" value="config_key"/>
         <constructor-arg index="3" value="config_value"/>
     </bean>
+
+    this maven dependency is required:
+    <dependency>
+                    <groupId>org.springmodules</groupId>
+                    <artifactId>spring-modules-jakarta-commons</artifactId>
+                    <version>0.8a</version>
+
+
