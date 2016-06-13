@@ -1,0 +1,31 @@
+****RUNNING A THING **
+
+e.g. to run 'bookChapter2.MyModule':
+
+1. u can RC and select run ..., this will run the main method,
+
+or you can use the intellij REPL (read evaluate print loop) console window
+
+***USING THE REPL***
+- can evaluate expressions, e.g. put in 3+4, u get Int = 6
+
+or type e.g. MyModule.main( null ), runs the main class.
+
+NOTE that you need to press ctrl+enter to execute what you have put in.
+
+NOTE: it will not automatically reload a changed file, click on the 'reload arrow' top lft of console window to do a reload
+
+***NOTE ON METHODS / OPERATORS, NOTATION***
+Scala has no operators, only functions, so e.g.
+2+1 is same as 2.+(1)  ... is the + function of the 2 INT object.
+
+can use either notation, e.g.
+MyModule.main( null ) same as MyModule main null
+
+***TAIL POSITION***
+see function MyModule.factorial...
+if a recursive call is the very last thing done before a fn returns, scala compile will compile it into a
+loop, rather than a recursive call, thus saving on stack memory.
+put:
+@annotation.tailrec
+on the fn, this will make scala give a compile error if it cant 'loop out' the recursion.
