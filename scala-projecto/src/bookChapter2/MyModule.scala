@@ -88,6 +88,8 @@ object MyModule {
     MyModule.isSorted( Array(1,2,2), MyModule.twoIntsInOrder) -> true
     MyModule.isSorted( Array(1,2,2,3,2), MyModule.twoIntsInOrder) -> false
 
+    NOTE:
+
      */
     def isSorted[A] (as: Array[A], ordered:(A,A) => Boolean ) : Boolean = {
       @annotation.tailrec
@@ -118,5 +120,48 @@ object MyModule {
       println(
         MyModule.isSorted( Array(1,2,3), MyModule.twoIntsInOrder) )
     }
+
+  // f is afunction, like : C = f(A,B) , B=>C means : C=f(B)
+  def partial1[A,B,C](a:A, f:(A,B)=>C): B=>C= {
+    (b: B ) => f(a,b)   // so we have delared that we create a function of b that returns f(a,b), i.e. a c.
+  }
+
+
+    /************************  EXERCISES AT END OF CHAPTER 2 ****************************/
+
+  //ex 2.3
+    //NOTE: curry and uncurry partially apply f, i.e. they take f, but combine it with another external input.
+  def curry[A,B,C](f:(A,B)=>C): A=>(B => C)=
+  {
+    // needs to return a function of A that returns a function of (B,C)
+        // we get a C by f (A,B)
+        //
+    (a:A ) => ((b:B)=>f(a,b))  // so returns a function of a:A, that returns a function which takes a b:B, which calls f(a,b)
+      //how fucking complicated?!
+  }
+
+  def uncurry[A,B,C] (f: A=>B=>C) : (A,B) => C =
+  {
+    // takes a fucntion f(A) => g(B,C) and returns h(A,B) =>C
+    (a:A, b:B) => f(a).apply(b)
+    //  explained: f(a) -> g(b) -> c
+      // so we pass a into f, to generate a function of b that returns a C, and call apply(b) on that function to get the c
+  }
+
+  def compose[A,B,C]( f: B=>C, g:A=>B) : A=> C ={
+
+        // example of composition, passing the value of another function to another, wrapped calls.
+    (a:A)=> f(g(a))
+  }
+
+  def composeUsingAndThenKeyWord [A,B,C]( f: B=>C, g:A=>B) : A=> C ={
+
+    (a:A)=> g.andThen(f)(a)  // g.andThen(f) is basically a function that calls g, and the f on a
+  }
+
+  def composeUsingComposeKeyWord [A,B,C]( f: B=>C, g:A=>B) : A=> C ={
+
+    (a:A)=> f.compose(g)(a)  // same as the above, compose and and then same, but other way found.
+  }
 
 }
