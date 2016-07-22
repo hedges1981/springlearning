@@ -1,0 +1,218 @@
+
+
+REPORT SERVER STUFF
+
+e.g.
+LOG into report server
+sudo su –
+su – x-reportuser
+cd AU
+cd reports
+vi TwiceDailySage50Reports.py
+
+build sls:
+
+mvn clean install -Djavax.net.ssl.keyStore=licence-service/target/lic/WEB-INF/conf/all-client-ssl.jks -Djavax.net.ssl.keyStorePassword=password -Djavax.net.ssl.trustStore=licence-service/target/lic/WEB-INF/conf/all-client-ssl.jks -Djavax.net.ssl.trustStorePassword=password
+
+JENKINS BOX: edit maven settings xml file:
+
+sudo as a tomcat user.
+
+Settings file is in:/opt/jenkins/tools/hudson.tasks.Maven_MavenInstallation/Maven3.0.5/conf
+
+RUN AU WITH H2:
+
+mvn autoupdate:h2-server-plugin:AUTOUPDATE_PLACEHOLDER_VERSION:startServer
+mvn autoupdate:h2-server-plugin:AUTOUPDATE_PLACEHOLDER_VERSION:runScripts
+mvn autoupdate:h2-server-plugin:AUTOUPDATE_PLACEHOLDER_VERSION:stopServer
+
+
+START TOMCAT DEBUG MODE
+  catalina.sh jpda start
+
+
+ALLOW A USER ACCESS TO A FOLDER:
+
+setfacl -m user:x-rowland.hall:rwx /home/x-reportuser/AU/reports
+
+SEE PERMISSIONS AND OWNER ON A FILE:
+ls -l xxxx.xxx
+
+STUFF WHEN ADDING A NEW REPORT:
+
+chown x-reportuser xxxx.py
+
+:- make it executable
+chmod 700 xxx.py
+
+or: chmod +x xxx.py
+
+to execute it:
+./xxx.py
+
+COPY FILE IN LINUX:
+
+
+TO GET A THING RSA KEY ALLOWED:
+
+SSH ipaddress
+
+restart mysql on jenkins box:
+service mysqld start
+
+CHANGE owner of a folder:
+chown -R tomcat:tomcat apache-tomcat-7.0.54/
+(tomcat:tomcat) = group:user
+
+
+TRACE ROUTE OVER ICMP
+
+SEE MYSQL QUEEY LOG:
+SET GLOBAL general_log = 'ON';
+SET GLOBAL log_output = 'TABLE';
+select * from mysql.general_log order by event_time desc;
+
+TAIL A LOG FILE:
+tail -f /opt/tomcat/logs/catalina.out
+
+RESTART NEXUS SERVER (MAVEN REPOSITORY)
+
+-is a tomcat, so e.g. /opt/tomcat/bin/startup.sh
+
+Get EC2
+
+*******************************AWS**************************************************************************
+
+AWS AUTO SCALING COMMANDS
+
+see; http://docs.aws.amazon.com/cli/latest/reference/autoscaling/index.html?highlight=autoscaling
+
+LINUX WORKING BETWEEN DIFFERENT MACHINES
+ssh -i AuPOCkey.pem ec2-user@172.32.0.215 //allows you to ssh onto the other box using the specified pem file.
+scp -i AuPOCkey.pem  /home/ec2-user/au.war ec2-user@172.32.0.95:/home/ec2-user //copies the file to the other box.
+
+---putting a scale change on a schedule
+
+aws autoscaling --region <put in the right region> put-scheduled-update-group-action --scheduled-action-name <put in what you want to call it> --auto-scaling-group-name <put in asg name> --recurrence <put in midnight cron expression> --desired-capacity 1
+
+e.g.
+aws autoscaling --region eu-west-1 put-scheduled-update-group-action --scheduled-action-name run_limelight_dl_log_file_consumer --auto-scaling-group-name ' Limelight Consumer ASG' --recurrence '0 0 * * *' --desired-capacity 1
+
+aws autoscaling describe-scheduled-actions --region <put in right region>
+use: aws autoscaling delete-scheduled-action to delete any scheduled action.SLS Prod Sage.DE.SMB Client 09:34
+MlCmRvZoVgIdMAWMYcQg 09:34
+De Prod SLS Prod Sage.DE.SMB CA 09:36
+?P]9Ya!@Nkc$7;s]/Ml9 09:37
+De Prod Backoffice Keystore (Working) 09:37
+jdy6s76754u 09:37
+de1.jks 09:37
+De Prod Backoffice keystore password (Deprecated) 09:37
+db783bf74k1nk 09:37
+De Staging Collaborate Client 09:38
+umhpfQ7z 09:38
+De Prod Sage ID Key Password 09:39
+3xh3jlP5m1OI 09:39
+admin 09:39
+EyTVK8ZFDjpfaZ9x4PEHdSmh 09:39
+BACKOFFICE: pCTTeXtPd3sq9CE9PxJEYaVx ENC(PR02cpY1Qd5u6FnqScTgSrH0JSuXXKX9gJrYgqhuaRQdYMgKPDLT2w==)
+SLSADMIN: ksV7hSSAHfd6ny8eaFNAmTXs ENC(JXPKtcmbKLL0U5tfoZKkvGw2OpLewTEyt05k+qslMozuo2gJXuSb7g==)
+SLSFRONTEND: vmzZKZ5Wr4S5L38L6pjUCFfT ENC(uOZdtqBTDh5MC61IgpBvhZ3tUvOby5VXN/3qTe8JrrtxpKouKnieCw==)
+
+
+GET EC2 INSTANCE ID
+ec2-metadata -i
+http://instance-data/latest/meta-data/instance-id
+
+
+PERMSIONS FOR PEM FILE TO BE USED IN COMMAND WINDOW:
+chmod 400 slsp.pem
+
+ NOTE: folder FOLDER FOR KEYSTORE IMPORT CONTAINS THE FOLLOWING FILES TO START OFF WITH:
+TEST-SageNARDUM-SLSAccess.pfx - this is our client cert
+chain of trust for that cert: TEST-SageNARDUM-CA.cer and TEST-SageNACloudSystemsRootCA.cer
+
+We want our keystore to have the client cert, linked to the chain of trust in one entry, under one alias.
+USed this as a guide: http://stackoverflow.com/questions/18787491/adding-certificate-chain-to-p12pfx-certificate
+
+To do this had to create a .p12 file that contained the entire chain, then import that all in one go. The following did that:
+
+openssl pkcs12 -in TEST-SageNARDUM-SLSAccess.pfx -out PEMFILE.pem
+
+entered password of: pQ0Uyk5Vd7qEWTk2ZqSY
+set pemfile to have password: password, cos that is the same as all-client-ssl.jks
+
+openssl pkcs12 -export -in PEMFILE.pem -out P12FILE.p12 -name cloudEnablement
+
+set export password: password, cos that is the same as all-client-ssl.jks
+
+- import the client cert with the chain of trust in one go:
+openssl pkcs12 -in P12FILE.p12 -out clientcert.pem -nodes -clcerts
+openssl x509 -in TEST-SageNARDUM-CA.cer -inform DER -out trusted_ca.pem
+openssl x509 -in TEST-SageNACloudSystemsRootCA.cer -inform DER -out root_ca.pem
+cat clientcert.pem trusted_ca.pem root_ca.pem >> clientcertchain.pem
+--now we have them all concattenated into a pem file, now convert that to a .p12, then add it to the keystore.
+openssl pkcs12 -export -in clientcertchain.pem -out clientcertchain.pfx
+openssl pkcs12 -in clientcertchain.pfx -out clientcertchain.pem
+openssl pkcs12 -export -in clientcertchain.pem -out clientcertchain.p12 -name cloudEnablementTesting
+keytool -v -importkeystore -srckeystore clientcertchain.p12 -srcstoretype PKCS12 -destkeystore all-client-ssl.jks -deststoretype JKS
+DEBUG JAVA MAIL:
+in start up options:
+java -Dmail.debug=true
+
+PULL PRIVTE AND PUB KEY FROM JKS FILE TO PEM FORMAT:
+--pull an alias out of the keystore into a .p12 file
+keytool -importkeystore -srckeystore sage.jks -destkeystore sage.p12 -srcalias tomcat -srcstoretype jks -deststoretype pkcs12
+--export the cert:
+openssl pkcs12 -in sage.p12  -nokeys -out cert.pem
+--export the private key, un encrypted
+openssl pkcs12 -in sage.p12  -nodes -nocerts -out privKey.pem
+
+***********reset the host key in linux:
+
+ssh-keygen -R <ip address or host name>
+
+
+
+******************Download a file from s3 to local:
+aws s3 cp s3://com.sage.lspcs.au.config.st/objectKey desiredFileName --region eu-west-1
+
+aws s3 cp  desiredFileName  s3://com.sage.lspcs.sls.config.poc/heapdumps/preload--region eu-west-1
+
+e.g.
+aws s3 cp s3://com.sage.lspcs.au.config.st/aws-file-migration-TRUNK-SNAPSHOT.war aws-file-migration-TRUNK-SNAPSHOT.war --region eu-west-1
+
+- note: essential to supply the region of where the bucket is.
+
+
+**********************Search all files in a folder for a string:
+e.g. search folder reports for '@', -R = recursive, i means case insensitive
+grep -Ri reports -e '@'
+
+
+*********************Maven, see dependecies new versions****************************
+http://stackoverflow.com/questions/2687220/maven-check-for-updated-dependencies-in-repository
+
+sql for number of check for updates in a week: (remember it is us dates, month first in thing.
+
+SELECT count(*) FROM rpt_request
+This
+
+Jenkis folder that fills up /opt/tomcat/logs   .
+
+
+options to allow for jvm to be profiled over jmx:
+
+#export JAVA_OPTS="$JAVA_OPTS -Djava.rmi.server.hostname=192.168.0.165"-- ip address of actual machine
+#export JAVA_OPTS="$JAVA_OPTS -Dcom.sun.management.jmxremote.port=3333"
+#export JAVA_OPTS="$JAVA_OPTS -Dcom.sun.management.jmxremote.ssl=false"
+#export JAVA_OPTS="$JAVA_OPTS -Dcom.sun.management.jmxremote.authenticate=false"
+
+little bit about comparing heap dumps
+
+
+XSD, JAXB STUFF:
+use this to generate XSDs for an example object:
+http://www.freeformatter.com/xsd-generator.html#ad-output
+
+
+
