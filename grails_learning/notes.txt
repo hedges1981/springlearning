@@ -1,0 +1,57 @@
+quotd - the web app created in chapter 1 of book.
+
+
+
+
+chapter 1      ******************************88888888
+
+- created QuoteController.groovy
+
+-**********************
+ note on page 17, when you brought in the stylesheet and the images they ended up having to go nithe grails-app/assets folder
+for it to work
+
+- created the QuoteDomain class using:
+-grails create-domain-class quote
+-note that this created the file Quote.groovy
+
+
+***********Datasource.... book talks about a file named DataSource.groovy, however it seems that is this grail version
+(3.x) the datasources are in file conf/application.yml instead.
+
+NOTE on the persistent h2 file:
+
+- run the command ;- grails run-app from the folder:
+grails_learning/qotd
+NOTE: the db url of:
+jdbc:h2:./devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+
+the ./devDb means it is pointing to a persistent db file in the folder: grails_learning/qotd
+
+
+***** SAVING STUFF TO THE DB, seep book p.20, ran the console from the qotd folder, and it worked ok.
+NOTE: the grails console command i) fires up the web app along with a groovy console to do stuff with it.
+ new quote created by running:  new qotd.Quote(author: 'king kong', content:'I am king kong').save().. note the
+ save() method on the domain object, this is also added in by Grails.
+
+
+*****SCAFFOLDING, see in QuoteController.groovy the scafolding = Qote bit, this auto sets up scaffolding for the Quote
+entity, see at eg> http://localhost:8080/quote/index for how it auto rigs up view+controller to allow to do CRUD operations.
+
+
+*****VALIDATION CONSTRAINTS: see book p.24 / the Quote.groovy entity, for how the validation is put on the class,
+// //NOTE that it appears that if you break validation that is done server-side,
+          //it gives you a shite error message rather than one actually telling you what is the issue.
+
+
+********* p. 25: CREATED A SERVICE
+ran: grails create-service quote
+this created the service groovy file in      service/qotd.
+see the QuoteController for how it is i) injected into a controller and used.
+
+****** p. 27:  BIT ABOUT TESTING
+See the QuoteServiceSpec.groovy that was auto created when we created the QuoteSerivce
+NOTE******TO RUN A TEST: rather than what the book says, this command seems to be the one to use to run the QuoteServiceSpec test:
+grails test-app -unit QuoteServiceSpec
+
+
