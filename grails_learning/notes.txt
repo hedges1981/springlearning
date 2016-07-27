@@ -53,5 +53,31 @@ see the QuoteController for how it is i) injected into a controller and used.
 See the QuoteServiceSpec.groovy that was auto created when we created the QuoteSerivce
 NOTE******TO RUN A TEST: rather than what the book says, this command seems to be the one to use to run the QuoteServiceSpec test:
 grails test-app -unit QuoteServiceSpec
+--run with --stacktrace to get the stacktrace if it fails.
+
+
+*****  p.29 / 30 NOTE: Couldn't implement the ajax bit, as in grails 3.x, the remoteLink tag has been deprecated
+NO easy alternative for doing this seems to have been offered.
+Further more Jquery bit also not working. Instructions on internet say to call:
+- grails install-plugin jquery
+- grails installJquery
+to get it working, but the install-plugin thing has again been removed in grails 3.
+
+
+
+****** P.31, 32:
+managed to build  a war file of the thing: grails war
+stats: call grails stats, note that the LOC column means 'lines of code'.
+
+
+******************CHAPTER 2 GROOVY LEARNING  **************************
+set up of intellij for groovy;;;; had to dl groovy sdk from net, then put in groovy-sdk folder
+when creating groovy module, set it to point to the right folder for the groovy SDK.
+
+***** SPOC TESTING*****
+had to install the SPOCK intellj plugin so that it can run the spock tests
+****NOTE: to get the dependencies for spock tests, added: org.spockframework:spock-core:1.0-groovy-2.4
+to the list of dependencies in the intellij->file->projectStructure. Click on the +, then search for the dep u need.
+then get it from maven.
 
 

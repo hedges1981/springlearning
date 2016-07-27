@@ -33,4 +33,12 @@ class QuoteController {
         [quote: randomQuote]
     }
 
+    def ajaxRandom() {
+        def randomQuote = quoteService.getRandomQuote()
+        render {
+            q(randomQuote.content)           //note, this causes it to return some html like @ <q>asasas</q><p>asasasas</p>
+            p(randomQuote.author)
+        }
+    }
+
 }

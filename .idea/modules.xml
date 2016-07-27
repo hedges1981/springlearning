@@ -2,59 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/annotations/annotations.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/annotations/annotations.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/annotations-solution/annotations-solution.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/annotations-solution/annotations-solution.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/aop/aop.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/aop/aop.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/aop-solution/aop-solution.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/aop-solution/aop-solution.iml" />
-      <module fileurl="file://$PROJECT_DIR$/spring_in_practice_book_code/sip06-01/com.springinpractice.06_01.iml" filepath="$PROJECT_DIR$/spring_in_practice_book_code/sip06-01/com.springinpractice.06_01.iml" />
       <module fileurl="file://$PROJECT_DIR$/developer-utils/developer-utils.iml" filepath="$PROJECT_DIR$/developer-utils/developer-utils.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/hibernate/hibernate.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/hibernate/hibernate.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/hibernate-solution/hibernate-solution.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/hibernate-solution/hibernate-solution.iml" />
+      <module fileurl="file://$PROJECT_DIR$/grails_learning/groovy-learning/groovy-learning.iml" filepath="$PROJECT_DIR$/grails_learning/groovy-learning/groovy-learning.iml" />
       <module fileurl="file://$PROJECT_DIR$/java-test/java-test.iml" filepath="$PROJECT_DIR$/java-test/java-test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/javaconfig-dependency-injection/javaconfig-dependency-injection.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/javaconfig-dependency-injection/javaconfig-dependency-injection.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/javaconfig-dependency-injection-solution/javaconfig-dependency-injection-solution.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/javaconfig-dependency-injection-solution/javaconfig-dependency-injection-solution.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jdbc/jdbc.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jdbc/jdbc.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jdbc-solution/jdbc-solution.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jdbc-solution/jdbc-solution.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jms/jms.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jms/jms.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jms-demo/jms-demo.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jms-demo/jms-demo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jms-solution/jms-solution.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jms-solution/jms-solution.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jmx/jmx.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jmx/jmx.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jmx-demo/jmx-demo.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jmx-demo/jmx-demo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jmx-solution/jmx-solution.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jmx-solution/jmx-solution.iml" />
       <module fileurl="file://$PROJECT_DIR$/jpa-learning/jpa-learning.iml" filepath="$PROJECT_DIR$/jpa-learning/jpa-learning.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jpa-spring-data/jpa-spring-data.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jpa-spring-data/jpa-spring-data.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jpa-spring-data-solution/jpa-spring-data-solution.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/jpa-spring-data-solution/jpa-spring-data-solution.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mockitolearning/mockitolearning.iml" filepath="$PROJECT_DIR$/mockitolearning/mockitolearning.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/mvc/mvc.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/mvc/mvc.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/mvc-solution/mvc-solution.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/mvc-solution/mvc-solution.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/parentCoreSpringProject.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/parentCoreSpringProject.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/remoting/remoting.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/remoting/remoting.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/remoting-solution/remoting-solution.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/remoting-solution/remoting-solution.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/rest-ws/rest-ws.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/rest-ws/rest-ws.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/rest-ws-solution/rest-ws-solution.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/rest-ws-solution/rest-ws-solution.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/rewards-common/rewards-common.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/rewards-common/rewards-common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/rewards-db/rewards-db.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/rewards-db/rewards-db.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/security/security.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/security/security.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/security-solution/security-solution.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/security-solution/security-solution.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/spring-boot-offline/spring-boot-offline.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/spring-boot-offline/spring-boot-offline.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/spring-boot-solution/spring-boot-solution.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/spring-boot-solution/spring-boot-solution.iml" />
-      <module fileurl="file://$PROJECT_DIR$/spring-boot-web4-webflow-learning/spring-boot-web4-webflow-learning.iml" filepath="$PROJECT_DIR$/spring-boot-web4-webflow-learning/spring-boot-web4-webflow-learning.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/spring-intro/spring-intro.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/spring-intro/spring-intro.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/spring-intro-solution/spring-intro-solution.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/spring-intro-solution/spring-intro-solution.iml" />
-      <module fileurl="file://$PROJECT_DIR$/spring-learning/spring-learning.iml" filepath="$PROJECT_DIR$/spring-learning/spring-learning.iml" />
-      <module fileurl="file://$PROJECT_DIR$/spring-mvc-security-learning/spring-mvc-learning.iml" filepath="$PROJECT_DIR$/spring-mvc-security-learning/spring-mvc-learning.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring-boot-web4-webflow-learning/spring-boot-web4-learning.iml" filepath="$PROJECT_DIR$/spring-boot-web4-webflow-learning/spring-boot-web4-learning.iml" />
       <module fileurl="file://$PROJECT_DIR$/springlearning-parent-pom.iml" filepath="$PROJECT_DIR$/springlearning-parent-pom.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ssl-tester/ssl-tester.iml" filepath="$PROJECT_DIR$/ssl-tester/ssl-tester.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/test/test.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/test/test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/test-solution/test-solution.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/test-solution/test-solution.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/tx/tx.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/tx/tx.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/tx-solution/tx-solution.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/tx-solution/tx-solution.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/ws/ws.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/ws/ws.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/ws-solution/ws-solution.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/ws-solution/ws-solution.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/xml-dependency-injection-best-practices/xml-dependency-injection-best-practices.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/xml-dependency-injection-best-practices/xml-dependency-injection-best-practices.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/xml-dependency-injection-best-practices-solution/xml-dependency-injection-best-practices-solution.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/xml-dependency-injection-best-practices-solution/xml-dependency-injection-best-practices-solution.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/xml-di/xml-di.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/xml-di/xml-di.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-spring-4.1.a.RELEASE/xml-di-solution/xml-di-solution.iml" filepath="$PROJECT_DIR$/core-spring-4.1.a.RELEASE/xml-di-solution/xml-di-solution.iml" />
     </modules>
   </component>
 </project>

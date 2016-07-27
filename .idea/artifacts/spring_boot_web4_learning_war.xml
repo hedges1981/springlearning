@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
   <artifact type="war" name="spring-boot-web4-learning:war">
-    <output-path>$PROJECT_DIR$/intouch-proxy-service/target</output-path>
-    <root id="archive" name="intouch-proxy-service-0.0.1-SNAPSHOT.war">
+    <output-path>$PROJECT_DIR$/spring-boot-web4-webflow-learning/target</output-path>
+    <root id="archive" name="spring-boot-web4-learning-0.0.1-SNAPSHOT.war">
       <element id="artifact" artifact-name="spring-boot-web4-learning:war exploded" />
     </root>
   </artifact>
