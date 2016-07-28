@@ -29,8 +29,10 @@ class QuoteAnalyserSpec extends Specification    //note that a Spock test extend
             quoteCount == 2
         }
 
+    //METHOD DONE MULTIPLE TIMES, for each case in the where: section.
     //DIRECT COPY OF CODE ON BOOK PAGE 44
-    @Unroll
+    @Unroll    //@Unroll is good as it tells you what iteration it fails on, gives you a nice logging output that tells u what has passed
+    //and has failed.
     def "Total number of quotes using parameterised test:"() {
         given: "An analyzer initialized with known quotes"
         def analyzer = new QuoteAnalyzer(inputQuotes)
@@ -40,9 +42,9 @@ class QuoteAnalyserSpec extends Specification    //note that a Spock test extend
         quoteCount == expected
         where:
         inputQuotes | expected
-        [] | 0
+        [] | 3
         quotes | 2
     }
 }
 
-}
+

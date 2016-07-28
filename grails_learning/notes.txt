@@ -1,9 +1,22 @@
 quotd - the web app created in chapter 1 of book.
 
+NOTE: on installing Grails:
+went for version 2.3.7 as that is the same as the book, note v3.x.x is out and was tried, but kept coming across too many
+issues with the book, so scaked it.
+
+INstallation:
+- put grails folder in e.g. /opt folder
+add this into my user profile folder to get grais on the path (in linux), would use env variables for same thing in linux:
+
+***********NOTE ON RUNNING< JAVA VERSION ****************
+grails v 2.3.7 doesn't work with java 8, so had to install a java 7 jdk.
+to work with it, in the terminal window being used to run grails, run this at start up, so that it uses the 1.7 java for all
+subsequent runs:
+export JAVA_HOME=/opt/java/jdk1.7.0_79
 
 
 
-chapter 1      ******************************88888888
+chapter 1      ******************************
 
 - created QuoteController.groovy
 
@@ -79,5 +92,49 @@ had to install the SPOCK intellj plugin so that it can run the spock tests
 ****NOTE: to get the dependencies for spock tests, added: org.spockframework:spock-core:1.0-groovy-2.4
 to the list of dependencies in the intellij->file->projectStructure. Click on the +, then search for the dep u need.
 then get it from maven.
+
+*********DIDNT bother working examples of the @TypeChecked annotation, apparently this makes it compile with strict type checking,
+like java
+
+****BOOK recommendations for typing p.58. Says use typing for method signatures and object properties, not for local variables.
+
+
+*************CHAPTER 3 MODELING THE DOMAIN *************************
+- switched to grails 2.3.7 at this point to get consistency with the book:
+- created the hubbub grails app, work is in the hubub folder.
+
+created domain class via:
+grails create-domain-class com.hedges.User
+
+created an integration test for that via:
+grails create-integration-test com.hedges.UserIntegration
+
+ran the integration test that was created via:
+grails test-app -integration:
+(note test-app alone runs both unit and integration, test-app -unit runs just the unit test, see above for notes on making
+it run just a specific test).
+
+***NOTE: to get it to put out e.g. println to the console,. you need -echoOut, like:
+grails test-app -integration -echoOut
+
+NOTE that the usless @@@@ that wrote the book didn't write the command right, you need the - before unit/ integration - wasted time faffing about with that.
+
+******SOME NOTES ON PERSISTANCE****
+see the test: UserIntegrationSpec for some notes on persisting entities.
+p.74: added some validation constraints to the User object, then added a test that tests them.
+p.74,75,76-> added some unit test to test validation, note the use of the valid() call and also subsequent inspection of the
+valiation errors in the UserIntegrationSpec test.
+
+****ORM****
+p.81, modeled a 1-1 rel, note that you can have > 1 1-1 rel by just having more in the hasOne map....
+p.82 modeled a 1-many.
+tests of the ORM stuff are in PostIntegrationSpec, NOTE: on here how the persisting of e.g. the Post objects is done automatically,
+***NOTE, some decent ORM and persistence tricks in all these integration tests.
+SORT ORDER FOR relationships: see p.85 and also the mapping bit of the User class.
+
+***ORM Many -> many rels*****
+added the many to many rels between tag and post, see pages 87-88, and also the test:  "Exercise tagging several posts with various tags"
+which tests it all.
+
 
 

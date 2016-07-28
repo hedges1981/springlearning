@@ -8,6 +8,9 @@
       <sourceFolder url="file://$MODULE_DIR$/core-spring-4.1.a.RELEASE/rest-ws-solution/src/test/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/scala-projecto/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/java8Learning/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/grails_learning/hubbub/test/integration" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/grails_learning/hubbub/test/unit" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/grails_learning/hubbub/grails-app/domain" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />

@@ -77,5 +77,70 @@ class AGroovyClassWithExamplesOfLanguageConstruction {
 
         List l; //NOTE AUTO import of classes, don't need to explicity import 'standard'stuff like List, groovy has auto import of some things
 
+
+        //EASY ACCESS OF OBJECT PROPERTIES
+        //
+        def quote =  new Quote(author: "Peter Ledbrook",
+                content: "Time waits for no man")    //note there is no actual constructor, this is a "GroovyBeans constructor, note how it wokrs.
+
+        // groovy dynamically can create getters and setters , even if the methods are not actually on the bean class:
+        println quote.getAuthor()  //note no getAuthor method on Quote
+
+
+        //PRIMITIVE TYPES, can have methods called on them, again through the GroovyDefaultMethods thingo e.g.:
+
+        int i = -100
+        i = i.abs()
+        println i; //PRINTS 100;
+
+        //LITTLE BIT ABOUT STRING LITERALS:
+        //$ in a string, lets you evaluate groovy expressions:
+        def name = "kingKong";
+        println "hello ${name}" //prints hello kingKing
+        //use tripple quote for multi line string literals, note how the \ allows one line to go over many in the editor:
+        println """
+this is on line 1
+this is on line 2
+this is on line 3 \
+this also is on line 3
+"""
+
+        //CLOSURES:
+        //examples in book are a bit like java 8 streams:
+        def someStrings = ["aaa","bbb","ccc","dog","dead"]
+        //e.g. use a 'stream with a closure to sum up the length of all the strings:
+        int totalLength = someStrings.sum { it.length() } //basically do a sum, adding up the length of each string as you
+        //go along:
+        println totalLength
+
+        //e.g. of using it like a filter:
+        def stringsContainingA = someStrings.findAll {it.contains("a")}  //NOTE: looks like you have to use it as the var name,
+        //didn't work when called something else
+        println stringsContainingA     //prints aaa , dead
+
+        //find: finds the first one, better than using a loop with a break:
+        println someStrings.find {it.contains("d")}
+
+
+        //GROOVY allows you to add functions at Runtime, bit like in javascript:
+        //add a method called dong to the String class:
+
+        String.metaClass.dong =
+            {
+                -> "dong"       //function returns the string
+            }
+
+
+        println "a".dong();    //prints dong..
+
+        //MAP LITERAL: very nifty way of making up a map
+        def mappo = [a:1,b:2]
+        println mappo["a"]   //prints 1
+
+
+        //DEMO OF * OPERATOR FOR EXPLODING A LIST:
+        def strings = ["1","2","3"]
+        def hashCodes = strings*.hashCode()
+        println hashCodes //prints:  [49, 50, 51]
     }
 }
