@@ -136,5 +136,22 @@ SORT ORDER FOR relationships: see p.85 and also the mapping bit of the User clas
 added the many to many rels between tag and post, see pages 87-88, and also the test:  "Exercise tagging several posts with various tags"
 which tests it all.
 
+*** SELF REFERENCING REL ***
+Nothing special, just a 1-1 or one -> many rel that happens to point at the same type.
+See the folling field of user and the test:
+
+"Ensure a user can follow other users"
+
+
+*****************CHAPTER 4, BUILDING A UI ******************
+- ran the commands on p.92 to create a scafoldingcontroller for the domain objects
+
+p.94 ran into pain about the validation, changed a constraints block on the fly, and that ended all server side validation,
+-had to restart to make it work again.
+- changed the validation message for user.password , see file messages.properties
+note, seems like changes to messages.properties do not get auto loaded.
+
+Customised some CSS as per p.98, see changes made to main.css
+changes the main.gsp file as per book, and also added in the hubbub.css file to web-app/css
 
 

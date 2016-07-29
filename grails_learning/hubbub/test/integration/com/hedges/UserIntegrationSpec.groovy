@@ -112,6 +112,24 @@ class UserIntegrationSpec extends Specification {
 
     }
 
+    def "Ensure a user can follow other users"() {
+
+        given: "A set of baseline users"
+        def joe = new User(loginId: 'joe', password:'password').save()
+        def jane = new User(loginId: 'jane', password:'password').save()
+        def jill = new User(loginId: 'jill', password:'password').save()
+
+        when: "Joe follows Jane & Jill, and Jill follows Jane"
+        joe.addToFollowing(jane)
+        joe.addToFollowing(jill)
+        jill.addToFollowing(jane)
+
+        then: "Follower counts should match following people"
+        2 == joe.following.size()
+        1 == jill.following.size()
+
+    }
+
 
 
 }

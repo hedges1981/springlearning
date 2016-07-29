@@ -39,6 +39,10 @@ class User {
         //NOTE: see page 79, use of importFrom to share constraints between objects, save repeating code.
         //TODO: look into a way that they might be held in a completely separate 'Constraints' class, book example seems
         //a bit wierd, having ApplicationUser class reference the User class.
+
+        posts()
+        tags() //NOTE: the ordering of the fields in the constraints section governs the ordering in a scaffolding UI
+        //note how these have no constraints, but they can still be declared here to give a chosen order.
     }
 }
 
