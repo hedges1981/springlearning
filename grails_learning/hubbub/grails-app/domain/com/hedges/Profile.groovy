@@ -22,4 +22,16 @@ class Profile {
         timezone nullable: true
         jabberAddress email: true, nullable: true
     }
+
+    //NOTE the to String used for logging, etc.
+    String toString()
+    {
+        "Profile of "+fullName +" id:$id"
+    }
+
+    //NOTE this one is the one that is default called by the grails scaffolding stuff to decide what to show for it in the UI.
+    String getDisplayString()
+    {
+        fullName
+    }
 }

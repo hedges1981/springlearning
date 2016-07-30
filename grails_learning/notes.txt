@@ -1,3 +1,7 @@
+*****NOTE: book contains many tedious errors, see:
+https://manning-content.s3.amazonaws.com/download/d/a8a43d8-d482-4a99-92c9-49aa4027c284/Smith_GrailsinAction_Err2.html
+
+
 quotd - the web app created in chapter 1 of book.
 
 NOTE: on installing Grails:
@@ -154,4 +158,6 @@ note, seems like changes to messages.properties do not get auto loaded.
 Customised some CSS as per p.98, see changes made to main.css
 changes the main.gsp file as per book, and also added in the hubbub.css file to web-app/css
 
+BOok p.102, used getDisplayName to make the profile look a bit better in the UI.
+p.104,list.gsp gone from later versions of grais, do it for index.gsp instead.
 
