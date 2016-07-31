@@ -161,3 +161,192 @@ changes the main.gsp file as per book, and also added in the hubbub.css file to 
 BOok p.102, used getDisplayName to make the profile look a bit better in the UI.
 p.104,list.gsp gone from later versions of grais, do it for index.gsp instead.
 
+8**made changes to index.gsp, show.gsp and renderEditor.gsp to make it use the getDisplayString.
+seems to be the case that:
+list.gsp - one used when listing the objects
+show.gsp... one used when looking at an object
+rendorEdiotr.template ... this is responsible for creating the UI widgets, changed so that the display name is used in change forms.
+
+*****DYNAMIC SCAFOLDING VS STATIC SCAFOLDING ****
+in the default way done, it is dynamic scaffolding, so that grails generated scaffolding views etc will keep up with changes to a domain object.
+you can also have static scaffolding, where you have separate views and controller for a given object.
+Call e.g:
+
+grails generate-all (or generate-views or generate-controller) com.hedges.User
+
+note how a set of user specifi views were created, to allow for separation of the stuff for the User object.
+Note however that these new static views need updating manually to relect changes to the object model.
+Note how the new static userController has various methods that basically correspond to crud operations.
+TO switch back to dynamic scafolding for the class, just delete all the geparate views.
+
+
+***********CHAPTER 5***************
+*********SQL, DATABASES, ETC **************88
+
+
+
+***********NOTE:******************
+file grails-app/conf/bootstrap.groovy place to run stuff on application start, see e.g. the stuff in it for setting up data in the db.
+
+
+ENVIRONMENTS:::  p.113
+pick it on start up through :
+e.g.
+grails -Dgrails.env=staging wa
+note, ****** if you spell the env name wrong, grails gives no warning, instead loads the default configuration
+SEE the dataSource.groovy file for example use of environments .
+
+DEFAULT FOR MOST COMMANDS IF NO ENV SET IS DEVELOPMENT
+
+
+P. 114. shows how u can write actual code checking the environment in bootstrap.groovy.
+
+115. ADDED in a search form, with an action method on the controller , as results, where some SQL is done.
+
+117. INTEERESTING note about the DEV method, use scaffolidng to start, then gradually replace it with the real stuff.
+
+118, added results JSP.
+
+120: QueryIntegrationSpec class created with good examples on SQL qurtying in it.
+
+
+****GRAILS GROOVY CONSOLE****
+ran with:      grails –reloading console
+import com.hedges.*
+User u = new User()
+println User.list()
+
+appears like it runs the app and you can interact with it,e.. the above brought stuff back that was in the db.
+
+**About environemnts again, e.g. this will print the current environment and execute some code specified for the current env
+println Environment.current
+Environment.executeForCurrentEnvironment(new BootStrap().init)
+
+***NOTE: on logging SQL:
+see bits added to the log4j section of config.groovy, also bits added to datasource.groovy to format the SQL
+***NOTE: hibernate block in datasource.groovy is where all the hibernate properties are set.
+
+****SOME ADVANCED SQL*****
+-p.128, use of countBy, etc
+p.130: use of criteria to do e.g. an advanced search form.
+
+**NOTE !!!!!!!!!!!!!!!!!!!!!
+see the advSearch.gsp and the advResults method in userController, very nice reusable pattern for doing an advanced searc
+see the page at:
+http://localhost:8080/hubbub/user/advSearch
+
+
+****P.132, talks about how to do projections, (count, with group by, etc)
+NO examples done.
+
+**************HQL>>>>>>>>>>>>>>>> Hibernate query language********************
+can be used for queries as a replacement for using the criteria API, see p.133 for some examples.
+
+
+
+*******************CHAPTER 6****************************************
+*******************CONTROLLING APPLICATION FLOW*******************
+
+
+****NOTE: unit testing and mocking, see. PostControllerSpec , some very good easy patterns here for mocking the persistence and
+just generally testing a controller.
+Run unit tests via:
+grails test-app -unit
+
+-implemented the posts/timeline view, see timeline.gsp and logic in post controller. Some decent 'gsp' stuff in the gsp, ${...}
+looping, etc.
+*****TIMELINE FUNCTIONALITY **** demos the use of params.id well, e.g. grais default in the below is to pass 'chuck_norris' as the params.id value
+when showing the timeline view.
+goto: http://localhost:8080/hubbub/post/timeline/chuck_norris
+too see timeline in action.
+
+
+************ADDING IN NEW DATA VIA UI*********************
+implemented logic to add new post to users tmeline, lots of good stuff, see timeline.gsp, timelinecontroller and the test
+brings in scopes, e.g. flash scope,
+see: p.148 for details about the scopes available.
+
+NOTE: flash scope and servletContext scope
+
+NOTE: default action for a controller,  implemented this with the index method of postController., default if no controller action specified
+generally use this to do some kind of default redirect.
+
+******RE-DIRECTS*******************************************
+see page 153, you can do additional stuff with re-directs other than the simple ones implemented in the post controller.
+
+
+
+***************CHAPTER 7*****************
+***********SERVICES AND DATA BINDING************
+
+create a service via e.g:
+grails create-service com.hedges.Post
+-services created in grails-app/services, also of course creates unit test for it.
+NOTE:  we have @Transactional, good on the service. See book p.157 for grails 2.2 way of doing transactional service, basically was default.
+Added unit test : PostServiceSpec , note how there is a bit in there for checking for expected exceptions (thrown(...)
+
+****MOCKING OF A SERVICE****
+test added to PostCOntroller spec that mocks the PostService, useful example.
+
+
+***LOGGING*****
+see p.161, basically you can call e.g. log.info "qwqwqw" when ever you want, log is always available.
+
+***DATA BINDING*****
+162; can use @RequestParameter to customise the binding for action parameters
+
+****SEE register.gsp and also register() in userController.
+this demos some parameter binding, for the nested profile object as well
+SEE the note about belongsTo on the profile class and p.166 bottom. basically ensures that validation cascades.
+
+**** NOTE: the test "Registering a user with known good parameters"()
+shows further shortcuts for doing a controller test, see e.g. the params usage
+
+***SHOWING ERRORS
+see the hasErrors section of register.gsp
+
+***NOTE: for displaying errors against fields, p.169 has a way of doing it, but it suggests using the FIELDS plugin to
+do it more elegantly.
+
+*** registration available at:
+
+**** PREVENTING UN_AUTHORISED CHANGES TO DOMAIN OBJECTES*****************
+note: see p.164 where it talks about black listing stuff using bindData(..).
+
+
+********* COMMAND OBJECTS **************
+basically a 'transfer object' to use when a form doesn't relate to a domain object directly.
+se the UserRegistrationCommand added to UserController       , and also the test which proves it's validation
+
+-see register2 action un UserCOntroller for the use of the Command object:
+
+added "Invoking the new register action via a command object" to userControllerSpec, good pattern for testing a controller with a command object.
+
+***ENCRYPTING PASSWORD: see the userRegistrationCommand class, where a cryptoService is injected to allow generation of an encrypted password.
+
+
+**************UPLOADING FILES *****************
+see ImageController and associated views and objects.
+NOTE: see also method rawUpload in the ImageController, example of accepting a file and storing it in th filesystem instead of the DB.
+In all this it uploads an image,
+note p.176 where it alludes to the 'burning-image' plugin to help with deeper image stuff.
+
+link for uploading image:
+http://localhost:8080/hubbub/image/form
+
+see profile.gsp for nifty bit of ajax like fetching of an image.
+
+******************FILTERS *****************************
+create filter using e.g.
+grails create-filters com.hedges.LameSecurity
+
+****NOTE: filter class must be SomeNameFilters , note .... SomeNameFilter (no s on the end) else apparently it wont fire.
+---because a filters file can contain > 1 filter .
+filter file created in grails-app/conf folder.
+
+***NOTE: see LameSecurityFilters for notes etc about filters:
+
+
+
+
+

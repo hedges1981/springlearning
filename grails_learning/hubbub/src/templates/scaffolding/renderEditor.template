@@ -37,10 +37,7 @@
  		sb << ' from="${' << "${property.type.name}?.values()" << '}"'
  		sb << ' keys="${' << property.type.name << '.values()*.name()}"'
 		if (isRequired()) sb << ' required=""'
-		sb << ' value="${' << "${domainInstance}?.${property.name}?.name()" << '}" '
-                cp.attributes.each { k, v ->
-                    sb << "${k}=\"${v}\" "
-                }
+		sb << ' value="${' << "${domainInstance}?.${property.name}?.name()" << '}"'
 		sb << renderNoSelection(property)
 		sb << '/>'
 		sb as String
@@ -101,6 +98,7 @@
  			sb << ' name="' << property.name << '.id"'
  			sb << ' from="${' << property.type.name << '.list()}"'
  			sb << ' optionKey="id"'
+			sb << ' optionValue="displayString"'
 			if (isRequired()) sb << ' required=""'
  			sb << ' value="${' << "${domainInstance}?.${property.name}" << '?.id}"'
  			sb << ' class="many-to-one"'

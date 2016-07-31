@@ -2,7 +2,10 @@ package com.hedges
 
 class Profile {
 
-    User user
+    static belongsTo = [user:User]
+    //NOTE: this belongsTo is needed so that validation cascades to this when saving a user object.
+    //the relational association on the USer class ensures saves cascade, but this is needed to ensure that a profile is validated when it is
+    //saved with a user
     byte[] photo    //NOTE that this is a byte[], to hold the binary data of the photo
     String fullName
     String bio

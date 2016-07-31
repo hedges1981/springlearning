@@ -1,0 +1,4 @@
+
+      note this is a multi line string,
+      achievable in groovy by using tripple "
+
