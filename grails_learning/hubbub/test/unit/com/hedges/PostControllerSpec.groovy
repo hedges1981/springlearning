@@ -15,7 +15,7 @@ import spock.lang.Specification
  * using it to implement any persistence calls on the mocked domain classes.
  */
 @TestFor(PostController)
-@Mock([User, Post])
+@Mock([User, Post, LameSecurityFilters])
 class PostControllerSpec extends Specification {
 
     //NOTE that this tests the PostController fetches teh right stuff from the DB and puts it in the model
@@ -68,7 +68,21 @@ class PostControllerSpec extends Specification {
                 "Posting up a storm")
         then: "redirected to timeline, flash message tells us all is well"
         flash.message ==~ /Added new post: Mock.*/
-        response.redirectedUrl == '/post/timeline/joe_cool'
+        response.redirectedUrl == '/users/joe_cool'
     }
 
+
+    /* other tests here */
+    def "Exercising security filter for unauthenticated user"() {
+        when:
+        withFilters(action: "addPost") {        //NOTE: the with filters here, makes it apply the filters when the controller is called.
+            //
+            controller.addPost("glen_a_smith", "A first post")
+        }
+        then:
+        response.redirectedUrl == '/login/form'
+        //NOTE: test is testing the security filters, (LameSecurityFilters.groovy) so we expect the login redirect from the filter.
+    }
 }
+
+

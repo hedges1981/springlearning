@@ -345,6 +345,28 @@ grails create-filters com.hedges.LameSecurity
 filter file created in grails-app/conf folder.
 
 ***NOTE: see LameSecurityFilters for notes etc about filters:
+wild card for filters, e.g. for the controller and action:
+(controller: '*', action: '*'),
+*** FILters can get at controller variables like e.g: (request, response, params, session, flash, + some more apparently.
+see p.180 for the other ones:
+p.181 like with all the other code, you can inject services, see p.181 for an example
+****TESTING FILTERS****
+added filter test: "Exercising security filter for unauthenticated user", see this for some notes on testing filters, e.g.
+the withFilters(...) bit.
+
+*** FILTERS WITH URLS ********
+filters can also be applied on a URL basis, see p.182 for examples.
+
+
+****CUSTOM URL MAPPINGS *****
+note that up to now we rely on the default URL system, /controllerName/action-name/id
+p.182 -> 187 talk about customising the URL mappings
+***see p.185 for bit about mapping views to error codes.
+read this bit when time, looks like you can do a lot of what you can with Spring, e.g. have parameters in the url, * wildcards, etc
+/grails-app/conf/UrlMappings.groovy is the file where url mappings are done .
+Copied in the UrlMappings.groovy from the book, to keep up with the book, and changed PostControllerSpec to match the changed mappings.
+
+
 
 
 

@@ -4,11 +4,13 @@ package com.hedges
 
 class LameSecurityFilters {
 
+
+    //NOTE that these filters provide security around
     def filters = {
         secureActions(controller:'post',
                 action:'(addPost|deletePost)') { //NOTE: how we specify what controller and actions it applies to:
             before = {             //executed before controller is reached
-                if (params.impersonateId) {
+                if (params.impersonateId) {       //NOTE how filters can get at the usual controller varialbes, i.e: also can ((request, response, params, session, flash)
                     session.user = User.findByLoginId(params.impersonateId)
                 }
                 if (!session.user) {
