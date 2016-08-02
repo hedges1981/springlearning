@@ -58,18 +58,24 @@ class UserController {
     }
 
     def register2(UserRegistrationCommand urc) {
+        log.error(" in register 2")
         if (urc.hasErrors()) {
-            render view: "register", model: [ user : urc ]
+            log.error(" has errors")
+            render view: "register", model: [user: urc]
         } else {
             def user = new User(urc.properties)
             user.profile = new Profile(urc.properties)
+            log.error(" saving user")
             if (user.validate() && user.save()) {
+                log.error(" saved user")
                 flash.message =
                     "Welcome aboard, ${urc.fullName ?: urc.loginId}"
+                log.error(" user has been saved, re directing")
                 redirect(uri: '/')
             } else {
-                 // maybe not unique loginId?
-                return [ user : urc ]
+                log.error("user not saved")
+                // maybe not unique loginId?
+                return [user: urc]
             }
         }
     }

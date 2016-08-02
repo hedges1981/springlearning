@@ -142,5 +142,8 @@ this also is on line 3
         def strings = ["1","2","3"]
         def hashCodes = strings*.hashCode()
         println hashCodes //prints:  [49, 50, 51]
+
+        //BIT OF RANDOM NUMBER GENERATION:
+        def x = new Random().nextBoolean()
     }
 }

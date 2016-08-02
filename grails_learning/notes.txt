@@ -367,6 +367,87 @@ read this bit when time, looks like you can do a lot of what you can with Spring
 Copied in the UrlMappings.groovy from the book, to keep up with the book, and changed PostControllerSpec to match the changed mappings.
 
 
+*************CHAPTER 8: FANCY UI STUFF *************
+GSP TAGS:
+- p.190 if test tag:
+- p.191: each tag for looping.
+- p.191: ways of doing links, check out the createLink one, looks quite nifty.
+p.191-2 see the resource for linking to files, and the external to simplify linking to a resource from inside a link tag.
+
+FORM TAGS: p.193
+
+*****FORMS: see register.gsp, accessible at:
+http://localhost:8080/hubbub/user/register
+
+DEMOS lots of possible form features as well as the use of a command object to talk to the register2 method on userController.
+**HTML passed through****
+see p. 195, grails will pass html attributes through to the underlying html that gets rendered. Probably useful for doing a class
+SELECT controls:::: these are quite nifty, see the referrer one and the way it just plugs into a controller method.
+
+****DEBUGGING APP *****
+grails -debug run-app   port is 5005
+
+****PAGINATION: implemented the global gsp and controller action that shows all the posts on one page.
+NOTE the pagination tag in global.gsp, which allows for pagination.
+
+see new global page at:
+http://localhost:8080/hubbub/post/global
+
+*** USE OF TAG LIBS ***
+see e.g. DateTagLib.groovy .... defines some custom tags with the namespace hub. See how the nice  hub:dateFromNow is used in the
+global.gsp ( through the use of the _postEntry.gsp ).
+
+TESTING TAG LIBS
+see DateTagLibSpec for example / re-usable template of testing a tag lib.
+
+CONDITIONAL SHOWING OF A THING WITH A TAG LIB (see p.203 ...logical tags)
+see in UtilTagLib.groovy the certainBrowser and showRandom tags. The certainBrowser one reads in the tag arguments and decides whether or
+not to show something, the other one just does a 1/in 2 show.
+
+ITERATION USING A TAG LIB
+can use the <g:each tag to do iteration, or see the 'eachFollower' tag on p.205 and in UtilTagLib.groovy for a diff way to do it.
+
+CALLING ONE TAG FROM ANOTHER:
+see how the tag: UtilTagLib.tinyThumbnail calls the createLink tag to do its work,
+
+8.3 ADDING DELICIOUS LAYOUTS... SITE MESH!
+p.207- main.gsp is the principle template used to render a page, see how it adds the Hubbub - Social Networking on Grails footer
+see the g:layoutHead and g:layoutBody tags for where it merges in the head and the body elements for the actual gsp being rendered.
+p.208... g:meta tag to display e.g. the version ,see it in main.gsp template.
+
+p.208, see the ways of applying a layout to controller, actions, switching it in the page, etc.
+Created a /layouts/post.gsp which got applied to the /post/global page, see: http://localhost:8080/hubbub/post/global
+NOTE!!! beware of an unseen meta tag scuppering the picking of the layout.
+
+p.210-211 talks about using bootstrap to design layouts, then merging in the gsp via tags like: <g:layoutBody/>
+
+TEMPLATES****, p.212 goes into depth on these, see how the postEntry template works on the global.gsp page.
+
+SKINNING**** p.213, looks easy, not bothered implementing.
+
+***IMPLEMENTING NAVIGATION TABS ****
+- installed the navigation plugin, see BuildConfig.groovy , where it has section plugins :
+**REMEMBER HERE THAT /timeline is directed to the post controller, see UrlMappings.groovy where all of that was set up.
+
+
+***** AJAX, p.216 ****
+note ajax bit is working to ajax up the posting of a post, see http://localhost:8080/hubbub/timeline/chuck_norris for where
+that is done from.
+
+----import jquery by doing:
+<g:javascript library="jquery"/>
+see timeline.gsp for all the ajax stuff, note the 'submit to remote form and also the way it calls into the js functions.
+NOTE that the LameSecurityFilters was set so that it always defaults user to chuck_norris, as adding that login stuff was proving painful.
+
+p.222, animations and effects..... skipped that bit.
+
+HANDLING JSON RETURN VALUES FROM AJAX******
+see: <div id="demoOfProcessingJson" > in timeline.gsp and the getSomeJson of PostController.
+Note the I butchered the book example, see the way that it gets the data back and shows it in an alert, instead of doing the tiny URL stuff.
+
+
+
+
 
 
 

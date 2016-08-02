@@ -3,6 +3,13 @@ package com.hedges
 class PostController {
     static scaffold = true
 
+    static layout= 'post'
+
+    static navigation = [
+            [group:'tabs', action: 'personal', title: 'My Timeline', order: 0],
+            [action: 'global', title: 'Global Timeline', order: 1]
+    ]
+
     def postService //injects an instance of postService
 
     //NOTE: this index () gives the default action, if. you browse to e.g. ..../post
@@ -23,6 +30,43 @@ class PostController {
         } else {
             [ user : user ]
         }
+    }
+
+    def personal()
+    {
+        log.error "in Persoinal"
+        flash.message = "this would be the personal time line if I create it, but have taken you back to the golbal instead"
+        redirect(action: 'global', params: params)
+    }
+
+    def getSomeJson(String fullUrl) {
+        def origUrl = fullUrl?.encodeAsURL()
+        def tinyUrl =
+            new URL("http://tinyurl.com/api-create.php?url=${origUrl}").text
+        render(contentType:"application/json") {
+            urls(small: tinyUrl, full:fullUrl)
+        }
+    }
+
+    def addPostAjax(String content) {
+        try {
+            log.error session.user
+            def newPost = postService.createPost(session.user.loginId, content)
+            def recentPosts = Post.findAllByUser(
+                    session.user,
+                    [sort: 'dateCreated', order: 'desc', max: 20])
+            render template: 'postEntry',
+                    collection: recentPosts,
+                    var: 'post'
+        } catch (PostException pe) {
+            render {
+                div(class:"errors", pe.message)
+            }
+        }
+    }
+
+    def global() {
+        [ posts : Post.list(params), postCount : Post.count() ]
     }
 
 
