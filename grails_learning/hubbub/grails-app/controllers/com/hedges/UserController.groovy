@@ -46,7 +46,7 @@ class UserController {
 
             def user = new User(params)  //note how the names of the params in the register gsp can be fed in here as they
             //refer to either stuff on the user direct, or stuff on the nested profile.
-            if (user.validate()) {
+            if (user.validate() ) {
                 user.save()
                 flash.message = "Successfully Created User"
                 redirect(uri: '/')
@@ -66,7 +66,7 @@ class UserController {
             def user = new User(urc.properties)
             user.profile = new Profile(urc.properties)
             log.error(" saving user")
-            if (user.validate() && user.save()) {
+            if ( user.save()) {
                 log.error(" saved user")
                 flash.message =
                     "Welcome aboard, ${urc.fullName ?: urc.loginId}"
@@ -74,10 +74,25 @@ class UserController {
                 redirect(uri: '/')
             } else {
                 log.error("user not saved")
+
                 // maybe not unique loginId?
                 return [user: urc]
             }
         }
+    }
+
+    def mailService
+
+    def welcomeEmail(String email) {
+        if (email) {
+            mailService.sendMail {
+                to email
+                subject "Welcome to Hubbub!"
+                html view: "/user/welcomeEmail", model: [ email: email ]    //NOTE: how we use the welcomeEmail.gsp view to generate the html.
+            }
+            flash.message = "Welcome aboard"
+        }
+        redirect(uri: "/")
     }
 
     def profile(String id) {

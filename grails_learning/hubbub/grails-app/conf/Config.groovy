@@ -61,7 +61,20 @@ grails {
         // escapes all not-encoded output at final stage of outputting
         // filteringCodecForContentType.'text/html' = 'html'
     }
+
+    mail {
+        host = "smtp.gmail.com"
+        port = 465
+        username = "rhdev2016@gmail.com"
+        password = "devpassword"
+        props = ["mail.smtp.auth":"true",
+                "mail.smtp.socketFactory.port":"465",
+                "mail.smtp.socketFactory.class":
+                        "javax.net.ssl.SSLSocketFactory",
+                "mail.smtp.socketFactory.fallback":"false"]
+    }
 }
+
 
 
 grails.converters.encoding = "UTF-8"
@@ -90,12 +103,17 @@ grails.hibernate.pass.readonly = false
 grails.hibernate.osiv.readonly = false
 
 environments {
+
     development {
         grails.logging.jul.usebridge = true
     }
     production {
         grails.logging.jul.usebridge = false
         // TODO: grails.serverURL = "http://www.changeme.com"
+    }
+
+    test {
+        dumbster.enabled = true
     }
 }
 
@@ -131,4 +149,7 @@ log4j = {
     //NOTE: stuff added here to show hibernate SQL:
 //    debug "org.hibernate.SQL"
 //    trace "org.hibernate.type.descriptor.sql.BasicBinder"
+
+    //NOTE: stuff added for emailing, from chapter 10, plugins chapter
+
 }

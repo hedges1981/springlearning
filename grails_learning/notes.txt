@@ -72,6 +72,9 @@ NOTE******TO RUN A TEST: rather than what the book says, this command seems to b
 grails test-app -unit QuoteServiceSpec
 --run with --stacktrace to get the stacktrace if it fails.
 
+NOTE: ***pain,to run e.g. all the unit tests:
+grails test-app unit no work, need to say unit: i.e. have : at the end.
+
 
 *****  p.29 / 30 NOTE: Couldn't implement the ajax bit, as in grails 3.x, the remoteLink tag has been deprecated
 NO easy alternative for doing this seems to have been offered.
@@ -444,6 +447,131 @@ p.222, animations and effects..... skipped that bit.
 HANDLING JSON RETURN VALUES FROM AJAX******
 see: <div id="demoOfProcessingJson" > in timeline.gsp and the getSomeJson of PostController.
 Note the I butchered the book example, see the way that it gets the data back and shows it in an alert, instead of doing the tiny URL stuff.
+
+
+**** CHAPTER 9, building reliable applications BASICALLY TESTING ********
+(testing)
+see test phases, run as in order : unit, integration, functional, other
+Useful testing shortcuts:
+
+grails test-app unit:spock  --runs only the spoc unit tests:
+Basically you can mix and match phase and test types to get done what you need, see p.231 for info.
+
+p.232, e.g. to run a specific test:
+grails test-app PostController
+can also use wild cards, e.g.
+
+grails test-app com.hedges.*
+can also test specific tests, e.g.:
+grails test-app unit: PostService.\"Invalid posts generate exceptional outcomes\"
+
+*****NOTE NOTE::!!!! use the grails console to run tests, as they run a lot faster lot faster.
+
+**MIXINS*** see file mixinDemo.groovy in groovy proj, basically looks like a way of fudging in stuff from another objecty
+MIXINS from the underlying basis of the e.g. @TestFor..... stuff from the tested class is mixed in, e.g. stuff from the
+controllers like model, params, session, etc.
+
+****EXPLICIT MOCKINGS****
+see p.240 for the explicit mocking in the PostControllerSpec, see how it uses the stuff in the @Mixin at the top to
+get hold of methods that are used to create mocks.
+
+NOTE: limitations of mocking Domain objs, it mocks the persistance storage using e.g. hash maps, but u get no transactional
+or optimistic locking behaviour.
+
+***MOCKING SERVICES, VERIFYING INTERACTIONS, ETC ***
+covered before, also on p.242.
+
+*** groovy mocks ***
+
+see example on p.243 , where the send mail method called by the post controller in the example is mocked with a function that
+effectively verifies the interaction. Very NIFTY!
+
+
+***FUNCTIONAL TESTING WITH GEB****
+see buildConfig.. added in dependencies and other config for the GEB plugin.
+p.246: see this test that very easily navigates to a url and checks the page.
+******run functional tests via:
+
+grails test-app functional:
+
+** made test timeLimeFunctionalSpec, but couldn't get it  to work as it want's a firefox to run, FF not installed on this computer!
+
+****SIMULATING USER INTERACTION***
+see test:
+"Submitting a new post"
+does a couple of things, like putting something into a text area and clicking a button, and checking the result comes back to the screen
+
+p.248, interesting, explains that geb sits on selenium, so you need to look for selenium browser drivers rather than geb drivers
+headles browsers like phantomjs load of rubbish, although headless firefox was used at Sage.
+
+p.250-1 *** talks about the $(...) selector syntax, standard stuff can select e.g. all things with a given class, etc.
+*** p.250 can traverse sub elements of a node etc, see all the methods at the bottom of the page.
+
+251--- some good notes on extracting data from notes, for checking.
+
+***PAGE OBJECT ***
+see TimeLinePage.groovy, good way of working with pages, refernces to mark up only in one place, so tests are more maintainable
+see: TimelinePageFunctionalSpec for example of using a page object inna test.
+
+*** PAGE NAVIGATION IN GEB TESTS *****
+***NOTE: about navigation using the to:
+to does a check that you have got there as well, so if you get redirected, the to will fail.
+solution: use via and at
+e.g.
+via TimelinePage
+at LoginPage....  gets you to the login page via a redirect from the TimeLinePage .
+
+--- adding in parameters to the URL:
+e.g.
+to TimelinePage, "phil", max: 10, offset: 0
+takes you to:
+/users/phil?max=10&offset=0
+
+*** GEB MANUAL section ADVANCED PAGE NAVIGATION good place to look for stuff tdw page navigation.
+
+
+***** CHAPTER 10-----PLUGINS ****************
+--basic ethos of plugins is that grails can call upon java modules, plugin system is just a wrapper around bringing
+other stuff in.
+263-264, talks about grails plugin repo and also using grais website to get plugins, also
+
+grails list-plugins
+ lists stuff in the central repo, also tells you which ones you already have installed.
+
+ Grails plugin repo, is baiscally a maven repo.
+
+ *** use grep to filter; e.g:
+
+ grails list-plugins | grep "mail"
+
+ *** get info about a plugin:
+ grails plugin-info mail    - gives you a decent bit of text explaining what the plugin is all about
+
+
+ ***grails website... has some plugins not available via the repo.
+
+ **grails install-plugin is depracated, use the BuildConfig.groovy file instead, see the plugins section:
+
+ p.266--- looks like plugins have the same potential for dependency pain as maven.
+
+ *** Adding in mail plugin, see buildConfig and also mail related properties in Config.groovy
+
+ see mail section, note that we use google for the smtp server, a common thing apparently for developers to do.
+
+ added in welcomeEmail method of UserController, see how it calls in a jsp template to fromat the email.
+****TESTING EMAILS ***
+see UserIntegrationSpec for the use of dumbster plugin, see of course also how the plugin is brought in in buildConfig.groovy
+
+couldn't get email to work, sacked it.
+
+**CACHING ***
+
+
+
+
+
+
+
 
 
 

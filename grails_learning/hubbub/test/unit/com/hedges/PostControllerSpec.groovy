@@ -14,7 +14,7 @@ import spock.lang.Specification
  * @Mock is very use full, does all of rigging up an 'in-memory database (really just a hash map) and
  * using it to implement any persistence calls on the mocked domain classes.
  */
-@TestFor(PostController)
+@TestFor(PostController)  //NOTE: the @TestFor allows for the things like params and
 @Mock([User, Post, LameSecurityFilters])
 class PostControllerSpec extends Specification {
 
