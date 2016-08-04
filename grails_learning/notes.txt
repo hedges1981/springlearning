@@ -564,7 +564,11 @@ see UserIntegrationSpec for the use of dumbster plugin, see of course also how t
 
 couldn't get email to work, sacked it.
 
-**CACHING ***
+**CACHING DATABASE MIGRATIONS SEARCHING***
+
+Chapter talks about this and related plugins, see pages; 273 ->  296.
+
+
 
 
 
