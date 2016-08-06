@@ -716,6 +716,50 @@ grails has plugins to allow for login with Facebook twitter, OAUTH, etc
 see page 323 for a bit about loging in using Twitter.
 
 
+****CHAPTER 14 UNDERSTANDING SPRING AND TRANSACTIONS *****
+
+basically grails is a wrapper around spring..
+Default is for grails to autowire springbeans into the groovy files by name, e.g. Bean is interface MyBean
+, ref it as myBean to get it autowired. 
+
+**** grailsApplication bean ******
+-- can call on e.g.:
+grailsApplication.mainContext to get the spring context
+grailsApplication.config to get the runtime application configuration
+
+p.304, says that you can get at the following beans:
+
+grailsApplication ----> as above
+sessionFactory ------> the hibernate session factory
+groovyPagesTemplateEngine  ---> allows for self parsing of gsps.
+messageSource ----> tdw text conversion in ui. 
+
+LOTS OF OTHER BEANS AVAILABLE, esp with plugins, e.g. mailService (mail plugin)
+springSecurityService --- se security chapter.
+
+p.386, see top for ways to get hold of the SpringApplication context.
+p.387... looks like you define your beans in grails-app/conf/spring/resources.groovy
+
+DEFINING CUSTOM BEANS:::
+1. see page 388, looks like it can be done in resources.groovy... looks a bit like an @Configuration spring class,
+u can counstruct beans, even based on conditions such as environments.
+
+GRAILS HAS A file called: web-app/web-inf/applicationContext.xml, presume that this can be used as the entry point for bringing in proper spring?
+
+
+*********** Transactions...
+
+Use @Transactional on services, basically the same as spring. 
+DONT forget about runtime exceptions trigger a roll back, checked do NOT!
+be careful in Groovy cos u don't have to catch checked ones, so easy to miss.
+
+****LOOKS like grails services are transactional by default, to disable and control, use:
+
+static transactional = false in the service class.
+
+
+
+
 
 
 
