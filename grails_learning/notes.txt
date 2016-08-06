@@ -568,6 +568,183 @@ couldn't get email to work, sacked it.
 
 Chapter talks about this and related plugins, see pages; 273 ->  296.
 
+*****CHAPTER 11, PROTECTING YOUR APPLICATION .... SECURITY ****
+
+p.299 SQL Injection, apparently the standard grails db stuff automatically protects against sql injection.
+
+p. 300, ***False bindable, mechanism to stop users from updating fields on an object that were not set editable on the form,
+i.e. by making their own post messages and setting stuff on an object that they are not meant to...
+bindable = false stops this in the constraints of the object, as it prevents the field from being set due to a 'mass assignment'
+
+alternative way: use a Command object to carry the data from the form, that only has properties on it that you want to be set on the 
+domain object. see e.g. p.301. 
+Disadvantage:  get fields duplicated on Domain Objects and command objects.
+
+***Escaping possible HTML tags..
+e.g. user puts a post that contains <script> tags to try to execute some javascript. 
+...ok with grails, anything that is rendered in a view inside ${.........} gets automatically escaped.
+
+Disabling escaping: use 1:
+e.g. ${raw(model.someContent)}... the raw makes it get parsed as raw unescaped.
+
+or to do it globally:
+grails.views.gsp.codecs.expression = 'none'   relates to ${...} stuff
+grails.views.gsp.codecs.scriptlet = 'none'   relates to jsp style <%......%> stuff.
+
+-- to encode something when the default is to have it turned off:
+${post.content.encodeAsHTML()}  ..use the encodeAsHTML method, which is on the groovy string object.
+
+***OTHER ENCODINGS OF STRINGS...#p.303 lists some other encoding methods, e.g. to encode/decode base64
+--all the encoding methods are idempotent, i.e. if u call them twice, you don't get a double encoding.
+
+for Javascript:
+use <g:javascript> tags to get stuff paresed through correctly encoded to work as Javascript,
+alert('${ myMessage.encodeAsJavaScript() }'); ..... note that the encodeAsJavascript method is good, as it will show html encoded
+stuff, e.g. turn &amp; into '&'...
+
+****CSRF....CROSS SITE REQUEST FORGERY ************
+p.305 talks about getting round this, use the <g:form... attribute of 'useToken' and also the withForm thing in the controller method.
+NOTE, isn't it default in spring? seems like a bit of faffing about.
+
+****SSL SSL SSL*****
+to start the app with https enabled:
+
+grails --https run-app
+
+NOTE: if you go to the site over HTTPS with no other configuration, grails generates a self sigend cert and uses that.
+
+TO USE A PROPER CERT (JKS)
+----put settings like the below in the BuildConfig.groovy***
+grails.tomcat.truststorePath = "${grailsSettings.baseDir}/conf/ssl/truststore.jks"
+grails.tomcat.truststorePassword = "changeit"
+grails.tomcat.clientAuth = "want"
+grails.tomcat.keystorePath = "${grailsSettings.baseDir}/conf/ssl/keystore.jks"
+grails.tomcat.keystorePassword = "changeit"
+grails.tomcat.keyAlias = "localhost"
+
+************ACCESS CONTROL ****************
+book recommends 3 plugins to implement access control:
+
+Authentication Plugin, Shiro Plugin, Spring Security Plugin.
+
+BOOK FOCUSES ON SPRING SECURITY.... good!
+p.309 onwards talks through setting it up:
+- takes you through the plugin installation and also the quickstart command to get it rigged up automatically with defaults.
+- read carefully, be careful with what the quickstart sets up, with respect to the User object, for example. 
+- looks like the plugin has a ready made login page, like you get with Spring Security. 
+p.313... see how you configure URL paterns and roles same as with Spring security, e.g in config.groovy:
+
+grails.plugin.springsecurity.securityConfigType = "InterceptUrlMap"
+grails.plugin.springsecurity.interceptUrlMap = [
+'/': ['permitAll'],
+'/post/global': ['permitAll']
+'/user/**': ['permitAll']
+'/login/auth': ['permitAll'],
+'/**/js/**': ['permitAll'],
+'/**/css/**': ['permitAll'],
+'/**/images/**': ['permitAll'],
+'/**': ['isFullyAuthenticated()']
+]
+
+****NOTE: good generic URL pattern for fully secured app:
+
+'/login/**': ['permitAll'],
+'/logout/**': ['permitAll'],
+'/**': ['isAuthenticated()']
+
+
+****p. 313, be careful of what it says about i) the white list (same as spring sec) and the casing of URLS,
+basically u need to specify them always in a lower case , (why, is a bit poor).
+
+p.314... again same as with spring sec, first match found that allows a role wins, so always put more specific
+URLs first in the list.
+
+***REMEMBER ME functionality.... p.314, you can have a 'remember me' button, same as with Spring sec. 
+
+****SPRING SECUIRTY SERVICE BEAN****
+you get a bean that you can reference like:
+def springSecurityService
+
+see p.316 for what you can do with it, e.g. get hold of the current user......
+
+***USING SPRING SECURITY IN VIEWS ****
+looks like there is a sec namespace, e.g.
+<sec:ifLoggedIn>
+<g:form name="logoutForm" controller="logout" action="index">
+<g:submitButton name="signOut" value="sign out"/>
+</g:form>
+</sec:ifLoggedIn>
+
+to conditionally show stuff based on login. 
+***LOOK round the sec stuff, must be stuff there tdw e.g. checking roles, etc etc *****
+
+****CONFIGURING LOGIN STUFF ***
+e.g.
+grails.plugin.springsecurity.auth.loginFormUrl = "/login/form"
+grails.plugin.springsecurity.failureHandler.defaultFailureUrl = "/login/form"
+grails.plugin.springsecurity.successHandler.defaultTargetUrl = "/timeline"
+
+---- you effectively get access to all the stuff you get in spring, but via the setting of these kinds of properties rather
+than in a spring config file. 
+
+****TYPICAL LOGIN FORM *****
+see p.318... note e.g. what the uri for the form is and also the names of the fields, inc the remember me one.
+basically same as spring security.
+
+*** TESTING SECURITY *****  
+FUNCTIONAL TESTING!!! basically says that to ensure that all the various factors come into play, use GEB
+functional testing as the reliable way to properly test security.
+
+***FURTHER ON SECURITY****
+--u need to define roles in BootStrap.groovy, e.g.
+
+def role = new Role(authority: "ROLE_ADMIN", description: "A super user.")
+def admin = new User(loginId: "dilbert", ...).save()
+role.addToPeople(admin)
+role.save()
+
+U then need to still refer to them in upper case convention syntax (ROLE_NAME), e.g.
+'/user/**': ['ROLE_ADMIN'],
+when working on the URL bits.
+
+***COMPLEX SECURITY WHERE SIMPLE ROLE BASED STUFF ISNT ENOUGH***
+e.g. you want it so that only a user can edit their own details... all users have ROLE_USER , so what to do?
+solution given on p.322: have some custom logic inna filter. 
+
+**SOCIAL ACCESS**
+grails has plugins to allow for login with Facebook twitter, OAUTH, etc
+see page 323 for a bit about loging in using Twitter.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
