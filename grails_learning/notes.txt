@@ -744,7 +744,13 @@ DEFINING CUSTOM BEANS:::
 1. see page 388, looks like it can be done in resources.groovy... looks a bit like an @Configuration spring class,
 u can counstruct beans, even based on conditions such as environments.
 
-GRAILS HAS A file called: web-app/web-inf/applicationContext.xml, presume that this can be used as the entry point for bringing in proper spring?
+GRAILS HAS A file called: web-app/web-inf/applicationContext.xml, that houses the actual grails beans, 
+***  http://docs.grails.org/2.3.7/guide/spring.html here says that need to putthem in:
+grails-app/conf/spring/resources.xml
+
+
+Or do you need to put them in:
+grails-app/conf/spring/resources.xml
 
 
 *********** Transactions...
@@ -757,6 +763,41 @@ be careful in Groovy cos u don't have to catch checked ones, so easy to miss.
 
 static transactional = false in the service class.
 
+
+
+*********CHAPTER 17: BUILD STUFF *****
+grails war --- creates you a war file
+NOTE that for the war file it defaults to production environment settings
+
+***DEPENDENCY MANAGEMENT ******
+note that in build config.groovy it basically says e.g:
+runtime 'org.postgresql:postgresql:9.3-1100-jdbc41'
+
+note that the above is maven: group:artifact:version
+
+Grails will always pick the latest version of a transient dependency if two deps
+call in different versions of it( from 2.3 )
+
+***exclusion of transient dependencies, see p.472 at the top
+
+grails dependency-report gives you a report out to the console window
+
+p.472.... see the build scopes, note that runtime seems like it is the same as build in maven, no 'build' in grails
+****JENKINS BUILD***
+p.475 talks about integrating it with jenkins
+p.476, apparently you can end up with unwanted stuff in the war file, bit on this page talks about using an event to gain control over
+the build folder.
+
+****DEPLOYMENT TO SERVER ENVIRONMENTS *****
+p.479, talks about hosting multiple grails apps in a tomcat, pooling classes buy calling on the tomcat/lib folder
+p.480 talks about having it pull in config stuff from specific folders on a server, allowing for different
+environmental settings, like the s3 buckets
+**** USE USE!!!! the app-name-config.groovy bit on p.480, note also that you can put datasource settings in this file.
+
+***********MAVEN INTEGRATION *************
+
+p.
+ 
 
 
 
