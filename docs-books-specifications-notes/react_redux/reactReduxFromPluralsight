@@ -1,0 +1,25 @@
+PLURALSIGHT 1. followed react core conecpts to react composition of this course first, to get onto react:
+https://app.pluralsight.com/library/courses/react-flux-building-applications/table-of-contents
+
+use strict = good idea.
+
+can be used just to wrap a part of the file.
+
+react component has props and state
+
+props are passed down from parent, are immutable
+state should only be used on top comp, pass it via props to the children.
+-see getDefaultProps for defaulting properties.
+
+various lifecycle methods, e.g.
+
+componentWillMount, componentDidUpdate, etc.
+NOTE: the will and did pattern,
+NOTE: there are e.g. shoulds, e.g. shouldComponentUpdate .... prevent un-necessary re rendering if u want.
+
+componentWillUnmount... when it is just about to be pulled off the DOM.
+
+keys: e.g. u are displaying stuff in a table:
+
+<tr key ="person.id">... etc.
+

@@ -1,0 +1,135 @@
+************REACT REDUX NOTES MADE FROM THE TTORIAL IN FOLDER *****
+
+
+--- url recommended by Andy discussing react.js
+
+****!!!!NOTE!!!!*******************************************
+all the code looks confusing, that is because it is using the facebook immutable javascript collections framework,
+see Here::::
+https://facebook.github.io/immutable-js/docs/#/Map
+for documentation.
+
+
+redux- stores all application state in one tree
+
+tree is immutable, every time data changes, new tree is made, replaces old one.
+
+-leads to functional programming, f(tree) -> nextTree
+
+tutorial talks about having a serverside app, that implements a load of functions that
+take one tree into another depending on what it needs to do.
+
+e.g. nextTree -> nextTree -> next Tree etc
+
+****** JAVASCRIPT CODE *********
+uses ES6 javascript... this gets 'transpiled' into ES5....es5 is what browsers understand
+see here for bit about javascript versions:
+https://en.wikipedia.org/wiki/ECMAScript
+and here for ES6 language guide: does it by a comparison of ES5 and ES6
+http://es6-features.org/#Constants
+
+*****REDUX ***********
+deals in actions, which effectively specify a function and the arguments: e.g.:
+
+type is the function, then u get the arguments.
+
+{type: 'SET_ENTRIES', entries: ['Trainspotting', '28 Days Later']}//in example, means set the entries field
+of the state object with the supplied data::::
+
+{type: 'NEXT'}
+
+{type: 'VOTE', entry: 'Trainspotting'}  //NOTE that these just a simple json literal
+
+examples then talk about a 'reducer' function, that takes the action and the state and does the work:
+
+e.g.
+function reducer(state, action) {
+  // Figure out what thing to do the state, then do it... basically decide on what function to call, then call it.
+}
+
+-- action as string json, means that they can be serialised into a sequence, and passed around..
+applying the sequence of actions from initial state gets you to the final state.
+
+****NOTE***** use functional programming to go state-> newState however it is in efficient to have functions
+that take the entire state and copy, modify and return the whole thing each time.
+Instead split it up into smaller nodes, and have some PURE functions that work on the smaller sub pieces.
+
+******* REDUX STORE *******
+-- basically is an object that wraps the state (dataStructure) and the reducer (thing that reads the actions and
+calls methods on the right things from them) .
+U simply pass actions to the store, and it applies them to the state using the reducer.
+
+Code creating the store:
+////////
+import {createStore} from 'redux';
+import reducer from './reducer';/// see in the example, the reducer file makes the reducer available.
+
+export default function makeStore() {
+  return createStore(reducer);
+}
+////////
+
+*****NOW IT TALKS ABOUT IMPLEMENTING THE SERVERSIDE ***
+
+////find this bit : "What we'll do is subscribe a listener to the store that reads the current state"
+NOTE how there you set the server up to emit the full state object each time it changes, as a 'state' event
+this causes a JSON snapshot of the state to be sent over all active socket.io connections...
+and note how it sends out a snapshot of the state also in response to someone connecting for the first time
+
+bit:"Receiving Remote Redux Actions"
+NOTE how at this point it is basically now following this logic:
+- A client sends an action to the server.
+- The server hands the action to the Redux Store.
+- The Store calls the reducer and the reducer executes the logic related to the action.
+- The Store updates its state based on the return value of the reducer.
+- The Store executes the listener function subscribed by the server.
+- The server emits a 'state' event.
+- All connected clients - including the one that initiated the original action - receive the new state.
+
+
+*******    The Client Application   **********
+bit:  "With the Webpack and Babel infrastructure in place, let's talk about React!"
+talks about pure components, as like pure functions, makes sense, component fed with data which it displays.
+compment as a function is a bit like:
+
+component( in data ) -> rendered output.
+***NOTE: react uses that JSX thing, so files that contain it must be .jsx
+THIS allows for html to be thrown into the files, e.g.
+
+const pair = ['Trainspotting', '28 Days Later'];
+ReactDOM.render(
+  <Voting pair={pair} />,
+  document.getElementById('app')
+);
+
+tells it to render a voting element in the 'app' node, setting the 'pair' field of the element to the values given.
+
+TO define the voting component, you need :
+1. a file called Voting.jsx
+2. this in the file:
+
+import React from 'react';
+
+export default React.createClass({
+  getPair: function() {
+    return this.props.pair || [];
+  },
+  render: function() {
+    return <div className="voting">
+      {this.getPair().map(entry =>
+        <button key={entry} onClick={() => this.props.vote(entry)}>
+          <h1>{entry}</h1>
+        </button>
+      )}
+    </div>;
+  }
+});
+
+//NOTE the above has the onclick call back, to actually effect someone's voting. Why is it this.props
+
+
+
+
+
+
+

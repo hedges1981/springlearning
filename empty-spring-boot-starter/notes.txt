@@ -1,0 +1,10 @@
+totally empty spring boot app, just has an index.html page, found at:
+
+http://localhost:8080/index.html
+
+good basic starting point for building a spring boot app.
+
+
+
+
+
