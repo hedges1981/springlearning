@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="dynamic-racecards:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="dynamic-racecards-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="dynamic-racecards:war exploded" />
+    </root>
+  </artifact>
+</component>

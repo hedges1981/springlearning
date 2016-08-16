@@ -100,23 +100,8 @@ aws autoscaling --region eu-west-1 put-scheduled-update-group-action --scheduled
 
 aws autoscaling describe-scheduled-actions --region <put in right region>
 use: aws autoscaling delete-scheduled-action to delete any scheduled action.SLS Prod Sage.DE.SMB Client 09:34
-MlCmRvZoVgIdMAWMYcQg 09:34
-De Prod SLS Prod Sage.DE.SMB CA 09:36
-?P]9Ya!@Nkc$7;s]/Ml9 09:37
-De Prod Backoffice Keystore (Working) 09:37
-jdy6s76754u 09:37
-de1.jks 09:37
-De Prod Backoffice keystore password (Deprecated) 09:37
-db783bf74k1nk 09:37
-De Staging Collaborate Client 09:38
-umhpfQ7z 09:38
-De Prod Sage ID Key Password 09:39
-3xh3jlP5m1OI 09:39
-admin 09:39
-EyTVK8ZFDjpfaZ9x4PEHdSmh 09:39
-BACKOFFICE: pCTTeXtPd3sq9CE9PxJEYaVx ENC(PR02cpY1Qd5u6FnqScTgSrH0JSuXXKX9gJrYgqhuaRQdYMgKPDLT2w==)
-SLSADMIN: ksV7hSSAHfd6ny8eaFNAmTXs ENC(JXPKtcmbKLL0U5tfoZKkvGw2OpLewTEyt05k+qslMozuo2gJXuSb7g==)
-SLSFRONTEND: vmzZKZ5Wr4S5L38L6pjUCFfT ENC(uOZdtqBTDh5MC61IgpBvhZ3tUvOby5VXN/3qTe8JrrtxpKouKnieCw==)
+EHdSmh 09:39
+
 
 
 GET EC2 INSTANCE ID

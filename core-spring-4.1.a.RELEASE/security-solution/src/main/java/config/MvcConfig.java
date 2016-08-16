@@ -39,6 +39,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter{
 	/**
 	 * These views are so simple they do not need a controller:
 	 */
+	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 	    registry.addViewController("/login.htm");
 	    registry.addViewController("/denied.htm");
