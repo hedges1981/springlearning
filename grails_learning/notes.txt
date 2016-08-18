@@ -797,6 +797,17 @@ environmental settings, like the s3 buckets
 ***********MAVEN INTEGRATION *************
 
 p.
+
+********************** viewing a DEV DB in the db console ***************
+
+brows to app + dbconsole url:
+e.g.
+http://localhost:8080/SISTrader/dbconsole
+
+user sa, no password
+
+for the db url, put the url as is from the dev datasource config:
+jdbc:h2:file:sistradingdb
  
 
 
