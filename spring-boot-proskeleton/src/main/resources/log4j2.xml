@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- EASY log4j2 file that also includes config for an email error appender -->
+
+<Configuration status="WARN">
+    <Properties>
+        <!--NOTE: if the app.logfile system property is not specified, then this the default that it will
+        fall back to -->
+        <Property name="app.logfile">logs/dynamicRaceCards</Property>
+    </Properties>
+    <Appenders>
+        <Console name="console-log" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n"/>
+        </Console>
+        <RollingFile name="application_log_file" fileName="${sys:app.logfile}"
+                     filePattern="${log-path}/${sys:app.logfile}-%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <SMTP name="Mail"
+              subject="${sys:spring.profiles.active} App Error"
+              to="${sys:error.email.to.address}"
+              from="${sys:spring.profiles.active}_app@hedges.com"
+              smtpHost="somewhere"
+              smtpPort="25"
+              bufferSize="50"
+              smtpDebug="false">
+            <PatternLayout>
+                <pattern>%d{[ dd.MM.yyyy HH:mm:ss.SSS]} ${hostName} [%t] %n%-5p %n%c %n%C %n %x %n %m%n</pattern>
+            </PatternLayout>
+        </SMTP>
+        <Async name="AsyncMailer">
+            <AppenderRef ref="Mail"/>
+        </Async>
+    </Appenders>
+    <Loggers>
+        <Root level="info" additivity="false">
+            <AppenderRef ref="console-log"/>
+            <AppenderRef ref="application_log_file"/>
+            <AppenderRef ref="Mail" level="error"/>
+        </Root>
+    </Loggers>
+</Configuration>

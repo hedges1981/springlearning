@@ -1,0 +1,7 @@
+#add property override here for the uat environment
+
+spring:
+    #defaults to development profile
+    profiles:
+        active: uat
+

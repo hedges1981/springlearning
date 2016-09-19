@@ -1,0 +1,7 @@
+#add override properties here for the QA env
+
+spring:
+    #defaults to development profile
+    profiles:
+        active: qa
+

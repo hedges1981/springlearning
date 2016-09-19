@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>tv.sis.racecards</groupId>
+    <artifactId>dynamic-racecards</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.4.0.RELEASE</version>
+        <relativePath/>
+    </parent>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Main class that is hit when run as standalone Spring boot app  -->
+        <start-class>com.hedges.config.ApplicationRunner</start-class>
+        <java.version>1.7</java.version>
+        <racecards.version>1.24.0</racecards.version>
+        <springboot.executable.jar.name>dynamicracecards</springboot.executable.jar.name>
+    </properties>
+
+    <!-- SPRING stuff -->
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <!-- exclusion allows for log4j to work instead of the default logback based mechanism -->
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
+        <dependency>
+            <!-- this one required for error emails -->
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.5.1</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!--NOTE: These dependencies are necessary to enable JSP usage when running embedded tomcat
+            NOTE also the need to put the jsp files under src/main/resources/META-INF/resources/WEB-INF
+            see: https://dzone.com/articles/spring-boot-with-jsps-in-executable-jars-1
+         -->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+
+        <!-- this dependency not in any public repos, so brought in from project lib folder, see custom file:// repo below -->
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>sqljdbc4</artifactId>
+            <version>4.0</version>
+        </dependency>
+
+
+
+
+    </dependencies>
+
+    <!-- example of using the file system as a repo, if something isn't in the remote one -->
+    <repositories>
+        <repository>
+            <id>project lib folder</id>
+            <url>file://${basedir}/lib</url>
+        </repository>
+    </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>dynamicracecards</finalName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- unpacks the racecards depenency and makes the files it contains available as static content-->
+            <!-- NOTE this bit will allow it to unpack a tar.gz file and stick the contents available as static content -->
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-dependency-plugin</artifactId>-->
+                <!--<configuration>-->
+                    <!--<includeTypes>tar.gz</includeTypes>-->
+                    <!--<includeArtifactIds>artifact to include</includeArtifactIds>-->
+                    <!--<outputDirectory>${basedir}/target/classes/static</outputDirectory>-->
+                    <!--<useSubDirectoryPerArtifact>false</useSubDirectoryPerArtifact>-->
+                    <!--<stripVersion>true</stripVersion>-->
+                <!--</configuration>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>unpack</id>-->
+                        <!--<phase>initialize</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>unpack-dependencies</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
+
+
+
+            <!--<plugin>-->
+                <!--<artifactId>maven-assembly-plugin</artifactId>-->
+                <!--<configuration>-->
+                    <!--<descriptors>-->
+                        <!--<descriptor>deployment/assembly.xml</descriptor>-->
+                    <!--</descriptors>-->
+                    <!--<tarLongFileMode>posix</tarLongFileMode>-->
+                <!--</configuration>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>make-assembly</id> &lt;!&ndash; this is used for inheritance merges &ndash;&gt;-->
+                        <!--<phase>package</phase> &lt;!&ndash; append to the packaging phase. &ndash;&gt;-->
+                        <!--<goals>-->
+                            <!--<goal>single</goal> &lt;!&ndash; goals == mojos &ndash;&gt;-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
+        </plugins>
+
+    </build>
+
+    <!-- Specify nexus location for releases and snapshots -->
+    <!--<distributionManagement>-->
+        <!--<repository>-->
+            <!--<uniqueVersion>false</uniqueVersion>-->
+            <!--<id>nexus.releases</id>-->
+            <!--<name>Release Repository</name>-->
+            <!--<url>http://some where :8082/nexus/content/repositories/releases/</url>-->
+        <!--</repository>-->
+    <!--</distributionManagement>-->
+
+</project>

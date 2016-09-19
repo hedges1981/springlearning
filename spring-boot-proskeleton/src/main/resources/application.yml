@@ -1,0 +1,29 @@
+#Contains the default properties for the default profile (development)
+#When usng a Spring profile, any duplicated properties declared in file application-<profileName>.yml
+#will win over the default values here
+
+
+logging:
+    level:
+        org:
+            springframework: INFO
+        tv:
+            sis: INFO
+spring:
+    #defaults to development profile
+    profiles:
+        active: development
+#    datasource:
+#        driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#        username: <un>
+#        password: <pwd>
+#        url: <enter url>
+
+    mvc:
+        view:
+            prefix: /WEB-INF/views/
+            suffix: .jsp
+server:
+    error:
+        whitelabel:
+            enabled: false
