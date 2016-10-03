@@ -1,0 +1,82 @@
+NOTE: this project follows the course on Pluralsight:
+
+https://app.pluralsight.com/library/courses/scala-for-java-developers/table-of-contents
+
+***Opening scala interpreter, called the REPL, read-evalualte-print-loop
+
+open cmd in C:\Program Files (x86)\scala\bin and type scala, u get a scala console thing: (or you could put the bin folder on the path)
+
+e.g. type 7*8 ,it prints you out
+res0: 56.
+
+you can then use res0 , type res0 /2, it gives you res1, etc:
+
+****NOTE****: you type res0, it gives you res1: 56 ! this is due to the pure mathematical functional side,
+the output of every expression is a new variable, due to immutability:
+
+NOTE how it infers the yupe from what happens, e.g. above, res1 is an int, but "Hello" + res1 gives you a res3 is a STRING
+
+**** :quit allows you to quit the repl.
+
+**** SCALA CONSOLE IN INTELLIJ***** need to press ctrl+enter to run the code.
+
+***** EXEC SCALA EMBEDDED IN A SH FILE****
+
+1. on first like of .sh file have:
+exec scala "$0" "$@"
+
+that will put it into exec scala mode, then the next lines of the script can feature scala code that gets executed.
+
+
+***** CLASS HIERACHY *****
+all classes inherit from Any
+Sub classes are AnyVal and AnyRef , the super types of value types and reference types.
+Int etc, i.e. things that are quite priimtive are value types. Val types are stuf that can be defined by a literal, e.g. 1L, etc
+****FOR anyVal == calls the equals sign
+
+things like String, List classes in Scala are of 'anyRef'
+
+but == still delegates to the .equals method.
+
+***** BOTTOM CLASSES **************
+can have classes that all types are a super type of, e.g. Scala.NULL, Scala.NOTHING, makes some sense, as anything can be a NULL
+
+see scalaClassDiag for a picture of all this.
+
+
+****SCALA DOC***
+/** write scala doc comments like this on classes methods etc */ can get made into easily browsable html stuff.
+
+*****LANGUAGE FEATURES ****************
+Alias imports, e.g. you have a name clash, you can alias an imported class name to get round it:
+e.g. this aliases java collection classes:
+import java.util.{Map ⇒ JMap, List ⇒ JList},
+u can also import methods and alias them, etc.etc.
+
+*** TAIL CALL OPTIMISATION, @tailrec, use this when working with recursive functions, allows for recursion without a stackoverlow
+see other scala learning project, can only be done when the recursive call is the last thing in the method.
+
+
+*********TRAITS VS ABSTRACT CLASSES *******
+see pic, main diff is ability for multiple inheritance, to 'mixin' behaviour from x amount of traits.
+
+*****LINEARISATION TO DEAL WITH MULTIPLE INHERITANCE PROBLEM OF DUPLICATE METHODS ****
+
+e.g.
+
+class FlyingPig extends Animal with Bird with Has4Legs
+
+all of the classes apart from FlyingPig have a method called move, which one is called?
+
+Answer: scala goes along the line until it finds on, so FlyingPig.move(..) calls Animal.move
+if Animal didn't have it it would call the one on Bird, etc.
+The same is true for super, super.methodX goes along the line until it finds the methodX to call.
+
+NOTE that java 8 does not do this, clashes in method names, cause a compile error.
+
+
+***********Exceptions**************
+Scala only throws runtime exceptons, even if you call something in java that will throw a checked one, scala
+always converts it into a runtime 1.
+
+
