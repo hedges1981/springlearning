@@ -808,6 +808,12 @@ user sa, no password
 
 for the db url, put the url as is from the dev datasource config:
 jdbc:h2:file:sistradingdb
+
+
+
+OK, this change made as a commit to the alternate branch
+
+
  
 
 
