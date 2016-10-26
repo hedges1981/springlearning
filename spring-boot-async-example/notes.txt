@@ -1,0 +1,6 @@
+Simple example, of
+
+- defining > 1 executor
+- referencing a specific executor by name in the @Async annotation.
+
+call mvnDebug spring-boot:run with break points to see what it does.

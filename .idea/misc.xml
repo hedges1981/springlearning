@@ -11,6 +11,8 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/spring-boot-jms-poc/complete/pom.xml" />
+        <option value="$PROJECT_DIR$/spring-boot-async-example/complete/pom.xml" />
       </list>
     </option>
   </component>
@@ -18,4 +20,3 @@
     <output url="file://$PROJECT_DIR$/classes" />
   </component>
 </project>
-
