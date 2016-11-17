@@ -25,6 +25,15 @@ function connect() {
             showGreeting(JSON.parse(greeting.body).content);
             //NOTE: can we easily subscribe to > 1 topic in here?
         });
+
+        stompClient.subscribe('/topic/testTopic/1', function (msg) {
+            alert("MessageRecieved on subscription1 "+ msg.body);
+        });
+
+        stompClient.subscribe('/topic/testTopic/2', function (msg) {
+            alert("MessageRecieved on subscription2 "+ msg.body);
+        });
+
     });
 }
 

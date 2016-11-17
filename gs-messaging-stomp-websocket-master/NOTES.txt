@@ -1,2 +1,22 @@
 This project follows example tutorial from here:
 https://spring.io/guides/gs/messaging-stomp-websocket/
+
+
+Notes: additional stuff made by me to demo 'multiplexing', > 1 topic over the same web socket?
+
+
+see app.js where it subscribest to topics
+/topic/testTopic/1
+/topic/testTopic/2
+
+See WebSocketPublishingService.java for thing that pushes messages down those topics.
+
+to test all this:
+
+start app:
+
+go to: http://localhost:8080/
+
+Connect to the websockets:
+
+U will see loads of annoying alerts popping up!

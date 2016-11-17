@@ -15,8 +15,12 @@ public class GreetingController {
     @SendTo("/topic/greetings")//Means that the returned value is broadcast to the greetings topic and will
     //be gotten by all subscribers.
     public Greeting greeting(HelloMessage message) throws Exception {
+
         Thread.sleep(1000); // simulated delay
         return new Greeting("Hello, " + message.getName() + "!");
     }
+
+
+
 
 }
