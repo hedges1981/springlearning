@@ -11,6 +11,7 @@
       <sourceFolder url="file://$MODULE_DIR$/spring-boot-jms-poc/initial/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/spring-boot-jms-poc/complete/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/spring-boot-async-example/complete/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gs-messaging-stomp-websocket/complete/src/main/java" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />

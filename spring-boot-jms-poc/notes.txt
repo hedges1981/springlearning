@@ -1,0 +1,5 @@
+simple example that;
+
+1. rigs up a named jms queue
+2. has a listener (the Receiver) on the  queue
+3. Fires a message down it and receives it
