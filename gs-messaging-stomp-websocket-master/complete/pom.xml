@@ -19,6 +19,8 @@
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
 
+        <!-- NOTE: these webjars dependencies look quite nifty, see in index.html how the various jars are grabbed by the
+        browser -->
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>webjars-locator</artifactId>

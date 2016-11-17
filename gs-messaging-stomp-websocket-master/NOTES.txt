@@ -1,0 +1,2 @@
+This project follows example tutorial from here:
+https://spring.io/guides/gs/messaging-stomp-websocket/

@@ -1,5 +1,6 @@
 package hello;
 
+//NOTE: this is the message that gets sent to the server as part of the POC:
 public class HelloMessage {
 
     private String name;
