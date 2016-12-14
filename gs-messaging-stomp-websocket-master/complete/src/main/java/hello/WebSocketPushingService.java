@@ -22,7 +22,6 @@ public class WebSocketPushingService implements ApplicationListener<ContextRefre
 
     }
 
-
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 

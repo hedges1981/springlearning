@@ -25,7 +25,7 @@ function connect() {
             showGreeting(JSON.parse(greeting.body).content);
             //NOTE: can we easily subscribe to > 1 topic in here?
         });
-
+            //yes, u can, easy to subscribe to > 1 topic here
         stompClient.subscribe('/topic/testTopic/1', function (msg) {
             alert("MessageRecieved on subscription1 "+ msg.body);
         });

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
+    <file url="file://$PROJECT_DIR$/gs-messaging-stomp-websocket-master/complete" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gs-rest-service-cors-master/complete" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-async-example/complete" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-jms-poc/complete" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/spring-boot-jms-poc/initial" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-web4-webflow-learning" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-websocket-portfolio-master/spring-websocket-portfolio-master" charset="UTF-8" />
   </component>
 </project>

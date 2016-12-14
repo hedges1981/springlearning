@@ -5,10 +5,13 @@
       <module fileurl="file://$PROJECT_DIR$/developer-utils/developer-utils.iml" filepath="$PROJECT_DIR$/developer-utils/developer-utils.iml" />
       <module fileurl="file://$PROJECT_DIR$/grails_learning/groovy-learning/groovy-learning.iml" filepath="$PROJECT_DIR$/grails_learning/groovy-learning/groovy-learning.iml" />
       <module fileurl="file://$PROJECT_DIR$/spring-boot-jms-poc/complete/gs-messaging-jms.iml" filepath="$PROJECT_DIR$/spring-boot-jms-poc/complete/gs-messaging-jms.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gs-messaging-stomp-websocket-master/complete/gs-messaging-stomp-websocket.iml" filepath="$PROJECT_DIR$/gs-messaging-stomp-websocket-master/complete/gs-messaging-stomp-websocket.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gs-rest-service-cors-master/complete/gs-rest-service-cors.iml" filepath="$PROJECT_DIR$/gs-rest-service-cors-master/complete/gs-rest-service-cors.iml" />
       <module fileurl="file://$PROJECT_DIR$/java-test/java-test.iml" filepath="$PROJECT_DIR$/java-test/java-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/jpa-learning/jpa-learning.iml" filepath="$PROJECT_DIR$/jpa-learning/jpa-learning.iml" />
       <module fileurl="file://$PROJECT_DIR$/spring-boot-async-example/complete/spring-boot-async-example.iml" filepath="$PROJECT_DIR$/spring-boot-async-example/complete/spring-boot-async-example.iml" />
       <module fileurl="file://$PROJECT_DIR$/spring-boot-web4-webflow-learning/spring-boot-web4-learning.iml" filepath="$PROJECT_DIR$/spring-boot-web4-webflow-learning/spring-boot-web4-learning.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring-websocket-portfolio-master/spring-websocket-portfolio-master/spring-websocket-portfolio.iml" filepath="$PROJECT_DIR$/spring-websocket-portfolio-master/spring-websocket-portfolio-master/spring-websocket-portfolio.iml" />
       <module fileurl="file://$PROJECT_DIR$/springlearning-parent-pom.iml" filepath="$PROJECT_DIR$/springlearning-parent-pom.iml" />
     </modules>
   </component>

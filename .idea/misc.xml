@@ -5,6 +5,7 @@
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/spring-boot-web4-webflow-learning" />
+    <file type="web" url="file://$PROJECT_DIR$/spring-websocket-portfolio-master/spring-websocket-portfolio-master" />
   </component>
   <component name="IdProvider" IDEtalkID="20501948902B5CC5DE67C4611B1F0F8A" />
   <component name="MavenProjectsManager">
@@ -13,6 +14,9 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/spring-boot-jms-poc/complete/pom.xml" />
         <option value="$PROJECT_DIR$/spring-boot-async-example/complete/pom.xml" />
+        <option value="$PROJECT_DIR$/gs-messaging-stomp-websocket-master/complete/pom.xml" />
+        <option value="$PROJECT_DIR$/spring-websocket-portfolio-master/spring-websocket-portfolio-master/pom.xml" />
+        <option value="$PROJECT_DIR$/gs-rest-service-cors-master/complete/pom.xml" />
       </list>
     </option>
   </component>

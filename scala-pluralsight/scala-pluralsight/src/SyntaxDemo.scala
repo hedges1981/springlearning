@@ -36,12 +36,14 @@ object SyntaxDemo extends App {
     }
   }
 
+  var er : Int = min( 1,2)
+
   println(min(5, 6))
 
   //some stuff on operators, operators are functions and can be over loaded, e.g.
   var x = 4 * 5
   //is like saying:
-  x = 4.*(5)
+//  x = 4.*(5)
   println(x)
   //but the 'infix' notation allows you to drop the dot, e.g.
   strVariable = (35 toString) + "hello";
