@@ -1,6 +1,6 @@
 import java.util
 
-import collection.JavaConverters._
+import scala.collection.JavaConverters._
 import scala.collection.mutable
 
 /**
