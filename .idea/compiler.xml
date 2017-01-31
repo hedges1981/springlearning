@@ -24,21 +24,27 @@
         <processorPath useClasspath="true" />
         <module name="developer-utils" />
         <module name="gs-messaging-jms" />
+        <module name="gs-messaging-stomp-websocket" />
+        <module name="gs-rest-service-cors" />
         <module name="java-test" />
         <module name="jpa-learning" />
         <module name="spring-boot-async-example" />
         <module name="spring-boot-web4-learning" />
+        <module name="spring-websocket-portfolio" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="developer-utils" target="1.5" />
+      <module name="developer-utils" target="1.8" />
       <module name="gs-messaging-jms" target="1.8" />
       <module name="gs-messaging-jms (1)" target="1.8" />
-      <module name="java-test" target="1.5" />
-      <module name="jpa-learning" target="1.5" />
+      <module name="gs-messaging-stomp-websocket" target="1.8" />
+      <module name="gs-rest-service-cors" target="1.8" />
+      <module name="java-test" target="1.8" />
+      <module name="jpa-learning" target="1.8" />
       <module name="spring-boot-async-example" target="1.8" />
       <module name="spring-boot-web4-learning" target="1.8" />
-      <module name="springlearning-parent-pom" target="1.5" />
+      <module name="spring-websocket-portfolio" target="1.7" />
+      <module name="springlearning-parent-pom" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

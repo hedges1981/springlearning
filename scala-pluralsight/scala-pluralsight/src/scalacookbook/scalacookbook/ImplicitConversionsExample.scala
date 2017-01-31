@@ -1,6 +1,6 @@
-package scalacookbook
+package scalacookbook.scalacookbook
 
-import scalacookbook.DingDongConversions._
+import scalacookbook.scalacookbook.DingDongConversions._
 
 /**
   * Created by christine on 30/01/2017.

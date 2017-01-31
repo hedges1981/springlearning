@@ -1,4 +1,4 @@
-package scalacookbook
+package scalacookbook.scalacookbook
 
 /**
   *
