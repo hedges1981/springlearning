@@ -1,0 +1,73 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <script src="https://npmcdn.com/babel-core@5.8.38/browser.min.js"></script>
+    <script src="https://npmcdn.com/react@15.3.1/dist/react.min.js"></script>
+    <script src="https://npmcdn.com/react-dom@15.3.1/dist/react-dom.min.js"></script>
+</head>
+<style type = "text/css">
+#container {
+padding: 50px;
+background-color: #EEE;
+}
+#container h1 {
+font-size: 48px;
+font-family: sans-serif;
+color: #0080A8;
+}</style>
+<body>
+<div id="app"></div>
+
+<script type="text/babel">
+
+//Here we define a component, that can be called in a render with: <HelloWorld/>
+var HelloWorld = React.createClass({
+                    render: function() {
+                                    return (
+                                    //note use of the passed in parameter here:
+                                    <p>Hello {this.props.greetTarget}!</p>
+                                    );
+                            }
+});
+
+//note how the child elements of the button get rendered, and can be accessed via : this.props.children
+//also note how this.props.children is an array of children, see e.g. below how its .length is displayed
+var ComponentWithChildren = React.createClass({
+                    render: function() {
+                    return (
+                    <div>
+
+                    <button type={this.props.behavior}>{this.props.children}</button>
+                    <p>Number of children= {this.props.children.length}</p>
+                    </div>
+                    );
+                    }
+                    });
+
+            var dest = document.querySelector("#container");
+            ReactDOM.render(
+                <div>
+                <HelloWorld greetTarget="Jimi"/>
+                <HelloWorld greetTarget="Jonny"/>
+                <HelloWorld greetTarget="Mavis"/>
+                <HelloWorld greetTarget="Mrs Dog"/>
+                //note how parameters are passed in as html elt attributes
+                //note can be called many times, but must be enclosed in a div, this is presumably
+                because the thing wants a self enclosed element to render.
+
+                <ComponentWithChildren behaviour="submit">
+                <p>child element that gets rendered</p>
+                <p>anoher child element that gets rendered</p>
+                </ComponentWithChildren>
+                </div>
+                ,
+                dest
+            );
+        </script>
+
+<div id="container"></div>
+</body>
+</html>
