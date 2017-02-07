@@ -86,10 +86,56 @@ object Ch4ClassesAndProperties extends App{
   yetAnotherClass.name // prints getting name
   yetAnotherClass.name_("new name") //prints setting name
 
-  //reached page 117
+  class ClassWithPrivateThisField{
+    private[this] var privateThis : Int = 1
+    private var normalPrivate : Int = 2
+
+    def tryToAccessPrivateField( other: ClassWithPrivateThisField): Unit ={
+      other.normalPrivate //this is ok as is normal private
+      //other.privateThis ....wont compile as private[this] keeps it private to just the instance
+    }
+
+  }
+
+  //Lazy class fields only get evaluated when accessed:
+  class LazyClass {
+
+    lazy val lazyField = {
+      println("initialising lazy field")
+      "hello"
+    }
+
+    //pattern for fields that start off un-initialised is to use an option, start with none
+    var uninitialisedField = None : Option[String]
+  }
+
+  val lazyClass = new LazyClass()//prints nothing
+  lazyClass.lazyField //prints 'initialising lazy field'
+
+  //to later set and get the un-initialised field:
+  lazyClass.uninitialisedField = Some("hello")
+  println( lazyClass.uninitialisedField.get ) // prints hello
+
+  //Some inheritance patterns:
+  //Handling constructor parameters
+
+  class Person( val name : String, val age : Int ) {
+    println("Person being built via primary constructor")
+
+    def this( age : Int ) = {
+
+      this( "Person built by auxiliary constructor" , age )
+    }
+
+  }
 
 
+  //NOTE: by saying extends Person( age ), you are telling it which of the superclass constructors
+  //to call
+  class Employee( name : String, age : Int, val employeeNumber : Int ) extends Person( age ){
+    println(" Employee being built")
+  }
 
-
+  println( new Employee( "name", 21, 1 ).name )
 
 }
