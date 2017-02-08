@@ -138,4 +138,54 @@ object Ch4ClassesAndProperties extends App{
 
   println( new Employee( "name", 21, 1 ).name )
 
+
+  //abstract classes:
+  abstract class AbstractClass {
+
+    val abstractField :String
+    def abstractMethod( s : String ) : Int
+    def abstractSomething :Unit
+
+    val overriddenActualVal = {
+      println("setting overriddenActualVal to Abstract super class value xxx ")
+      "xxx"
+    }
+  }
+
+  class AbstractClassImpl extends AbstractClass{
+    override val abstractField: String = "hello"
+    override def abstractMethod(s: String): Int = 999
+    override def abstractSomething: Unit = {
+      //nothing
+    }
+
+    override val overriddenActualVal = {
+      println("setting overriddenActualVal to AbstractClassImpl class value xxx ")
+      "xxx"
+    }
+  }
+
+  //NOTE how this calls stuff in the super class when setting the variable which is then overridden.
+  new AbstractClassImpl
+
+  //CASE CLASSES:::
+  case class MyCaseClass( s : Int, t : Int )
+
+  //no need to use new keyword to make one:
+  val caseClass1 = MyCaseClass(1,2)
+  val caseClass2 = MyCaseClass(1,2)
+
+  //automatically generates equals and hash codes for the classes
+  assert( caseClass1 == caseClass2 )
+  assert( caseClass1.hashCode() == caseClass2.hashCode() )
+
+  //copy good for immutable objects and merging in data:
+  val caseClass3= caseClass1.copy(t=3)
+
+  //NOTE also the nice toString that you get:
+  println( caseClass3)
+
+
+
+
 }
