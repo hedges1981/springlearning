@@ -58,4 +58,9 @@ object Ch1Strings extends App{
   //note the use of the implicit class StringImprovements to allow this to be done:
   val aaa = "ding "
   println( aaa.dongify )
+
+  //Making a string from a list of things:
+  val anotherList = List(1,2,3,4,5)
+  val listAsConcatenatedString : String = anotherList.mkString("/")
+  println(listAsConcatenatedString) //prints '1/2/3/4/5'
 }
