@@ -65,4 +65,60 @@ object Ch5Methods {
   val copyOfTuple = tuple.copy(_5=5555)  //does a copy changing only the 5th element:
   println( copyOfTuple )
 
+  //it is convention that if a getter method has no side effect, make it have no ()...
+  //e.g.
+  class GetterClass{
+    def noSideEffects : Int = 12
+
+    def hasSideEffects() : Int = {
+      println("getting with side effect")
+      14
+    }
+  }
+
+  //note how you call the getters:
+  new GetterClass().noSideEffects //would not compile with ()
+  new GetterClass().hasSideEffects //this ok
+  //and also this:
+  new GetterClass().hasSideEffects()
+
+  //Var args example:
+  def printTheLot( strings : String * ){ strings.foreach(println) }
+  val stringList = List("1","2","3")
+  printTheLot( stringList :_* )  //note the use of :_* , short hand to make it pass the list elements in
+  //sequence instead of the list as one go
+
+
+  //Declaring that methods throw exceptions:
+  @throws( classOf[IllegalArgumentException] )
+  @throws ( classOf[IllegalStateException ])
+  def exceptionThrowingMethod( i : Int ): Unit ={
+
+    if(i<5) throw new IllegalArgumentException else throw new IllegalStateException()
+
+  }
+
+  //also, scala doesn't care if exceptions are checked or not, u don't need to declare them and
+  //nor are you forced to catch them
+
+  //Method chaining, fluent programming style:
+  class MethodChainingClass {
+
+    var firstName :String = ???
+    var secondName : String = ???
+
+    def setFirstName( s : String ):MethodChainingClass = {
+      this.firstName = s
+      this
+    }
+
+    def setSecondName( s : String ):MethodChainingClass = {
+      this.secondName = s
+      this
+    }
+  }
+
+  //note how you can chain the methods
+  val aMethodChainingClass = new MethodChainingClass().setFirstName("king").setSecondName("kong")
+
 }
